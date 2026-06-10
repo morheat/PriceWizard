@@ -221,61 +221,49 @@
 </div>
 
           <!-- ⭐ HOT ROD PRICE PANEL -->
-    <div class="priceColumn">
+<div class="priceColumn">
   <div id="price_hot_rod" class="section" style="display:none;">
-  <h3>Price Breakdown — Hot Rod</h3>
-  <p>Diameter: $0.00</p>
-  <p>Sheath Material: $0.00</p>
-  <p>Length: $0.00</p>
-  <p>Configuration: $0.00</p>
-  <p>Circuit Type: $0.00</p>
-  <p>Volts: $0.00</p>
-  <p>Watts: $0.00</p>
-  <p>Termination: $0.00</p>
-  <p>Lead Gage: $0.00</p>
-  <p>Lead Wire Insulation: $0.00</p>
-  <p>Lead Wire Length: $0.00</p>
-  <p>Protection Length: $0.00</p>
-  <table style="width:100%; margin-top:15px; border-collapse: collapse;">
-  <tr>
-    <th style="text-align:left; padding:6px;">Quantity</th>
-    <th style="text-align:left; padding:6px;">9 Days (Std)</th>
-  </tr>
-  <tr>
-    <td style="padding:6px;">1</td>
-    <td style="padding:6px;">$0.00</td>
-  </tr>
-  <tr>
-    <td style="padding:6px;">2–4</td>
-    <td style="padding:6px;">$0.00</td>
-  </tr>
-  <tr>
-    <td style="padding:6px;">5–9</td>
-    <td style="padding:6px;">$0.00</td>
-  </tr>
-  <tr>
-    <td style="padding:6px;">10–24</td>
-    <td style="padding:6px;">$0.00</td>
-  </tr>
-  <tr>
-    <td style="padding:6px;">25–49</td>
-    <td style="padding:6px;">$0.00</td>
-  </tr>
-  <tr>
-    <td style="padding:6px;">50–99</td>
-    <td style="padding:6px;">$0.00</td>
-  </tr>
-  <tr>
-    <td style="padding:6px;">100+</td>
-    <td style="padding:6px;">$0.00</td>
-  </tr>
-</table>
+    <h3>Price Breakdown — Hot Rod</h3>
 
-  <hr>
-  <p class="total"><strong>Total: $0.00</strong></p>
-    
+    <!-- These IDs are required for the pricing engine -->
+    <p>Diameter Base Price: <span id="price_hotrod_diameter">$0.00</span></p>
+    <p>Length Surcharge: <span id="price_hotrod_length">$0.00</span></p>
+
+    <!-- You can keep these for future pricing categories -->
+    <p>Sheath Material: <span id="price_hotrod_sheath">$0.00</span></p>
+    <p>Configuration: <span id="price_hotrod_configuration">$0.00</span></p>
+    <p>Circuit Type: <span id="price_hotrod_circuit">$0.00</span></p>
+    <p>Volts: <span id="price_hotrod_volts">$0.00</span></p>
+    <p>Watts: <span id="price_hotrod_watts">$0.00</span></p>
+    <p>Termination: <span id="price_hotrod_termination">$0.00</span></p>
+    <p>Lead Gage: <span id="price_hotrod_leadgage">$0.00</span></p>
+    <p>Lead Wire Insulation: <span id="price_hotrod_insulation">$0.00</span></p>
+    <p>Lead Wire Length: <span id="price_hotrod_leadlength">$0.00</span></p>
+    <p>Protection Length: <span id="price_hotrod_protection">$0.00</span></p>
+
+    <table style="width:100%; margin-top:15px; border-collapse: collapse;">
+      <tr>
+        <th style="text-align:left; padding:6px;">Quantity</th>
+        <th style="text-align:left; padding:6px;">9 Days (Std)</th>
+      </tr>
+      <tr>
+        <td style="padding:6px;">1</td>
+        <td class="qty1" style="padding:6px;">$0.00</td>
+      </tr>
+      <tr><td style="padding:6px;">2–4</td><td style="padding:6px;">$0.00</td></tr>
+      <tr><td style="padding:6px;">5–9</td><td style="padding:6px;">$0.00</td></tr>
+      <tr><td style="padding:6px;">10–24</td><td style="padding:6px;">$0.00</td></tr>
+      <tr><td style="padding:6px;">25–49</td><td style="padding:6px;">$0.00</td></tr>
+      <tr><td style="padding:6px;">50–99</td><td style="padding:6px;">$0.00</td></tr>
+      <tr><td style="padding:6px;">100+</td><td style="padding:6px;">$0.00</td></tr>
+    </table>
+
+    <hr>
+
+    <p class="total"><strong>Total: $0.00</strong></p>
+  </div>
 </div>
-      </div>
+
       </div>
   </div>
       
@@ -2046,7 +2034,11 @@
 </div>
 
 
-   <script>
+<script>
+
+/* ---------------------------------------------------------
+   PRODUCT SHOW / HIDE
+--------------------------------------------------------- */
 function showOptions() {
   const selected = document.getElementById("product").value;
 
@@ -2084,33 +2076,25 @@ function showOptions() {
     "price_ceramic_band"
   ];
 
-  // Hide all product sections
   productSections.forEach(id => {
     document.getElementById(id).style.display = "none";
   });
 
-  // Hide all price panels
   pricePanels.forEach(id => {
     document.getElementById(id).style.display = "none";
   });
 
-  // Hide default panel by default
-  document.getElementById("price_default").style.display = "none";
+  document.getElementById("price_default").style.display = selected ? "none" : "block";
 
-  // If no product selected → show default panel
-  if (!selected) {
-    document.getElementById("price_default").style.display = "block";
-    return;
+  if (selected) {
+    document.getElementById(selected).style.display = "block";
+    document.getElementById("price_" + selected).style.display = "block";
   }
-
-  // Show selected product section
-  document.getElementById(selected).style.display = "block";
-
-  // Show matching price panel
-  const pricePanelId = "price_" + selected;
-  document.getElementById(pricePanelId).style.display = "block";
 }
 
+/* ---------------------------------------------------------
+   HOT ROD — SHEATH OPTIONS (DEPENDENT DROPDOWN)
+--------------------------------------------------------- */
 const hotRodSheathOptions = {
   "1/8 in": ["304 SS"],
   "1/4 in": ["304 SS", "316 SS", "Incoloy"],
@@ -2141,12 +2125,10 @@ function updateHotRodSheath() {
   const diameter = document.getElementById("hotrod_diameter").value;
   const sheathSelect = document.getElementById("hotrod_sheath");
 
-  // Reset sheath dropdown
   sheathSelect.innerHTML = '<option value="">-- Select Sheath Material --</option>';
 
   if (!diameter) return;
 
-  // Insert valid sheath materials
   hotRodSheathOptions[diameter].forEach(material => {
     const opt = document.createElement("option");
     opt.value = material;
@@ -2155,12 +2137,15 @@ function updateHotRodSheath() {
   });
 }
 
+/* ---------------------------------------------------------
+   HOT ROD — LENGTH LIMITS
+--------------------------------------------------------- */
 const hotRodLengthLimits = {
   "1/8 in": { min: 1, max: 6 },
-  "default": { min: 1, max: 60 } // all other diameters
+  "default": { min: 1, max: 60 }
 };
 
-     function validateHotRodLength() {
+function validateHotRodLength() {
   const diameter = document.getElementById("hotrod_diameter").value;
   const lengthInput = document.getElementById("hotrod_length");
 
@@ -2173,98 +2158,95 @@ const hotRodLengthLimits = {
   }
 
   const value = parseFloat(lengthInput.value);
-
   if (isNaN(value)) return;
 
   if (value < min) lengthInput.value = min;
   if (value > max) lengthInput.value = max;
 }
 
-     const hotRodBracketPricing = {
-  "1/8 in": [
-    { min: 1.01, max: 2.00, price: 57.82 },
-    { min: 2.01, max: 3.00, price: 62.50 },
-    { min: 3.01, max: 4.00, price: 68.00 }
-  ],
-
-  "1/4 in": {
-    "304 SS": [
-      { min: 2.01, max: 3.00, price: 36.20 },
-      { min: 3.01, max: 4.00, price: 40.00 }
-    ],
-    "316 SS": [
-      { min: 2.01, max: 3.00, price: 38.00 }
-    ]
-  }
+/* ---------------------------------------------------------
+   HOT ROD — BASE PRICE PER DIAMETER
+--------------------------------------------------------- */
+const hotRodBasePrice = {
+  "1/8 in": 44.32,
+  "1/4 in": 22.10,
+  "5/16 in": 42.00,
+  "3/8 in": 45.00,
+  "1/2 in": 48.00,
+  "17/32 in": 49.00,
+  "5/8 in": 50.00,
+  "11/16 in": 52.00,
+  "3/4 in": 55.00,
+  "1 in": 60.00,
+  "6 mm": 38.00,
+  "6.5 mm": 39.00,
+  "8 mm": 41.00,
+  "10 mm": 43.00,
+  "12 mm": 46.00,
+  "12.5 mm": 47.00,
+  "13 mm": 48.00,
+  "14 mm": 49.00,
+  "16 mm": 52.00,
+  "17 mm": 53.00,
+  "19 mm": 55.00,
+  "20 mm": 56.00,
+  "25 mm": 62.00
 };
 
-     
-/*  const hotRodPricing = {
-  "1/8 in": {
-    "1 in": 51.07,
-    "2 in": 57.82,
-    "3 in": 64.57,
-    "4 in": 71.32,
-    "5 in": 78.07,
-    "6 in": 84.82
+/* ---------------------------------------------------------
+   HOT ROD — INCREMENT PER DIAMETER + SHEATH
+--------------------------------------------------------- */
+const hotRodIncrement = {
+  "1/8 in": { "304 SS": 6.75 },
+
+  "1/4 in": {
+    "304 SS": 4.70,
+    "316 SS": 4.85,
+    "Incoloy": 4.92
   },
-  "1/4 in": {
-    "1 in": 48.00
-  }
-  // Add more diameter → length → price combinations here
+
+  "3/8 in": {
+    "304 SS": 8.00,
+    "316 SS": 8.75,
+    "Incoloy": 9.50
+  },
+
+  "1 in": { "304 SS": 10.00 }
 };
-*/
 
-function updateHotRodSheath() {
-  const diameter = document.getElementById("hotrod_diameter").value;
-  const sheathSelect = document.getElementById("hotrod_sheath");
-
-  sheathSelect.innerHTML = '<option value="">-- Select Sheath Material --</option>';
-
-  if (!diameter) return;
-
-  hotRodSheathOptions[diameter].forEach(material => {
-    const opt = document.createElement("option");
-    opt.value = material;
-    opt.textContent = material;
-    sheathSelect.appendChild(opt);
-  });
-}
-
-     
+/* ---------------------------------------------------------
+   HOT ROD — FINAL PRICING ENGINE
+--------------------------------------------------------- */
 function updateHotRodPrice() {
   const diameter = document.getElementById("hotrod_diameter").value;
   const sheath = document.getElementById("hotrod_sheath").value;
   const length = parseFloat(document.getElementById("hotrod_length").value);
 
-  let total = 0;
+  let base = 0;
+  let increment = 0;
+  let bracketCount = 0;
 
-  if (!diameter || isNaN(length)) {
-    document.querySelector("#price_hot_rod .total").textContent = "Total: $0.00";
-    return;
+  if (hotRodBasePrice[diameter]) {
+    base = hotRodBasePrice[diameter];
   }
 
-  // Case 1: diameter-only brackets
-  if (Array.isArray(hotRodBracketPricing[diameter])) {
-    hotRodBracketPricing[diameter].forEach(bracket => {
-      if (length >= bracket.min && length <= bracket.max) {
-        total = bracket.price;
-      }
-    });
+  if (hotRodIncrement[diameter] && hotRodIncrement[diameter][sheath]) {
+    increment = hotRodIncrement[diameter][sheath];
   }
 
-  // Case 2: diameter + sheath brackets
-  if (hotRodBracketPricing[diameter] &&
-      hotRodBracketPricing[diameter][sheath]) {
-
-    hotRodBracketPricing[diameter][sheath].forEach(bracket => {
-      if (length >= bracket.min && length <= bracket.max) {
-        total = bracket.price;
-      }
-    });
+  if (!isNaN(length) && length >= 1) {
+    bracketCount = Math.ceil(length);  // YOUR EXACT BRACKET LOGIC
   }
 
-  // Update UI
+  const lengthAdd = bracketCount * increment;
+  const total = base + lengthAdd;
+
+  document.getElementById("price_hotrod_diameter").textContent =
+    "$" + base.toFixed(2);
+
+  document.getElementById("price_hotrod_length").textContent =
+    "$" + lengthAdd.toFixed(2);
+
   document.querySelector("#price_hot_rod .total").textContent =
     "Total: $" + total.toFixed(2);
 
@@ -2273,6 +2255,7 @@ function updateHotRodPrice() {
 }
 
 </script>
+
 
 
 </div>
