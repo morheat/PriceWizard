@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Price Wizard0</title>
+  <title>Price Wizard7</title>
 
   <style>
     body {
@@ -146,16 +146,13 @@
 </select>
 
 
-  <label>Length</label>
-    <select id="hotrod_length" onchange="updateHotRodPrice();">
-    <option value="">-- Select Length --</option>
-    <option>1 in</option>
-    <option>2 in</option>
-    <option>3 in</option>
-    <option>4 in</option>
-    <option>5 in</option>
-    <option>6 in</option>  
-  </select>
+<label>Length (inches)</label>
+<input type="number"
+       id="hotrod_length"
+       step="0.01"
+       placeholder="Enter length"
+       oninput="validateHotRodLength(); updateHotRodPrice();">
+
 
   <label>Configuration</label>
   <select>
@@ -2158,7 +2155,51 @@ function updateHotRodSheath() {
   });
 }
 
-  const hotRodPricing = {
+const hotRodLengthLimits = {
+  "1/8 in": { min: 1, max: 6 },
+  "default": { min: 1, max: 60 } // all other diameters
+};
+
+     function validateHotRodLength() {
+  const diameter = document.getElementById("hotrod_diameter").value;
+  const lengthInput = document.getElementById("hotrod_length");
+
+  let min = 1;
+  let max = 999;
+
+  if (hotRodLengthLimits[diameter]) {
+    min = hotRodLengthLimits[diameter].min;
+    max = hotRodLengthLimits[diameter].max;
+  }
+
+  const value = parseFloat(lengthInput.value);
+
+  if (isNaN(value)) return;
+
+  if (value < min) lengthInput.value = min;
+  if (value > max) lengthInput.value = max;
+}
+
+     const hotRodBracketPricing = {
+  "1/8 in": [
+    { min: 1.01, max: 2.00, price: 57.82 },
+    { min: 2.01, max: 3.00, price: 62.50 },
+    { min: 3.01, max: 4.00, price: 68.00 }
+  ],
+
+  "1/4 in": {
+    "304 SS": [
+      { min: 2.01, max: 3.00, price: 36.20 },
+      { min: 3.01, max: 4.00, price: 40.00 }
+    ],
+    "316 SS": [
+      { min: 2.01, max: 3.00, price: 38.00 }
+    ]
+  }
+};
+
+     
+/*  const hotRodPricing = {
   "1/8 in": {
     "1 in": 51.07,
     "2 in": 57.82,
@@ -2172,9 +2213,7 @@ function updateHotRodSheath() {
   }
   // Add more diameter → length → price combinations here
 };
-
-//     const hotRodSheathOptions = { … };
-//const hotRodPricing = { … };
+*/
 
 function updateHotRodSheath() {
   const diameter = document.getElementById("hotrod_diameter").value;
@@ -2209,8 +2248,6 @@ function updateHotRodPrice() {
   document.querySelector("#price_hot_rod .qty1").textContent =
     "$" + total.toFixed(2);
 }
-
-
      
 </script>
 
