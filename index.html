@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Price Wizard1</title>
+  <title>Price Wizard0</title>
 
   <style>
     body {
@@ -160,50 +160,51 @@
   <label>Configuration</label>
   <select>
     <option value="">-- Select Configuration --</option>
-    <option>Placeholder 1</option>
-    <option>Placeholder 2</option>
+    <option>Standard</option>
   </select>
 
   <label>Circuit Type</label>
   <select>
     <option value="">-- Select Circuit Type --</option>
-    <option>Placeholder 1</option>
+    <option>Single Phase</option>
     <option>Placeholder 2</option>
   </select>
 
   <label>Volts</label>
   <select>
     <option value="">-- Select Volts --</option>
-    <option>Placeholder 1</option>
-    <option>Placeholder 2</option>
+    <option>110</option>
+    <option>120</option>
+    <option>230</option>
+    <option>240</option>
   </select>
 
-  <label>Watts</label>
-  <select>
-    <option value="">-- Select Watts --</option>
-    <option>Placeholder 1</option>
-    <option>Placeholder 2</option>
-  </select>
+<label>Watts</label>
+<input type="number"
+       id="hotrod_watts"
+       placeholder="Enter Watts"
+       oninput="updateHotRodPrice();">
+
 
   <label>Termination</label>
   <select>
     <option value="">-- Select Termination --</option>
-    <option>Placeholder 1</option>
-    <option>Placeholder 2</option>
+    <option>Swaged in Leads</option>
+    <option>Crimped on Leads</option>
+    <option>Straight Pins</option>
   </select>
 
   <label>Lead Gage</label>
   <select>
     <option value="">-- Select Lead Gage --</option>
-    <option>Placeholder 1</option>
-    <option>Placeholder 2</option>
+    <option>24 ga</option>
   </select>
 
   <label>Lead Wire Insulation</label>
   <select>
     <option value="">-- Select Lead Wire Insulation --</option>
-    <option>Placeholder 1</option>
-    <option>Placeholder 2</option>
+    <option>450C Hi-Temp</option>
+    <option>Teflon</option>
   </select>
 
   <label>Lead Wire Length</label>
