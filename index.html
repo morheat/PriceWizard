@@ -111,19 +111,39 @@
     <div class="productColumn">
   <h3>Hot Rod</h3>
 
-  <label>Diameter</label>
-  <select>
-    <option value="">-- Select Diameter --</option>
-    <option>Placeholder A</option>
-    <option>Placeholder 2</option>
-  </select>
+<label>Diameter</label>
+<select id="hotrod_diameter" onchange="updateHotRodSheath()">
+  <option value="">-- Select Diameter --</option>
+  <option>1/8 in</option>
+  <option>1/4 in</option>
+  <option>5/16 in</option>
+  <option>3/8 in</option>
+  <option>1/2 in</option>
+  <option>17/32 in</option>
+  <option>5/8 in</option>
+  <option>11/16 in</option>
+  <option>3/4 in</option>
+  <option>1 in</option>
+  <option>6 mm</option>
+  <option>6.5 mm</option>
+  <option>8 mm</option>
+  <option>10 mm</option>
+  <option>12 mm</option>
+  <option>12.5 mm</option>
+  <option>13 mm</option>
+  <option>14 mm</option>
+  <option>16 mm</option>
+  <option>17 mm</option>
+  <option>19 mm</option>
+  <option>20 mm</option>
+  <option>25 mm</option>
+</select>
 
-  <label>Sheath Material</label>
-  <select>
-    <option value="">-- Select Sheath Material --</option>
-    <option>Placeholder 1</option>
-    <option>Placeholder 2</option>
-  </select>
+<label>Sheath Material</label>
+<select id="hotrod_sheath">
+  <option value="">-- Select Sheath Material --</option>
+</select>
+
 
   <label>Length</label>
   <select>
@@ -390,8 +410,11 @@
   <label>Width</label>
   <select>
     <option value="">-- Select Width --</option>
-    <option>Placeholder 1</option>
-    <option>Placeholder 2</option>
+    <option>3/4 in</option>
+    <option>1 1/2 in</option>
+    <option>2 1/2 in</option>
+    <option>3 in</option>
+    <option>4 in</option>
   </select>
 
   <label>Configuration</label>
@@ -2082,6 +2105,54 @@ function showOptions() {
   const pricePanelId = "price_" + selected;
   document.getElementById(pricePanelId).style.display = "block";
 }
+
+<script>
+const hotRodSheathOptions = {
+  "1/8 in": ["304 SS"],
+  "1/4 in": ["304 SS", "316 SS", "Incoloy"],
+  "5/16 in": ["304 SS"],
+  "3/8 in": ["304 SS", "316 SS", "Incoloy"],
+  "1/2 in": ["304 SS", "316 SS", "Incoloy"],
+  "17/32 in": ["304 SS", "316 SS", "Incoloy"],
+  "5/8 in": ["304 SS", "316 SS", "Incoloy"],
+  "11/16 in": ["304 SS", "316 SS", "Incoloy"],
+  "3/4 in": ["304 SS", "316 SS", "Incoloy"],
+  "1 in": ["304 SS"],
+  "6 mm": ["304 SS", "316 SS", "Incoloy"],
+  "6.5 mm": ["304 SS", "316 SS", "Incoloy"],
+  "8 mm": ["304 SS"],
+  "10 mm": ["304 SS", "316 SS", "Incoloy"],
+  "12 mm": ["304 SS", "316 SS", "Incoloy"],
+  "12.5 mm": ["304 SS", "316 SS", "Incoloy"],
+  "13 mm": ["304 SS", "316 SS", "Incoloy"],
+  "14 mm": ["304 SS", "316 SS", "Incoloy"],
+  "16 mm": ["304 SS", "316 SS", "Incoloy"],
+  "17 mm": ["304 SS", "316 SS", "Incoloy"],
+  "19 mm": ["304 SS", "316 SS", "Incoloy"],
+  "20 mm": ["304 SS", "316 SS", "Incoloy"],
+  "25 mm": ["304 SS"]
+};
+
+function updateHotRodSheath() {
+  const diameter = document.getElementById("hotrod_diameter").value;
+  const sheathSelect = document.getElementById("hotrod_sheath");
+
+  // Reset sheath dropdown
+  sheathSelect.innerHTML = '<option value="">-- Select Sheath Material --</option>';
+
+  if (!diameter) return;
+
+  // Insert valid sheath materials
+  hotRodSheathOptions[diameter].forEach(material => {
+    const opt = document.createElement("option");
+    opt.value = material;
+    opt.textContent = material;
+    sheathSelect.appendChild(opt);
+  });
+}
+
+     
+     
 </script>
 
 
