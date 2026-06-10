@@ -112,7 +112,8 @@
   <h3>Hot Rod</h3>
 
 <label>Diameter</label>
-<select id="hotrod_diameter" onchange="updateHotRodSheath()">
+<select id="hotrod_diameter"
+        onchange="updateHotRodSheath(); updateHotRodPrice();">
   <option value="">-- Select Diameter --</option>
   <option>1/8 in</option>
   <option>1/4 in</option>
@@ -140,7 +141,8 @@
 </select>
 
 <label>Sheath Material</label>
-<select id="hotrod_sheath">
+<select id="hotrod_length"
+        onchange="updateHotRodPrice();">
   <option value="">-- Select Sheath Material --</option>
 </select>
 
@@ -148,8 +150,8 @@
   <label>Length</label>
   <select>
     <option value="">-- Select Length --</option>
-    <option>Placeholder 1</option>
-    <option>Placeholder 2</option>
+    <option>1 in</option>
+    <option>2 in</option>
   </select>
 
   <label>Configuration</label>
@@ -214,6 +216,7 @@
     <option>Placeholder 1</option>
     <option>Placeholder 2</option>
   </select>
+      
 </div>
 
           <!-- ⭐ HOT ROD PRICE PANEL -->
@@ -268,7 +271,8 @@
 </table>
 
   <hr>
-  <p><strong>Total: $0.00</strong></p>
+  <p class="total"><strong>Total: $0.00</strong></p>
+    
 </div>
       </div>
       </div>
@@ -2150,7 +2154,55 @@ function updateHotRodSheath() {
   });
 }
 
+  const hotRodPricing = {
+  "1/8 in": {
+    "1 in": 51.07
+  },
+  "1/4 in": {
+    "1 in": 48.00
+  }
+  // Add more diameter → length → price combinations here
+};
+
+     const hotRodSheathOptions = { … };
+const hotRodPricing = { … };
+
+     function updateHotRodSheath() {
+  const diameter = document.getElementById("hotrod_diameter").value;
+  const sheathSelect = document.getElementById("hotrod_sheath");
+
+  sheathSelect.innerHTML = '<option value="">-- Select Sheath Material --</option>';
+
+  if (!diameter) return;
+
+  hotRodSheathOptions[diameter].forEach(material => {
+    const opt = document.createElement("option");
+    opt.value = material;
+    opt.textContent = material;
+    sheathSelect.appendChild(opt);
+  });
+}
+
      
+     function updateHotRodPrice() {
+  const diameter = document.getElementById("hotrod_diameter").value;
+  const length = document.getElementById("hotrod_length").value;
+
+  let total = 0;
+
+  if (hotRodPricing[diameter] && hotRodPricing[diameter][length]) {
+    total = hotRodPricing[diameter][length];
+  }
+
+  // Update total
+  document.querySelector("#price_hot_rod .total").textContent =
+    "Total: $" + total.toFixed(2);
+
+  // Update quantity table (quantity 1 = total)
+  document.querySelector("#price_hot_rod .qty1").textContent =
+    "$" + total.toFixed(2);
+}
+
      
 </script>
 
