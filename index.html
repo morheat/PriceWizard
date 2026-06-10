@@ -141,14 +141,13 @@
 </select>
 
 <label>Sheath Material</label>
-<select id="hotrod_length"
-        onchange="updateHotRodPrice();">
+  <select id="hotrod_sheath" onchange="updateHotRodPrice();">
   <option value="">-- Select Sheath Material --</option>
 </select>
 
 
   <label>Length</label>
-  <select>
+    <select id="hotrod_length" onchange="updateHotRodPrice();">
     <option value="">-- Select Length --</option>
     <option>1 in</option>
     <option>2 in</option>
@@ -2164,10 +2163,10 @@ function updateHotRodSheath() {
   // Add more diameter → length → price combinations here
 };
 
-     const hotRodSheathOptions = { … };
-const hotRodPricing = { … };
+//     const hotRodSheathOptions = { … };
+//const hotRodPricing = { … };
 
-     function updateHotRodSheath() {
+function updateHotRodSheath() {
   const diameter = document.getElementById("hotrod_diameter").value;
   const sheathSelect = document.getElementById("hotrod_sheath");
 
@@ -2184,7 +2183,7 @@ const hotRodPricing = { … };
 }
 
      
-     function updateHotRodPrice() {
+function updateHotRodPrice() {
   const diameter = document.getElementById("hotrod_diameter").value;
   const length = document.getElementById("hotrod_length").value;
 
@@ -2194,14 +2193,13 @@ const hotRodPricing = { … };
     total = hotRodPricing[diameter][length];
   }
 
-  // Update total
   document.querySelector("#price_hot_rod .total").textContent =
     "Total: $" + total.toFixed(2);
 
-  // Update quantity table (quantity 1 = total)
   document.querySelector("#price_hot_rod .qty1").textContent =
     "$" + total.toFixed(2);
 }
+
 
      
 </script>
