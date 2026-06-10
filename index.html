@@ -2,33 +2,69 @@
 <html>
 <head>
   <title>Price Wizard</title>
+
   <style>
-    body { 
-      font-family: Arial; 
-      max-width: 600px; 
-      margin: 40px auto; 
-      line-height: 1.5;
+    body {
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, #6a5acd, #00bfff);
+      margin: 0;
+      padding: 40px;
+      color: #333;
     }
-    label { 
-      display: block; 
-      margin-top: 15px; 
-      font-weight: bold; 
+
+    .container {
+      max-width: 900px;
+      margin: auto;
+      background: white;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.15);
     }
-    select { 
-      width: 100%; 
-      padding: 8px; 
-      margin-top: 5px; 
+
+    h2 {
+      text-align: center;
+      margin-bottom: 25px;
     }
+
+    label {
+      display: block;
+      margin-top: 15px;
+      font-weight: bold;
+    }
+
+    select {
+      width: 100%;
+      padding: 10px;
+      margin-top: 5px;
+      border-radius: 6px;
+      border: 1px solid #aaa;
+    }
+
     .section {
       margin-top: 25px;
-      padding: 15px;
-      border: 1px solid #ccc;
-      border-radius: 6px;
-      background: #f9f9f9;
+      padding: 20px;
+      border-radius: 10px;
+      background: #f4f4f4;
+      box-shadow: inset 0 0 5px rgba(0,0,0,0.1);
+    }
+
+    #priceSummary {
+      margin-top: 30px;
+      padding: 20px;
+      background: #eef6ff;
+      border-radius: 10px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+
+    #priceSummary h3 {
+      margin-top: 0;
     }
   </style>
 </head>
+
 <body>
+
+<div class="container">
 
   <h2>Price Wizard</h2>
 
@@ -37,145 +73,1099 @@
   <select id="product" onchange="showOptions()">
     <option value="">-- Select Product --</option>
     <option value="hot_rod">Hot Rod</option>
-    <option value="non_swaged_heaters">Non-Swaged Heaters</option>
+    <option value="non_swaged">Non-Swaged Heaters</option>
     <option value="starflex">Starflex</option>
-    <option value="mica_band_heater">Mica Band Heater</option>
+    <option value="mica_band">Mica Band Heater</option>
     <option value="nozzle_heater">Nozzle Heater</option>
     <option value="silicone_rubber">Silicone Rubber</option>
-    <option value="mica_strip_heater">Mica Strip Heater</option>
-    <option value="ceramic_strip_heater">Ceramic Strip Heater</option>
+    <option value="mica_strip">Mica Strip Heater</option>
+    <option value="ceramic_strip">Ceramic Strip Heater</option>
     <option value="air_heater">Air Heater</option>
     <option value="basic_tc">Basic TC</option>
-    <option value="mineral_insulated_tc">Mineral Insulated TC</option>
+    <option value="mi_tc">Mineral Insulated TC</option>
     <option value="coil_heaters">Coil Heaters</option>
-    <option value="square_cartridge_heater">Square Cartridge Heater</option>
-    <option value="ceramic_band_heater">Ceramic Band Heater</option>
+    <option value="square_cartridge">Square Cartridge Heater</option>
+    <option value="ceramic_band">Ceramic Band Heater</option>
   </select>
 
 
-  <!-- HOT ROD OPTIONS -->
-  <div id="hotRodOptions" class="section" style="display:none;">
+<div id="hot_rod" class="section" style="display:none;">
+  <h3>Hot Rod</h3>
 
-    <h3>Hot Rod Options</h3>
+  <label>Diameter</label>
+  <select>
+    <option value="">-- Select Diameter --</option>
+    <option>Placeholder 1</option>
+    <option>Placeholder 2</option>
+  </select>
 
-    <label>Diameter</label>
-    <select>
-      <option>1/8 in</option>
-      <option>1/4 in</option>
-      <option>5/16 in"</option>
-      <option>3/8 in</option>
-      <option>1/2 in(*)"</option>
-      <option>5/8 in</option>
-      <option>3/4 in</option>
-      <option>1 in</option>
-      <option>6 mm</option>
-      <option>6.5 mm</option>
-      <option>8 mm</option>
-      <option>10 mm</option>
-      <option>12 mm</option>
-      <option>12.5 mm</option>
-      <option>13 mm</option>
-      <option>14 mm</option>
-      <option>17/32 in</option>
-      <option>16 mm</option>
-      <option>17 mm</option>
-      <option>11/16 in</option>
-      <option>19 mm</option>
-      <option>20 mm</option>
-      <option>25 mm</option>
-    </select>
+  <label>Sheath Material</label>
+  <select>
+    <option value="">-- Select Sheath Material --</option>
+    <option>Placeholder 1</option>
+    <option>Placeholder 2</option>
+  </select>
 
-    <label>Sheath Material</label>
-    <select>
-      <option>304 SS</option>
-      <option>316 SS</option>
-      <option>Incoloy 800</option>
-    </select>
+  <label>Length</label>
+  <select>
+    <option value="">-- Select Length --</option>
+    <option>Placeholder 1</option>
+    <option>Placeholder 2</option>
+  </select>
 
-    <label>Length</label>
-    <select>
-      <option>6"</option>
-      <option>12"</option>
-      <option>18"</option>
-      <option>24"</option>
-    </select>
+  <label>Configuration</label>
+  <select>
+    <option value="">-- Select Configuration --</option>
+    <option>Placeholder 1</option>
+    <option>Placeholder 2</option>
+  </select>
 
-    <label>Configuration</label>
-    <select>
-      <option>Straight</option>
-      <option>Right Angle</option>
-    </select>
+  <label>Circuit Type</label>
+  <select>
+    <option value="">-- Select Circuit Type --</option>
+    <option>Placeholder 1</option>
+    <option>Placeholder 2</option>
+  </select>
 
-    <label>Circuit Type</label>
-    <select>
-      <option>Single Circuit</option>
-      <option>Dual Circuit</option>
-    </select>
+  <label>Volts</label>
+  <select>
+    <option value="">-- Select Volts --</option>
+    <option>Placeholder 1</option>
+    <option>Placeholder 2</option>
+  </select>
 
-    <label>Volts</label>
-    <select>
-      <option>120V</option>
-      <option>240V</option>
-    </select>
+  <label>Watts</label>
+  <select>
+    <option value="">-- Select Watts --</option>
+    <option>Placeholder 1</option>
+    <option>Placeholder 2</option>
+  </select>
 
-    <label>Watts</label>
-    <select>
-      <option>100W</option>
-      <option>250W</option>
-      <option>500W</option>
-      <option>750W</option>
-      <option>1000W</option>
-    </select>
+  <label>Termination</label>
+  <select>
+    <option value="">-- Select Termination --</option>
+    <option>Placeholder 1</option>
+    <option>Placeholder 2</option>
+  </select>
 
-    <label>Termination</label>
-    <select>
-      <option>Leads</option>
-      <option>Post Terminals</option>
-    </select>
+  <label>Lead Gage</label>
+  <select>
+    <option value="">-- Select Lead Gage --</option>
+    <option>Placeholder 1</option>
+    <option>Placeholder 2</option>
+  </select>
 
-    <label>Lead Gage</label>
-    <select>
-      <option>18 AWG</option>
-      <option>20 AWG</option>
-    </select>
+  <label>Lead Wire Insulation</label>
+  <select>
+    <option value="">-- Select Lead Wire Insulation --</option>
+    <option>Placeholder 1</option>
+    <option>Placeholder 2</option>
+  </select>
 
-    <label>Lead Wire Insulation</label>
-    <select>
-      <option>Fiberglass</option>
-      <option>Teflon</option>
-    </select>
+  <label>Lead Wire Length</label>
+  <select>
+    <option value="">-- Select Lead Wire Length --</option>
+    <option>Placeholder 1</option>
+    <option>Placeholder 2</option>
+  </select>
 
-    <label>Lead Wire Length</label>
-    <select>
-      <option>6"</option>
-      <option>12"</option>
-      <option>24"</option>
-    </select>
+  <label>Protection Length</label>
+  <select>
+    <option value="">-- Select Protection Length --</option>
+    <option>Placeholder 1</option>
+    <option>Placeholder 2</option>
+  </select>
+</div>
 
-    <label>Protection Length</label>
-    <select>
-      <option>None</option>
-      <option>2"</option>
-      <option>4"</option>
-    </select>
+  <div id="non_swaged" class="section" style="display:none;">
+  <h3>Non-Swaged Heaters</h3>
 
-  </div>
+  <label>Diameter</label>
+  <select>
+    <option value="">-- Select Diameter --</option>
+    <option>Placeholder 1</option>
+    <option>Placeholder 2</option>
+  </select>
+
+  <label>Length</label>
+  <select>
+    <option value="">-- Select Length --</option>
+    <option>Placeholder 1</option>
+    <option>Placeholder 2</option>
+  </select>
+
+  <label>Circuit Type</label>
+  <select>
+    <option value="">-- Select Circuit Type --</option>
+    <option>Placeholder 1</option>
+    <option>Placeholder 2</option>
+  </select>
+
+  <label>Volts</label>
+  <select>
+    <option value="">-- Select Volts --</option>
+    <option>Placeholder 1</option>
+    <option>Placeholder 2</option>
+  </select>
+
+  <label>Watts</label>
+  <select>
+    <option value="">-- Select Watts --</option>
+    <option>Placeholder 1</option>
+    <option>Placeholder 2</option>
+  </select>
+
+  <label>Lead Gage</label>
+  <select>
+    <option value="">-- Select Lead Gage --</option>
+    <option>Placeholder 1</option>
+    <option>Placeholder 2</option>
+  </select>
+
+  <label>Lead Wire Length</label>
+  <select>
+    <option value="">-- Select Lead Wire Length --</option>
+    <option>Placeholder 1</option>
+    <option>Placeholder 2</option>
+  </select>
+
+  <label>Lead Wire Protection</label>
+  <select>
+    <option value="">-- Select Lead Wire Protection --</option>
+    <option>Placeholder 1</option>
+    <option>Placeholder 2</option>
+  </select>
+
+  <label>Protection Length</label>
+  <select>
+    <option value="">-- Select Protection Length --</option>
+    <option>Placeholder 1</option>
+    <option>Placeholder 2</option>
+  </select>
+</div>
+
+  <div id="starflex" class="section" style="display:none;">
+  <h3>Starflex</h3>
+
+  <label>Width</label>
+  <select>
+    <option value="">-- Select Width --</option>
+    <option>Placeholder 1</option>
+    <option>Placeholder 2</option>
+  </select>
+
+  <label>Configuration</label>
+  <select>
+    <option value="">-- Select Configuration --</option>
+    <option>Placeholder 1</option>
+    <option>Placeholder 2</option>
+  </select>
+
+  <label>Diameter</label>
+  <select>
+    <option value="">-- Select Diameter --</option>
+    <option>Placeholder 1</option>
+    <option>Placeholder 2</option>
+  </select>
+
+  <label>Volts</label>
+  <select>
+    <option value="">-- Select Volts --</option>
+    <option>Placeholder 1</option>
+    <option>Placeholder 2</option>
+  </select>
+
+  <label>Watts</label>
+  <select>
+    <option value="">-- Select Watts --</option>
+    <option>Placeholder 1</option>
+    <option>Placeholder 2</option>
+  </select>
+
+  <label>Termination</label>
+  <select>
+    <option value="">-- Select Termination --</option>
+    <option>Placeholder 1</option>
+    <option>Placeholder 2</option>
+  </select>
+
+  <label>Lead Length</label>
+  <select>
+    <option value="">-- Select Lead Length --</option>
+    <option>Placeholder 1</option>
+    <option>Placeholder 2</option>
+  </select>
+
+  <label>Terminal Boxes</label>
+  <select>
+    <option value="">-- Select Terminal Box --</option>
+    <option>Placeholder 1</option>
+    <option>Placeholder 2</option>
+  </select>
+
+  <label>Spring Loaded Clamps</label>
+  <select>
+    <option value="">-- Select Spring Loaded Clamps --</option>
+    <option>Placeholder 1</option>
+    <option>Placeholder 2</option>
+  </select>
+
+  <label>Thermocouple Hole</label>
+  <select>
+    <option value="">-- Select Thermocouple Hole --</option>
+    <option>Placeholder 1</option>
+    <option>Placeholder 2</option>
+  </select>
+</div>
+
+<div id="mica_band" class="section" style="display:none;">
+  <h3>Mica Band Heater</h3>
+
+  <label>Construction</label>
+  <select>
+    <option value="">-- Select Construction --</option>
+    <option>Placeholder 1</option>
+    <option>Placeholder 2</option>
+  </select>
+
+  <label>Diameter</label>
+  <select>
+    <option value="">-- Select Diameter --</option>
+    <option>Placeholder 1</option>
+    <option>Placeholder 2</option>
+  </select>
+
+  <label>Width</label>
+  <select>
+    <option value="">-- Select Width --</option>
+    <option>Placeholder 1</option>
+    <option>Placeholder 2</option>
+  </select>
+
+  <label>SS Sheath</label>
+  <select>
+    <option value="">-- Select SS Sheath --</option>
+    <option>Placeholder 1</option>
+    <option>Placeholder 2</option>
+  </select>
+
+  <label>Volts</label>
+  <select>
+    <option value="">-- Select Volts --</option>
+    <option>Placeholder 1</option>
+    <option>Placeholder 2</option>
+  </select>
+
+  <label>Watts</label>
+  <select>
+    <option value="">-- Select Watts --</option>
+    <option>Placeholder 1</option>
+    <option>Placeholder 2</option>
+  </select>
+
+  <label>Clamping Options</label>
+  <select>
+    <option value="">-- Select Clamping Option --</option>
+    <option>Placeholder 1</option>
+    <option>Placeholder 2</option>
+  </select>
+
+  <label>Termination</label>
+  <select>
+    <option value="">-- Select Termination --</option>
+    <option>Placeholder 1</option>
+    <option>Placeholder 2</option>
+  </select>
+
+  <label>Lead Wire Length</label>
+  <select>
+    <option value="">-- Select Lead Wire Length --</option>
+    <option>Placeholder 1</option>
+    <option>Placeholder 2</option>
+  </select>
+
+  <label>Lead Gage</label>
+  <select>
+    <option value="">-- Select Lead Gage --</option>
+    <option>Placeholder 1</option>
+    <option>Placeholder 2</option>
+  </select>
+
+  <label>Lead Covering</label>
+  <select>
+    <option value="">-- Select Lead Covering --</option>
+    <option>Placeholder 1</option>
+    <option>Placeholder 2</option>
+  </select>
+
+  <label>Lead Covering Length</label>
+  <select>
+    <option value="">-- Select Lead Covering Length --</option>
+    <option>Placeholder 1</option>
+    <option>Placeholder 2</option>
+  </select>
+</div>
+
+  
+  <div id="nozzle_heater" class="section" style="display:none;">
+  <h3>Nozzle Heater</h3>
+
+  <label>Diameter</label>
+  <select>
+    <option value="">-- Select Diameter --</option>
+    <option>Placeholder</option>
+  </select>
+
+  <label>Width</label>
+  <select>
+    <option value="">-- Select Width --</option>
+    <option>Placeholder</option>
+  </select>
+
+  <label>Volts</label>
+  <select>
+    <option value="">-- Select Volts --</option>
+    <option>Placeholder</option>
+  </select>
+
+  <label>Watts</label>
+  <select>
+    <option value="">-- Select Watts --</option>
+    <option>Placeholder</option>
+  </select>
+
+  <label>Lead Length</label>
+  <select>
+    <option value="">-- Select Lead Length --</option>
+    <option>Placeholder</option>
+  </select>
+
+  <label>Lead Type</label>
+  <select>
+    <option value="">-- Select Lead Type --</option>
+    <option>Placeholder</option>
+  </select>
+
+  <label>Stainless Steel Braid</label>
+  <select>
+    <option value="">-- Select SS Braid --</option>
+    <option>Placeholder</option>
+  </select>
+
+  <label>Clamping Options</label>
+  <select>
+    <option value="">-- Select Clamping Option --</option>
+    <option>Placeholder</option>
+  </select>
+</div>
 
 
-  <script>
-    function showOptions() {
-      const product = document.getElementById("product").value;
+  <div id="silicone_rubber" class="section" style="display:none;">
+  <h3>Silicone Rubber</h3>
 
-      // Hide all product sections
-      document.getElementById("hotRodOptions").style.display = "none";
+  <label>Configuration</label>
+  <select>
+    <option value="">-- Select Configuration --</option>
+    <option>Placeholder</option>
+  </select>
 
-      // Show Hot Rod section
-      if (product === "hot_rod") {
-        document.getElementById("hotRodOptions").style.display = "block";
-      }
-    }
-  </script>
+  <label>Width</label>
+  <select>
+    <option value="">-- Select Width --</option>
+    <option>Placeholder</option>
+  </select>
 
+  <label>Length</label>
+  <select>
+    <option value="">-- Select Length --</option>
+    <option>Placeholder</option>
+  </select>
+
+  <label>Volts</label>
+  <select>
+    <option value="">-- Select Volts --</option>
+    <option>Placeholder</option>
+  </select>
+
+  <label>Watts</label>
+  <select>
+    <option value="">-- Select Watts --</option>
+    <option>Placeholder</option>
+  </select>
+
+  <label>Lead Length</label>
+  <select>
+    <option value="">-- Select Lead Length --</option>
+    <option>Placeholder</option>
+  </select>
+
+  <label>Lead Type</label>
+  <select>
+    <option value="">-- Select Lead Type --</option>
+    <option>Placeholder</option>
+  </select>
+
+  <label>Lead Gage</label>
+  <select>
+    <option value="">-- Select Lead Gage --</option>
+    <option>Placeholder</option>
+  </select>
+
+  <label>Insulation</label>
+  <select>
+    <option value="">-- Select Insulation --</option>
+    <option>Placeholder</option>
+  </select>
+
+  <label>Fastening</label>
+  <select>
+    <option value="">-- Select Fastening --</option>
+    <option>Placeholder</option>
+  </select>
+
+  <label>Temperature Control</label>
+  <select>
+    <option value="">-- Select Temperature Control --</option>
+    <option>Placeholder</option>
+  </select>
+
+  <label>Temperature Range</label>
+  <select>
+    <option value="">-- Select Temperature Range --</option>
+    <option>Placeholder</option>
+  </select>
+
+  <label>Lead Extension Tab</label>
+  <select>
+    <option value="">-- Select Lead Extension Tab --</option>
+    <option>Placeholder</option>
+  </select>
+
+  <label>Ground Wire</label>
+  <select>
+    <option value="">-- Select Ground Wire --</option>
+    <option>Placeholder</option>
+  </select>
+
+  <label>Ground Mesh</label>
+  <select>
+    <option value="">-- Select Ground Mesh --</option>
+    <option>Placeholder</option>
+  </select>
+
+  <label>Extra Layer of Silicone</label>
+  <select>
+    <option value="">-- Select Extra Layer --</option>
+
+
+<div id="mica_strip" class="section" style="display:none;">
+  <h3>Mica Strip Heater</h3>
+
+  <label>Sheath Material</label>
+  <select>
+    <option value="">-- Select Sheath Material --</option>
+    <option>Placeholder</option>
+  </select>
+
+  <label>Length</label>
+  <select>
+    <option value="">-- Select Length --</option>
+    <option>Placeholder</option>
+  </select>
+
+  <label>Width</label>
+  <select>
+    <option value="">-- Select Width --</option>
+    <option>Placeholder</option>
+  </select>
+
+  <label>Volts</label>
+  <select>
+    <option value="">-- Select Volts --</option>
+    <option>Placeholder</option>
+  </select>
+
+  <label>Watts</label>
+  <select>
+    <option value="">-- Select Watts --</option>
+    <option>Placeholder</option>
+  </select>
+
+  <label>Circuit Type</label>
+  <select>
+    <option value="">-- Select Circuit Type --</option>
+    <option>Placeholder</option>
+  </select>
+
+  <label>Termination</label>
+  <select>
+    <option value="">-- Select Termination --</option>
+    <option>Placeholder</option>
+  </select>
+
+  <label>Lead Gage</label>
+  <select>
+    <option value="">-- Select Lead Gage --</option>
+    <option>Placeholder</option>
+  </select>
+
+  <label>Lead Length</label>
+  <select>
+    <option value="">-- Select Lead Length --</option>
+    <option>Placeholder</option>
+  </select>
+
+  <label>Lead Covering</label>
+  <select>
+    <option value="">-- Select Lead Covering --</option>
+    <option>Placeholder</option>
+  </select>
+
+  <label>Lead Covering Length</label>
+  <select>
+    <option value="">-- Select Lead Covering Length --</option>
+    <option>Placeholder</option>
+  </select>
+
+  <label>Grounding</label>
+  <select>
+    <option value="">-- Select Grounding --</option>
+    <option>Placeholder</option>
+  </select>
+
+  <label>Spring Guard</label>
+  <select>
+    <option value="">-- Select Spring Guard --</option>
+    <option>Placeholder</option>
+  </select>
+
+  <label>Internal Thermocouple</label>
+  <select>
+    <option value="">-- Select Internal TC --</option>
+    <option>Placeholder</option>
+  </select>
+
+  <label>Butt Case Construction</label>
+  <select>
+    <option value="">-- Select Butt Case --</option>
+    <option>Placeholder</option>
+  </select>
+
+  <label>Ceramic Terminal Covers</label>
+  <select>
+    <option value="">-- Select Terminal Covers --</option>
+    <option>Placeholder</option>
+  </select>
+
+  <label>Rounded Corners</label>
+  <select>
+    <option value="">-- Select Rounded Corners --</option>
+    <option>Placeholder</option>
+  </select>
+
+  <label>Extra Mica</label>
+  <select>
+    <option value="">-- Select Extra Mica --</option>
+    <option>Placeholder</option>
+  </select>
+
+  <label>Terminal Box</label>
+  <select>
+    <option value="">-- Select Terminal Box --</option>
+    <option>Placeholder</option>
+  </select>
+
+  <label>Right Angle Cap</label>
+  <select>
+    <option value="">-- Select Right Angle Cap --</option>
+    <option>Placeholder</option>
+  </select>
+
+  <label>Mounting Slots</label>
+  <select>
+    <option value="">-- Select Mounting Slots --</option>
+    <option>Placeholder</option>
+  </select>
+
+  <label>Holes</label>
+  <select>
+    <option value="">-- Select Holes --</option>
+    <option>Placeholder</option>
+  </select>
+
+  <label>Slots</label>
+  <select>
+    <option value="">-- Select Slots --</option>
+    <option>Placeholder</option>
+  </select>
+</div>
+
+
+    <div id="ceramic_strip" class="section" style="display:none;">
+  <h3>Ceramic Strip Heater</h3>
+
+  <label>Thickness</label>
+  <select>
+    <option value="">-- Select Thickness --</option>
+    <option>Placeholder</option>
+  </select>
+
+  <label>Sheath Material</label>
+  <select>
+    <option value="">-- Select Sheath Material --</option>
+    <option>Placeholder</option>
+  </select>
+
+  <label>Length</label>
+  <select>
+    <option value="">-- Select Length --</option>
+    <option>Placeholder</option>
+  </select>
+
+  <label>Mounting Tabs</label>
+  <select>
+    <option value="">-- Select Mounting Tabs --</option>
+    <option>Placeholder</option>
+  </select>
+
+  <label>Volts</label>
+  <select>
+    <option value="">-- Select Volts --</option>
+    <option>Placeholder</option>
+  </select>
+
+  <label>Watts</label>
+  <select>
+    <option value="">-- Select Watts --</option>
+    <option>Placeholder</option>
+  </select>
+
+  <label>Termination</label>
+  <select>
+    <option value="">-- Select Termination --</option>
+    <option>Placeholder</option>
+  </select>
+
+  <label>Lead Gage</label>
+  <select>
+    <option value="">-- Select Lead Gage --</option>
+    <option>Placeholder</option>
+  </select>
+
+  <label>Lead Length</label>
+  <select>
+    <option value="">-- Select Lead Length --</option>
+    <option>Placeholder</option>
+  </select>
+
+  <label>Lead Protection</label>
+  <select>
+    <option value="">-- Select Lead Protection --</option>
+    <option>Placeholder</option>
+  </select>
+
+  <label>Protection Length</label>
+  <select>
+    <option value="">-- Select Protection Length --</option>
+    <option>Placeholder</option>
+  </select>
+
+  <label>Right Angle Construction</label>
+  <select>
+    <option value="">-- Select Right Angle Construction --</option>
+    <option>Placeholder</option>
+  </select>
+
+  <label>Terminal Covers</label>
+  <select>
+    <option value="">-- Select Terminal Covers --</option>
+    <option>Placeholder</option>
+  </select>
+
+  <label>Distributed Wattage</label>
+  <select>
+    <option value="">-- Select Distributed Wattage --</option>
+    <option>Placeholder</option>
+  </select>
+
+  <label>Tab Stop</label>
+  <select>
+    <option value="">-- Select Tab Stop --</option>
+    <option>Placeholder</option>
+  </select>
+</div>
+
+
+    <div id="air_heater" class="section" style="display:none;">
+  <h3>Air Heater</h3>
+
+  <label>Volts</label>
+  <select>
+    <option value="">-- Select Volts --</option>
+    <option>Placeholder</option>
+  </select>
+
+  <label>Watts</label>
+  <select>
+    <option value="">-- Select Watts --</option>
+    <option>Placeholder</option>
+  </select>
+
+  <label>Termination</label>
+  <select>
+    <option value="">-- Select Termination --</option>
+    <option>Placeholder</option>
+  </select>
+
+  <label>Inlet Fitting</label>
+  <select>
+    <option value="">-- Select Inlet Fitting --</option>
+    <option>Placeholder</option>
+  </select>
+
+  <label>Outlet Fitting</label>
+  <select>
+    <option value="">-- Select Outlet Fitting --</option>
+    <option>Placeholder</option>
+  </select>
+</div>
+
+
+    <div id="basic_tc" class="section" style="display:none;">
+  <h3>Basic Thermocouple</h3>
+
+  <label>Style</label>
+  <select>
+    <option value="">-- Select Style --</option>
+    <option>Placeholder</option>
+  </select>
+
+  <label>Length</label>
+  <select>
+    <option value="">-- Select Length --</option>
+    <option>Placeholder</option>
+  </select>
+
+  <label>Type</label>
+  <select>
+    <option value="">-- Select Type --</option>
+    <option>Placeholder</option>
+  </select>
+
+  <label>Ground</label>
+  <select>
+    <option value="">-- Select Ground --</option>
+    <option>Placeholder</option>
+  </select>
+
+  <label>Lead Gage</label>
+  <select>
+    <option value="">-- Select Lead Gage --</option>
+    <option>Placeholder</option>
+  </select>
+
+  <label>Lead Length</label>
+  <select>
+    <option value="">-- Select Lead Length --</option>
+    <option>Placeholder</option>
+  </select>
+
+  <label>Termination</label>
+  <select>
+    <option value="">-- Select Termination --</option>
+    <option>Placeholder</option>
+  </select>
+
+  <label>Second Termination</label>
+  <select>
+    <option value="">-- Select Second Termination --</option>
+    <option>Placeholder</option>
+  </select>
+</div>
+
+
+    <div id="mi_tc" class="section" style="display:none;">
+  <h3>Mineral Insulated Thermocouple</h3>
+
+  <label>Type</label>
+  <select>
+    <option value="">-- Select Type --</option>
+    <option>Placeholder</option>
+  </select>
+
+  <label>Diameter</label>
+  <select>
+    <option value="">-- Select Diameter --</option>
+    <option>Placeholder</option>
+  </select>
+
+  <label>Sheath Material</label>
+  <select>
+    <option value="">-- Select Sheath Material --</option>
+    <option>Placeholder</option>
+  </select>
+
+  <label>Probe Length</label>
+  <select>
+    <option value="">-- Select Probe Length --</option>
+    <option>Placeholder</option>
+  </select>
+
+  <label>Ground</label>
+  <select>
+    <option value="">-- Select Ground --</option>
+    <option>Placeholder</option>
+  </select>
+
+  <label>Leads</label>
+  <select>
+    <option value="">-- Select Leads --</option>
+    <option>Placeholder</option>
+  </select>
+
+  <label>Lead Length</label>
+  <select>
+    <option value="">-- Select Lead Length --</option>
+    <option>Placeholder</option>
+  </select>
+
+  <label>Termination</label>
+  <select>
+    <option value="">-- Select Termination --</option>
+    <option>Placeholder</option>
+  </select>
+</div>
+
+
+    <div id="coil_heaters" class="section" style="display:none;">
+  <h3>Coil Heaters</h3>
+
+  <label>Volts</label>
+  <select>
+    <option value="">-- Select Volts --</option>
+    <option>Placeholder</option>
+  </select>
+
+  <label>Watts</label>
+  <select>
+    <option value="">-- Select Watts --</option>
+    <option>Placeholder</option>
+  </select>
+
+  <label>Diameter</label>
+  <select>
+    <option value="">-- Select Diameter --</option>
+    <option>Placeholder</option>
+  </select>
+
+  <label>Coil Length</label>
+  <select>
+    <option value="">-- Select Coil Length --</option>
+    <option>Placeholder</option>
+  </select>
+
+  <label>Thermocouple</label>
+  <select>
+    <option value="">-- Select Thermocouple --</option>
+    <option>Placeholder</option>
+  </select>
+</div>
+
+
+    <div id="square_cartridge" class="section" style="display:none;">
+  <h3>Square Cartridge Heater</h3>
+
+  <label>Size</label>
+  <select>
+    <option value="">-- Select Size --</option>
+    <option>Placeholder</option>
+  </select>
+
+  <label>Length</label>
+  <select>
+    <option value="">-- Select Length --</option>
+    <option>Placeholder</option>
+  </select>
+
+  <label>Configuration</label>
+  <select>
+    <option value="">-- Select Configuration --</option>
+    <option>Placeholder</option>
+  </select>
+
+  <label>Volts</label>
+  <select>
+    <option value="">-- Select Volts --</option>
+    <option>Placeholder</option>
+  </select>
+
+  <label>Watts</label>
+  <select>
+    <option value="">-- Select Watts --</option>
+    <option>Placeholder</option>
+  </select>
+
+  <label>Termination</label>
+  <select>
+    <option value="">-- Select Termination --</option>
+    <option>Placeholder</option>
+  </select>
+
+  <label>Lead Gage</label>
+  <select>
+    <option value="">-- Select Lead Gage --</option>
+    <option>Placeholder</option>
+  </select>
+
+  <label>Lead Insulation</label>
+  <select>
+    <option value="">-- Select Lead Insulation --</option>
+    <option>Placeholder</option>
+  </select>
+
+  <label>Lead Wire Length</label>
+  <select>
+    <option value="">-- Select Lead Wire Length --</option>
+    <option>Placeholder</option>
+  </select>
+</div>
+
+
+    <div id="ceramic_band" class="section" style="display:none;">
+  <h3>Ceramic Band Heater</h3>
+
+  <label>Type</label>
+  <select>
+    <option value="">-- Select Type --</option>
+    <option>Placeholder</option>
+  </select>
+
+  <label>Diameter</label>
+  <select>
+    <option value="">-- Select Diameter --</option>
+    <option>Placeholder</option>
+  </select>
+
+  <label>Width</label>
+  <select>
+    <option value="">-- Select Width --</option>
+    <option>Placeholder</option>
+  </select>
+
+  <label>Volts</label>
+  <select>
+    <option value="">-- Select Volts --</option>
+    <option>Placeholder</option>
+  </select>
+
+  <label>Watts</label>
+  <select>
+    <option value="">-- Select Watts --</option>
+    <option>Placeholder</option>
+  </select>
+
+  <label>Circuit Type</label>
+  <select>
+    <option value="">-- Select Circuit Type --</option>
+    <option>Placeholder</option>
+  </select>
+
+  <label>Clamping</label>
+  <select>
+    <option value="">-- Select Clamping --</option>
+    <option>Placeholder</option>
+  </select>
+
+  <label>Termination</label>
+  <select>
+    <option value="">-- Select Termination --</option>
+    <option>Placeholder</option>
+  </select>
+
+  <label>Lead Length</label>
+  <select>
+    <option value="">-- Select Lead Length --</option>
+    <option>Placeholder</option>
+  </select>
+
+  <label>Lead Gage</label>
+  <select>
+    <option value="">-- Select Lead Gage --</option>
+    <option>Placeholder</option>
+  </select>
+
+  <label>Protection Length</label>
+  <select>
+    <option value="">-- Select Protection Length --</option>
+    <option>Placeholder</option>
+  </select>
+
+  <label>Ground Terminal</label>
+  <select>
+    <option value="">-- Select Ground Terminal --</option>
+    <option>Placeholder</option>
+  </select>
+
+  <label>Terminal Box</label>
+  <select>
+    <option value="">-- Select Terminal Box --</option>
+    <option>Placeholder</option>
+  </select>
+
+  <label>Single Hole</label>
+  <select>
+    <option value="">-- Select Single Hole --</option>
+    <option>Placeholder</option>
+  </select>
+
+  <label>Bayonet Adapter at Gap</label>
+  <select>
+    <option value="">-- Select Bayonet Adapter --</option>
+    <option>Placeholder</option>
+  </select>
+</div>
+
+
+    <script>
+function showOptions() {
+  const selected = document.getElementById("product").value;
+
+  // List of all product section IDs
+  const sections = [
+    "hot_rod",
+    "non_swaged",
+    "starflex",
+    "mica_band",
+    "nozzle_heater",
+    "silicone_rubber",
+    "mica_strip",
+    "ceramic_strip",
+    "air_heater",
+    "basic_tc",
+    "mi_tc",
+    "coil_heaters",
+    "square_cartridge",
+    "ceramic_band"
+  ];
+
+  // Hide all sections
+  sections.forEach(id => {
+    document.getElementById(id).style.display = "none";
+  });
+
+  // Show selected section
+  if (selected) {
+    document.getElementById(selected).style.display = "block";
+  }
+}
+
+// Placeholder price logic
+function updatePrice() {
+  document.getElementById("priceDiameter").innerText = "Diameter: $0.00";
+  document.getElementById("priceLength").innerText = "Length: $0.00";
+  document.getElementById("priceSheath").innerText = "Sheath Material: $0.00";
+  document.getElementById("priceTotal").innerText = "Total: $0.00";
+}
+</script>
 </body>
 </html>
-
