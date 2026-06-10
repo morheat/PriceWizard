@@ -2,12 +2,40 @@
 <html>
 <head>
   <title>Price Wizard</title>
+  <style>
+    body { 
+      font-family: Arial; 
+      max-width: 600px; 
+      margin: 40px auto; 
+      line-height: 1.5;
+    }
+    label { 
+      display: block; 
+      margin-top: 15px; 
+      font-weight: bold; 
+    }
+    select { 
+      width: 100%; 
+      padding: 8px; 
+      margin-top: 5px; 
+    }
+    .section {
+      margin-top: 25px;
+      padding: 15px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      background: #f9f9f9;
+    }
+  </style>
 </head>
 <body>
 
-  <!-- Paste the product dropdown here -->
+  <h2>Price Wizard</h2>
+
+  <!-- PRODUCT DROPDOWN -->
   <label>Product</label>
-  <select id="product">
+  <select id="product" onchange="showOptions()">
+    <option value="">-- Select Product --</option>
     <option value="hot_rod">Hot Rod</option>
     <option value="non_swaged_heaters">Non-Swaged Heaters</option>
     <option value="starflex">Starflex</option>
@@ -24,5 +52,111 @@
     <option value="ceramic_band_heater">Ceramic Band Heater</option>
   </select>
 
+
+  <!-- HOT ROD OPTIONS -->
+  <div id="hotRodOptions" class="section" style="display:none;">
+
+    <h3>Hot Rod Options</h3>
+
+    <label>Diameter</label>
+    <select>
+      <option>1/8"</option>
+      <option>1/4"</option>
+      <option>3/8"</option>
+      <option>1/2"</option>
+    </select>
+
+    <label>Sheath Material</label>
+    <select>
+      <option>304 SS</option>
+      <option>316 SS</option>
+      <option>Incoloy 800</option>
+    </select>
+
+    <label>Length</label>
+    <select>
+      <option>6"</option>
+      <option>12"</option>
+      <option>18"</option>
+      <option>24"</option>
+    </select>
+
+    <label>Configuration</label>
+    <select>
+      <option>Straight</option>
+      <option>Right Angle</option>
+    </select>
+
+    <label>Circuit Type</label>
+    <select>
+      <option>Single Circuit</option>
+      <option>Dual Circuit</option>
+    </select>
+
+    <label>Volts</label>
+    <select>
+      <option>120V</option>
+      <option>240V</option>
+    </select>
+
+    <label>Watts</label>
+    <select>
+      <option>100W</option>
+      <option>250W</option>
+      <option>500W</option>
+      <option>750W</option>
+      <option>1000W</option>
+    </select>
+
+    <label>Termination</label>
+    <select>
+      <option>Leads</option>
+      <option>Post Terminals</option>
+    </select>
+
+    <label>Lead Gage</label>
+    <select>
+      <option>18 AWG</option>
+      <option>20 AWG</option>
+    </select>
+
+    <label>Lead Wire Insulation</label>
+    <select>
+      <option>Fiberglass</option>
+      <option>Teflon</option>
+    </select>
+
+    <label>Lead Wire Length</label>
+    <select>
+      <option>6"</option>
+      <option>12"</option>
+      <option>24"</option>
+    </select>
+
+    <label>Protection Length</label>
+    <select>
+      <option>None</option>
+      <option>2"</option>
+      <option>4"</option>
+    </select>
+
+  </div>
+
+
+  <script>
+    function showOptions() {
+      const product = document.getElementById("product").value;
+
+      // Hide all product sections
+      document.getElementById("hotRodOptions").style.display = "none";
+
+      // Show Hot Rod section
+      if (product === "hot_rod") {
+        document.getElementById("hotRodOptions").style.display = "block";
+      }
+    }
+  </script>
+
 </body>
 </html>
+
