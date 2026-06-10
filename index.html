@@ -1125,6 +1125,11 @@
   </select>
 </div>
 
+<div id="price_default" class="section">
+  <h3>Price Breakdown</h3>
+  <p>Select a product to view pricing details.</p>
+</div>
+    
     <!-- ⭐ HOT ROD PRICE PANEL -->
 <div id="price_hot_rod" class="section" style="display:none;">
   <h3>Price Breakdown — Hot Rod</h3>
@@ -1410,7 +1415,6 @@
 function showOptions() {
   const selected = document.getElementById("product").value;
 
-  // All product sections
   const productSections = [
     "hot_rod",
     "non_swaged",
@@ -1428,7 +1432,6 @@ function showOptions() {
     "ceramic_band"
   ];
 
-  // All price panels
   const pricePanels = [
     "price_hot_rod",
     "price_non_swaged",
@@ -1456,19 +1459,24 @@ function showOptions() {
     document.getElementById(id).style.display = "none";
   });
 
-  // Show selected product section
-  if (selected) {
-    document.getElementById(selected).style.display = "block";
+  // Hide default panel by default
+  document.getElementById("price_default").style.display = "none";
 
-    // Show matching price panel
-    const pricePanelId = "price_" + selected;
-    const panel = document.getElementById(pricePanelId);
-    if (panel) {
-      panel.style.display = "block";
-    }
+  // If no product selected → show default panel
+  if (!selected) {
+    document.getElementById("price_default").style.display = "block";
+    return;
   }
+
+  // Show selected product section
+  document.getElementById(selected).style.display = "block";
+
+  // Show matching price panel
+  const pricePanelId = "price_" + selected;
+  document.getElementById(pricePanelId).style.display = "block";
 }
 </script>
+
 
 </div>
 </body>
