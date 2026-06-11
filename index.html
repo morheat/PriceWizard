@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Price Wizard(6/11, 10:35)</title>
+  <title>Price Wizard(6/11, 10:51, Lead Gage V2)</title>
 
   <style>
     body {
@@ -113,7 +113,7 @@
 
 <label>Diameter</label>
 <select id="hotrod_diameter"
-        onchange="updateHotRodSheath(); updateHotRodLeadGage(); updateLeadGageInfo(); updateHotRodPrice();">
+        onchange="updateHotRodSheath(); updateHotRodLeadGage(); updateSheathInfo(); updateLeadGageInfo(); updateHotRodPrice();">
   <option value="">-- Select Diameter --</option>
   <option>1/8 in</option>
   <option>1/4 in</option>
@@ -141,8 +141,8 @@
 </select>
 
 <label>Sheath Material</label>
-  <select id="hotrod_sheath" onchange="updateHotRodPrice();">
-  <option value="">-- Select Sheath Material --</option>
+<select id="hotrod_sheath"
+        onchange="updateSheathInfo(); updateHotRodPrice();">
 </select>
 
 
@@ -153,14 +153,20 @@
        placeholder="Enter length"
        oninput="validateHotRodLength(); updateHotRodPrice();">
 
+<p id="hotrod_sheath_info"
+   style="font-size:12px; color:#555; margin:6px 0 12px 0;">
+</p>
+
+
 <label>Lead Gage</label>
 <select id="hotrod_leadgage"
         onchange="updateLeadGageInfo(); updateHotRodPrice();">
 </select>
 
-<p id="hotrod_leadgage_info" style="font-size:12px; color:#555; margin-top:-8px;">
-  <!-- This will be filled dynamically -->
+<p id="hotrod_leadgage_info"
+   style="font-size:12px; color:#555; margin:6px 0 12px 0;">
 </p>
+
 
       
 <label>Lead Length (inches)</label>
@@ -2336,6 +2342,27 @@ const hotRodIncrement = {
        
 };
 
+  function updateSheathInfo() {
+  const diameter = document.getElementById("hotrod_diameter").value;
+  const sheath = document.getElementById("hotrod_sheath").value;
+  const info = document.getElementById("hotrod_sheath_info");
+
+  if (!diameter || !sheath) {
+    info.textContent = "";
+    return;
+  }
+
+  const inc = hotRodIncrement[diameter]?.[sheath];
+
+  if (!inc) {
+    info.textContent = "";
+    return;
+  }
+
+  info.textContent = `+ $${inc.toFixed(2)} per bracket`;
+}
+
+  
 const hotRodLeadPricing = {
   "1/8 in": {},
 
