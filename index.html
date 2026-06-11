@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Price Wizard(6/11, 10:51, Lead Gage V2)</title>
+  <title>Price Wizard(6/11, 11:36, Lead Configuration and End Sales V1)</title>
 
   <style>
     body {
@@ -167,8 +167,7 @@
    style="font-size:12px; color:#555; margin:6px 0 12px 0;">
 </p>
 
-
-      
+  
 <label>Lead Length (inches)</label>
 <input type="number"
        id="hotrod_leadlength"
@@ -176,6 +175,17 @@
        placeholder="Enter lead length"
        oninput="updateHotRodPrice();">
 
+<label>Lead Configuration & End Seals</label>
+<select id="hotrod_leadconfig"
+        multiple
+        size="8"
+        onchange="updateHotRodPrice(); updateLeadConfigInfo();">
+</select>
+
+<p id="hotrod_leadconfig_info"
+   style="font-size:12px; color:#555; margin:6px 0 12px 0;"></p>
+
+      
   <label>Configuration</label>
   <select>
     <option value="">-- Select Configuration --</option>
@@ -251,6 +261,14 @@
     <p>Diameter Base Price: <span id="price_hotrod_diameter">$0.00</span></p>
     <p>Length Surcharge: <span id="price_hotrod_length">$0.00</span></p>
     <p>Lead Length Surcharge: <span id="price_hotrod_leadlength">$0.00</span></p>
+    <p>Lead Configurations & End Seals Subtotal:
+   <span id="price_hotrod_leadconfig">$0.00</span>
+</p>
+
+<div id="price_hotrod_leadconfig_details"
+     style="font-size:12px; color:#555; margin-bottom:12px;">
+</div>
+
 
     <!-- You can keep these for future pricing categories -->
     <p>Sheath Material: <span id="price_hotrod_sheath">$0.00</span></p>
@@ -2623,12 +2641,76 @@ if (leadGage && !isNaN(leadLength)) {
   }
 }
 
+const hotRodLeadConfigPricing = {
+  "Right Angle Leads": 16.68,
+  "Crimped on Leads": 0,
+  "Strain Relief Clip": 16.68,
+  "Spring Guard": 19.21,
+  "Ceramic Beads (per inch)": 6.61,
+  "Single sleeve or heat shrink over both leads (per Inch)": 0.61,
+  "Sleeve or heat shrink on each lead (per inch)": 0.83,
+  "Ground wire base price": 13.67,
+  "Ground wire per inch": 0.25,
 
+  // End Seals
+  "Teflon Seal": 7.74,
+  "Lava Seal": 23.08,
+  "Cement Potting": 8.31,
+  "RTV Potting": 8.31,
+  "Epoxy Potting": 11.60,
+  "Epoxylite Potting": 20.39,
+  "Epoxy over RTV Potting": 18.29
+};
+
+function loadLeadConfigOptions() {
+  const select = document.getElementById("hotrod_leadconfig");
+  select.innerHTML = "";
+
+  Object.keys(hotRodLeadConfigPricing).forEach(option => {
+    const opt = document.createElement("option");
+    opt.value = option;
+    opt.textContent = option;
+    select.appendChild(opt);
+  });
+}
+
+  function updateLeadConfigInfo() {
+  const select = document.getElementById("hotrod_leadconfig");
+  const info = document.getElementById("hotrod_leadconfig_info");
+
+  const selected = Array.from(select.selectedOptions).map(o => o.value);
+
+  if (selected.length === 0) {
+    info.textContent = "";
+    return;
+  }
+
+    // -----------------------------
+// LEAD CONFIGURATION PRICING
+// -----------------------------
+let leadConfigAdd = 0;
+let leadConfigDetails = "";
+
+const configSelect = document.getElementById("hotrod_leadconfig");
+const selectedConfigs = Array.from(configSelect.selectedOptions).map(o => o.value);
+
+selectedConfigs.forEach(name => {
+  const price = hotRodLeadConfigPricing[name] || 0;
+  leadConfigAdd += price;
+  leadConfigDetails += `${name}: $${price.toFixed(2)}<br>`;
+});
+
+
+  info.textContent = selected
+    .map(name => `${name}: $${hotRodLeadConfigPricing[name].toFixed(2)}`)
+    .join(" | ");
+}
 
   // -----------------------------
   // TOTAL PRICE
   // -----------------------------
-  const total = base + lengthAdd + leadAdd;
+ const total = base + lengthAdd + leadAdd + leadConfigAdd;
+
 
   // -----------------------------
   // UPDATE BREAKDOWN PANEL
@@ -2642,6 +2724,13 @@ if (leadGage && !isNaN(leadLength)) {
   document.getElementById("price_hotrod_leadlength").textContent =
     "$" + leadAdd.toFixed(2);
 
+  document.getElementById("price_hotrod_leadconfig").textContent =
+  "$" + leadConfigAdd.toFixed(2);
+
+document.getElementById("price_hotrod_leadconfig_details").innerHTML =
+  leadConfigDetails;
+
+
   // Total
   document.querySelector("#price_hot_rod .total").textContent =
     "Total: $" + total.toFixed(2);
@@ -2650,6 +2739,12 @@ if (leadGage && !isNaN(leadLength)) {
   document.querySelector("#price_hot_rod .qty1").textContent =
     "$" + total.toFixed(2);
 }
+
+  // all your functions above…
+
+window.onload = function() {
+  loadLeadConfigOptions();
+};
 
 
 </script>
