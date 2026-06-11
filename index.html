@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Price Wizard(6/11, 1:42, Lead Configuration and End Sales V4)</title>
+  <title>Price Wizard(6/11, 1:53, Lead Configuration and End Sales V5)</title>
 
   <style>
     body {
@@ -2459,6 +2459,21 @@ const hotRodLeadPricing = {
 };
 
 /* ---------------------------------------------------------
+   HOT ROD — LEAD CONFIG PER-INCH MAPS
+--------------------------------------------------------- */
+const hotRodLeadConfigPerInch = {
+  "Ceramic Beads (per inch)": true,
+  "Single sleeve or heat shrink over both leads (per Inch)": true,
+  "Sleeve or heat shrink on each lead (per inch)": true,
+  "Ground wire per inch": true
+};
+
+const hotRodLeadConfigBaseItems = {
+  "Ground wire base price": true
+};
+
+
+/* ---------------------------------------------------------
    HOT ROD — LENGTH LIMITS
 --------------------------------------------------------- */
 const hotRodLengthLimits = {
@@ -2604,8 +2619,7 @@ function updateLeadGageInfo() {
 function updateLeadConfigInfo() {
   const select = document.getElementById("hotrod_leadconfig");
   const info = document.getElementById("hotrod_leadconfig_info");
-
-  if (!select || !info) return;
+  const leadLength = parseFloat(document.getElementById("hotrod_leadlength").value);
 
   const selected = Array.from(select.selectedOptions).map(o => o.value);
   if (selected.length === 0) {
@@ -2613,10 +2627,19 @@ function updateLeadConfigInfo() {
     return;
   }
 
-  info.textContent = selected
-    .map(name => `${name}: $${hotRodLeadConfigPricing[name].toFixed(2)}`)
-    .join(" | ");
+  info.innerHTML = selected.map(name => {
+    const price = hotRodLeadConfigPricing[name];
+
+    if (hotRodLeadConfigPerInch[name]) {
+      return `${name}: $${price}/in`;
+    }
+    if (hotRodLeadConfigBaseItems[name]) {
+      return `${name}: $${price} base`;
+    }
+    return `${name}: $${price}`;
+  }).join(" | ");
 }
+
 
 /* ---------------------------------------------------------
    HOT ROD — HELPERS
@@ -2654,19 +2677,38 @@ function updateHotRodPrice() {
     }
   }
 
-  /* LEAD CONFIGURATION PRICING */
-  let leadConfigAdd = 0;
-  let leadConfigDetails = "";
+/* -----------------------------
+   LEAD CONFIGURATION PRICING
+----------------------------- */
+let leadConfigAdd = 0;
+let leadConfigDetails = "";
 
-  const leadConfigSelect = document.getElementById("hotrod_leadconfig");
-  if (leadConfigSelect) {
-    const selectedConfigs = Array.from(leadConfigSelect.selectedOptions).map(o => o.value);
-    selectedConfigs.forEach(name => {
-      const price = hotRodLeadConfigPricing[name] || 0;
-      leadConfigAdd += price;
-      leadConfigDetails += `${name}: $${price.toFixed(2)}<br>`;
-    });
+const leadConfigSelect = document.getElementById("hotrod_leadconfig");
+const selectedConfigs = Array.from(leadConfigSelect.selectedOptions).map(o => o.value);
+
+selectedConfigs.forEach(name => {
+  const price = hotRodLeadConfigPricing[name] || 0;
+
+  // Per-inch logic
+  if (hotRodLeadConfigPerInch[name]) {
+    const perInchTotal = price * leadLength;
+    leadConfigAdd += perInchTotal;
+    leadConfigDetails += `${name}: $${perInchTotal.toFixed(2)} (${leadLength} in × $${price})<br>`;
   }
+
+  // Base-only items
+  else if (hotRodLeadConfigBaseItems[name]) {
+    leadConfigAdd += price;
+    leadConfigDetails += `${name}: $${price.toFixed(2)} (base)<br>`;
+  }
+
+  // Normal flat-price items
+  else {
+    leadConfigAdd += price;
+    leadConfigDetails += `${name}: $${price.toFixed(2)}<br>`;
+  }
+});
+
 
   /* TOTAL */
   const total = base + lengthAdd + leadAdd + leadConfigAdd;
