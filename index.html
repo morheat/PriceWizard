@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Price Wizard(6/11, 1:53, Lead Configuration and End Sales V5)</title>
+  <title>Price Wizard(6/11, 2:15, Lead Configuration and End Sales V6)</title>
 
   <style>
     body {
@@ -177,11 +177,9 @@
        oninput="updateHotRodPrice();">
 
 <label>Lead Configuration & End Seals</label>
-<select id="hotrod_leadconfig"
-        multiple
-        size="8"
-        onchange="updateHotRodPrice(); updateLeadConfigInfo();">
-</select>
+<div id="hotrod_leadconfig_container"></div>
+<div id="hotrod_leadconfig_info" class="info"></div>
+
 
 <p id="hotrod_leadconfig_info"
    style="font-size:12px; color:#555; margin:6px 0 12px 0;"></p>
@@ -2570,17 +2568,29 @@ function updateHotRodLeadGage() {
 }
 
 function loadLeadConfigOptions() {
-  const select = document.getElementById("hotrod_leadconfig");
-  if (!select) return;
+  const container = document.getElementById("hotrod_leadconfig_container");
+  container.innerHTML = "";
 
-  select.innerHTML = "";
-  Object.keys(hotRodLeadConfigPricing).forEach(option => {
-    const opt = document.createElement("option");
-    opt.value = option;
-    opt.textContent = option;
-    select.appendChild(opt);
+  Object.keys(hotRodLeadConfigPricing).forEach(name => {
+    const wrapper = document.createElement("label");
+    wrapper.style.display = "block";
+
+    const checkbox = document.createElement("input");
+    checkbox.type = "checkbox";
+    checkbox.value = name;
+    checkbox.classList.add("leadconfig_option");
+
+    checkbox.addEventListener("change", () => {
+      updateLeadConfigInfo();
+      updateHotRodPrice();
+    });
+
+    wrapper.appendChild(checkbox);
+    wrapper.appendChild(document.createTextNode(" " + name));
+    container.appendChild(wrapper);
   });
 }
+
 
 /* ---------------------------------------------------------
    HOT ROD — INFO TEXT UPDATERS
@@ -2617,11 +2627,13 @@ function updateLeadGageInfo() {
 }
 
 function updateLeadConfigInfo() {
-  const select = document.getElementById("hotrod_leadconfig");
   const info = document.getElementById("hotrod_leadconfig_info");
   const leadLength = parseFloat(document.getElementById("hotrod_leadlength").value);
 
-  const selected = Array.from(select.selectedOptions).map(o => o.value);
+  const selected = Array.from(
+    document.querySelectorAll(".leadconfig_option:checked")
+  ).map(cb => cb.value);
+
   if (selected.length === 0) {
     info.textContent = "";
     return;
@@ -2639,6 +2651,7 @@ function updateLeadConfigInfo() {
     return `${name}: $${price}`;
   }).join(" | ");
 }
+
 
 
 /* ---------------------------------------------------------
@@ -2683,8 +2696,9 @@ function updateHotRodPrice() {
 let leadConfigAdd = 0;
 let leadConfigDetails = "";
 
-const leadConfigSelect = document.getElementById("hotrod_leadconfig");
-const selectedConfigs = Array.from(leadConfigSelect.selectedOptions).map(o => o.value);
+const selectedConfigs = Array.from(
+  document.querySelectorAll(".leadconfig_option:checked")
+).map(cb => cb.value);
 
 selectedConfigs.forEach(name => {
   const price = hotRodLeadConfigPricing[name] || 0;
@@ -2702,12 +2716,13 @@ selectedConfigs.forEach(name => {
     leadConfigDetails += `${name}: $${price.toFixed(2)} (base)<br>`;
   }
 
-  // Normal flat-price items
+  // Flat items
   else {
     leadConfigAdd += price;
     leadConfigDetails += `${name}: $${price.toFixed(2)}<br>`;
   }
 });
+
 
 
   /* TOTAL */
