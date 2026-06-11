@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Price Wizard(6/11, 12:14, Lead Configuration and End Sales V3)</title>
+  <title>Price Wizard(6/11, 1:42, Lead Configuration and End Sales V4)</title>
 
   <style>
     body {
@@ -2077,7 +2077,6 @@
 
 
 <script>
-
 /* ---------------------------------------------------------
    PRODUCT SHOW / HIDE
 --------------------------------------------------------- */
@@ -2133,84 +2132,10 @@ function showOptions() {
     document.getElementById("price_" + selected).style.display = "block";
   }
 }
-
 /* ---------------------------------------------------------
-   HOT ROD — SHEATH OPTIONS (DEPENDENT DROPDOWN)
+   HOT ROD — PRICING MATRICES
 --------------------------------------------------------- */
-const hotRodSheathOptions = {
-  "1/8 in": ["304 SS"],
-  "1/4 in": ["304 SS", "316 SS", "Incoloy"],
-  "5/16 in": ["304 SS"],
-  "3/8 in": ["304 SS", "316 SS", "Incoloy"],
-  "1/2 in": ["304 SS", "316 SS", "Incoloy"],
-  "17/32 in": ["304 SS", "316 SS", "Incoloy"],
-  "5/8 in": ["304 SS", "316 SS", "Incoloy"],
-  "11/16 in": ["304 SS", "316 SS", "Incoloy"],
-  "3/4 in": ["304 SS", "316 SS", "Incoloy"],
-  "1 in": ["304 SS"],
-  "6 mm": ["304 SS", "316 SS", "Incoloy"],
-  "6.5 mm": ["304 SS", "316 SS", "Incoloy"],
-  "8 mm": ["304 SS"],
-  "10 mm": ["304 SS", "316 SS", "Incoloy"],
-  "12 mm": ["304 SS", "316 SS", "Incoloy"],
-  "12.5 mm": ["304 SS", "316 SS", "Incoloy"],
-  "13 mm": ["304 SS", "316 SS", "Incoloy"],
-  "14 mm": ["304 SS", "316 SS", "Incoloy"],
-  "16 mm": ["304 SS", "316 SS", "Incoloy"],
-  "17 mm": ["304 SS", "316 SS", "Incoloy"],
-  "19 mm": ["304 SS", "316 SS", "Incoloy"],
-  "20 mm": ["304 SS", "316 SS", "Incoloy"],
-  "25 mm": ["304 SS"]
-};
 
-function updateHotRodSheath() {
-  const diameter = document.getElementById("hotrod_diameter").value;
-  const sheathSelect = document.getElementById("hotrod_sheath");
-
-  sheathSelect.innerHTML = '<option value="">-- Select Sheath Material --</option>';
-
-  if (!diameter) return;
-
-  hotRodSheathOptions[diameter].forEach(material => {
-    const opt = document.createElement("option");
-    opt.value = material;
-    opt.textContent = material;
-    sheathSelect.appendChild(opt);
-  });
-}
-
-/* ---------------------------------------------------------
-   HOT ROD — LENGTH LIMITS
---------------------------------------------------------- */
-const hotRodLengthLimits = {
-  "1/8 in": { min: 1, max: 6 },
-  "1 in": { min: 2, max: 6 },
-  "25 mm": { min: 2, max: 6 },
-  "default": { min: 1, max: 60 }
-};
-
-function validateHotRodLength() {
-  const diameter = document.getElementById("hotrod_diameter").value;
-  const lengthInput = document.getElementById("hotrod_length");
-
-  let min = 1;
-  let max = 60;
-
-  if (hotRodLengthLimits[diameter]) {
-    min = hotRodLengthLimits[diameter].min;
-    max = hotRodLengthLimits[diameter].max;
-  }
-
-  const value = parseFloat(lengthInput.value);
-  if (isNaN(value)) return;
-
-  if (value < min) lengthInput.value = min;
-  if (value > max) lengthInput.value = max;
-}
-
-/* ---------------------------------------------------------
-   HOT ROD — BASE PRICE PER DIAMETER
---------------------------------------------------------- */
 const hotRodBasePrice = {
   "1/8 in": 44.32,
   "1/4 in": 22.10,
@@ -2237,9 +2162,6 @@ const hotRodBasePrice = {
   "25 mm": 48.64
 };
 
-/* ---------------------------------------------------------
-   HOT ROD — INCREMENT PER DIAMETER + SHEATH
---------------------------------------------------------- */
 const hotRodIncrement = {
   "1/8 in": { "304 SS": 6.75 },
 
@@ -2361,27 +2283,6 @@ const hotRodIncrement = {
        
 };
 
-  function updateSheathInfo() {
-  const diameter = document.getElementById("hotrod_diameter").value;
-  const sheath = document.getElementById("hotrod_sheath").value;
-  const info = document.getElementById("hotrod_sheath_info");
-
-  if (!diameter || !sheath) {
-    info.textContent = "";
-    return;
-  }
-
-  const inc = hotRodIncrement[diameter]?.[sheath];
-
-  if (!inc) {
-    info.textContent = "";
-    return;
-  }
-
-  info.textContent = `+ $${inc.toFixed(2)} per inch`;
-}
-
-  
 const hotRodLeadPricing = {
   "1/8 in": {},
 
@@ -2548,8 +2449,6 @@ const hotRodLeadPricing = {
   "Sleeve or heat shrink on each lead (per inch)": 0.83,
   "Ground wire base price": 13.67,
   "Ground wire per inch": 0.25,
-
-  // End Seals
   "Teflon Seal": 7.74,
   "Lava Seal": 23.08,
   "Cement Potting": 8.31,
@@ -2558,19 +2457,94 @@ const hotRodLeadPricing = {
   "Epoxylite Potting": 20.39,
   "Epoxy over RTV Potting": 18.29
 };
-const hotRodLeadGageOptions = {};
 
+/* ---------------------------------------------------------
+   HOT ROD — LENGTH LIMITS
+--------------------------------------------------------- */
+const hotRodLengthLimits = {
+  "1/8 in": { min: 1, max: 6 },
+  "1 in": { min: 2, max: 6 },
+  "25 mm": { min: 2, max: 6 },
+  "default": { min: 1, max: 60 }
+};
+
+function validateHotRodLength() {
+  const diameter = document.getElementById("hotrod_diameter").value;
+  const lengthInput = document.getElementById("hotrod_length");
+
+  let min = 1;
+  let max = 60;
+
+  if (hotRodLengthLimits[diameter]) {
+    min = hotRodLengthLimits[diameter].min;
+    max = hotRodLengthLimits[diameter].max;
+  }
+
+  const value = parseFloat(lengthInput.value);
+  if (isNaN(value)) return;
+
+  if (value < min) lengthInput.value = min;
+  if (value > max) lengthInput.value = max;
+}
+
+/* ---------------------------------------------------------
+   HOT ROD — DROPDOWN OPTION MAPS
+--------------------------------------------------------- */  
+const hotRodSheathOptions = {
+  "1/8 in": ["304 SS"],
+  "1/4 in": ["304 SS", "316 SS", "Incoloy"],
+  "5/16 in": ["304 SS"],
+  "3/8 in": ["304 SS", "316 SS", "Incoloy"],
+  "1/2 in": ["304 SS", "316 SS", "Incoloy"],
+  "17/32 in": ["304 SS", "316 SS", "Incoloy"],
+  "5/8 in": ["304 SS", "316 SS", "Incoloy"],
+  "11/16 in": ["304 SS", "316 SS", "Incoloy"],
+  "3/4 in": ["304 SS", "316 SS", "Incoloy"],
+  "1 in": ["304 SS"],
+  "6 mm": ["304 SS", "316 SS", "Incoloy"],
+  "6.5 mm": ["304 SS", "316 SS", "Incoloy"],
+  "8 mm": ["304 SS"],
+  "10 mm": ["304 SS", "316 SS", "Incoloy"],
+  "12 mm": ["304 SS", "316 SS", "Incoloy"],
+  "12.5 mm": ["304 SS", "316 SS", "Incoloy"],
+  "13 mm": ["304 SS", "316 SS", "Incoloy"],
+  "14 mm": ["304 SS", "316 SS", "Incoloy"],
+  "16 mm": ["304 SS", "316 SS", "Incoloy"],
+  "17 mm": ["304 SS", "316 SS", "Incoloy"],
+  "19 mm": ["304 SS", "316 SS", "Incoloy"],
+  "20 mm": ["304 SS", "316 SS", "Incoloy"],
+  "25 mm": ["304 SS"]
+};
+
+const hotRodLeadGageOptions = {};
 Object.keys(hotRodLeadPricing).forEach(diameter => {
   hotRodLeadGageOptions[diameter] = Object.keys(hotRodLeadPricing[diameter]);
 });
+
+/* ---------------------------------------------------------
+   HOT ROD — DROPDOWN LOADERS
+--------------------------------------------------------- */
+function updateHotRodSheath() {
+  const diameter = document.getElementById("hotrod_diameter").value;
+  const sheathSelect = document.getElementById("hotrod_sheath");
+
+  sheathSelect.innerHTML = '<option value="">-- Select Sheath Material --</option>';
+  if (!diameter) return;
+
+  hotRodSheathOptions[diameter].forEach(material => {
+    const opt = document.createElement("option");
+    opt.value = material;
+    opt.textContent = material;
+    sheathSelect.appendChild(opt);
+  });
+}
 
 function updateHotRodLeadGage() {
   const diameter = document.getElementById("hotrod_diameter").value;
   const gageSelect = document.getElementById("hotrod_leadgage");
 
   gageSelect.innerHTML = '<option value="">-- Select Lead Gage --</option>';
-
-  if (!diameter || !hotRodLeadGageOptions[diameter]) return;
+  if (!diameter) return;
 
   hotRodLeadGageOptions[diameter].forEach(gage => {
     const opt = document.createElement("option");
@@ -2580,34 +2554,78 @@ function updateHotRodLeadGage() {
   });
 }
 
+function loadLeadConfigOptions() {
+  const select = document.getElementById("hotrod_leadconfig");
+  if (!select) return;
+
+  select.innerHTML = "";
+  Object.keys(hotRodLeadConfigPricing).forEach(option => {
+    const opt = document.createElement("option");
+    opt.value = option;
+    opt.textContent = option;
+    select.appendChild(opt);
+  });
+}
+
+/* ---------------------------------------------------------
+   HOT ROD — INFO TEXT UPDATERS
+--------------------------------------------------------- */
+function updateSheathInfo() {
+  const diameter = document.getElementById("hotrod_diameter").value;
+  const sheath = document.getElementById("hotrod_sheath").value;
+  const info = document.getElementById("hotrod_sheath_info");
+
+  if (!info) return;
+  if (!diameter || !sheath) {
+    info.textContent = "";
+    return;
+  }
+
+  const inc = hotRodIncrement[diameter]?.[sheath];
+  info.textContent = inc ? `+ $${inc.toFixed(2)} per inch` : "";
+}
 
 function updateLeadGageInfo() {
   const diameter = document.getElementById("hotrod_diameter").value;
   const gage = document.getElementById("hotrod_leadgage").value;
   const info = document.getElementById("hotrod_leadgage_info");
 
+  if (!info) return;
   if (!diameter || !gage) {
     info.textContent = "";
     return;
   }
 
   const pricing = hotRodLeadPricing[diameter][gage];
-  const first = pricing.firstBracket;
-  const inc = pricing.increment;
-
   info.textContent =
-    `First 0–10 in: $${first.toFixed(2)} | +$${inc.toFixed(2)} per inch beyond 10 in`;
+    `First 0–10 in: $${pricing.firstBracket.toFixed(2)} | +$${pricing.increment.toFixed(2)} per inch beyond 10 in`;
 }
 
+function updateLeadConfigInfo() {
+  const select = document.getElementById("hotrod_leadconfig");
+  const info = document.getElementById("hotrod_leadconfig_info");
 
-  
+  if (!select || !info) return;
+
+  const selected = Array.from(select.selectedOptions).map(o => o.value);
+  if (selected.length === 0) {
+    info.textContent = "";
+    return;
+  }
+
+  info.textContent = selected
+    .map(name => `${name}: $${hotRodLeadConfigPricing[name].toFixed(2)}`)
+    .join(" | ");
+}
+
+/* ---------------------------------------------------------
+   HOT ROD — HELPERS
+--------------------------------------------------------- */
 function getLeadBracketCount(leadLength) {
   if (isNaN(leadLength) || leadLength <= 10) return 0;
-
   return Math.ceil(leadLength - 10);
 }
-
-
+  
 /* ---------------------------------------------------------
    HOT ROD — FINAL PRICING ENGINE
 --------------------------------------------------------- */
@@ -2618,135 +2636,67 @@ function updateHotRodPrice() {
   const leadGage = document.getElementById("hotrod_leadgage").value;
   const leadLength = parseFloat(document.getElementById("hotrod_leadlength").value);
 
-  let base = 0;
-  let increment = 0;
-  let bracketCount = 0;
-
-  // Base price
-  if (hotRodBasePrice[diameter]) {
-    base = hotRodBasePrice[diameter];
-  }
-
-  // Increment per bracket (diameter + sheath)
-  if (hotRodIncrement[diameter] && hotRodIncrement[diameter][sheath]) {
-    increment = hotRodIncrement[diameter][sheath];
-  }
-
-  // Length bracket count
-  if (!isNaN(length) && length >= 1) {
-    bracketCount = Math.ceil(length);
-  }
-
+  /* BASE + LENGTH PRICING */
+  const base = hotRodBasePrice[diameter] || 0;
+  const increment = hotRodIncrement[diameter]?.[sheath] || 0;
+  const bracketCount = !isNaN(length) && length >= 1 ? Math.ceil(length) : 0;
   const lengthAdd = bracketCount * increment;
 
-// -----------------------------
-// LEAD LENGTH PRICING
-// -----------------------------
-let leadAdd = 0;
-
-if (leadGage && !isNaN(leadLength)) {
-  const pricing = hotRodLeadPricing[diameter]?.[leadGage];
-
-  if (pricing) {
-    const first = pricing.firstBracket;
-    const inc = pricing.increment;
-
-    // First bracket (0–10 in)
-    leadAdd = first;
-
-    // Additional brackets beyond 10 in
-    if (leadLength > 10) {
-      const extraBrackets = Math.ceil(leadLength - 10);
-      leadAdd += extraBrackets * inc;
+  /* LEAD LENGTH PRICING */
+  let leadAdd = 0;
+  if (leadGage && !isNaN(leadLength)) {
+    const pricing = hotRodLeadPricing[diameter]?.[leadGage];
+    if (pricing) {
+      leadAdd = pricing.firstBracket;
+      if (leadLength > 10) {
+        leadAdd += getLeadBracketCount(leadLength) * pricing.increment;
+      }
     }
   }
-}
 
-function loadLeadConfigOptions() {
-  const select = document.getElementById("hotrod_leadconfig");
-  select.innerHTML = "";
+  /* LEAD CONFIGURATION PRICING */
+  let leadConfigAdd = 0;
+  let leadConfigDetails = "";
 
-  Object.keys(hotRodLeadConfigPricing).forEach(option => {
-    const opt = document.createElement("option");
-    opt.value = option;
-    opt.textContent = option;
-    select.appendChild(opt);
-  });
-}
-
-  function updateLeadConfigInfo() {
-  const select = document.getElementById("hotrod_leadconfig");
-  const info = document.getElementById("hotrod_leadconfig_info");
-
-  const selected = Array.from(select.selectedOptions).map(o => o.value);
-
-  if (selected.length === 0) {
-    info.textContent = "";
-    return;
+  const leadConfigSelect = document.getElementById("hotrod_leadconfig");
+  if (leadConfigSelect) {
+    const selectedConfigs = Array.from(leadConfigSelect.selectedOptions).map(o => o.value);
+    selectedConfigs.forEach(name => {
+      const price = hotRodLeadConfigPricing[name] || 0;
+      leadConfigAdd += price;
+      leadConfigDetails += `${name}: $${price.toFixed(2)}<br>`;
+    });
   }
 
-    // -----------------------------
-// LEAD CONFIGURATION PRICING
-// -----------------------------
-let leadConfigAdd = 0;
-let leadConfigDetails = "";
+  /* TOTAL */
+  const total = base + lengthAdd + leadAdd + leadConfigAdd;
 
-const configSelect = document.getElementById("hotrod_leadconfig");
-const selectedConfigs = Array.from(configSelect.selectedOptions).map(o => o.value);
+  /* UPDATE BREAKDOWN PANEL */
+  const priceDiameter = document.getElementById("price_hotrod_diameter");
+  const priceLength = document.getElementById("price_hotrod_length");
+  const priceLeadLength = document.getElementById("price_hotrod_leadlength");
+  const priceLeadConfig = document.getElementById("price_hotrod_leadconfig");
+  const priceLeadConfigDetails = document.getElementById("price_hotrod_leadconfig_details");
 
-selectedConfigs.forEach(name => {
-  const price = hotRodLeadConfigPricing[name] || 0;
-  leadConfigAdd += price;
-  leadConfigDetails += `${name}: $${price.toFixed(2)}<br>`;
-});
+  if (priceDiameter) priceDiameter.textContent = "$" + base.toFixed(2);
+  if (priceLength) priceLength.textContent = "$" + lengthAdd.toFixed(2);
+  if (priceLeadLength) priceLeadLength.textContent = "$" + leadAdd.toFixed(2);
+  if (priceLeadConfig) priceLeadConfig.textContent = "$" + leadConfigAdd.toFixed(2);
+  if (priceLeadConfigDetails) priceLeadConfigDetails.innerHTML = leadConfigDetails;
 
+  const totalEl = document.querySelector("#price_hot_rod .total");
+  const qty1El = document.querySelector("#price_hot_rod .qty1");
 
-  info.textContent = selected
-    .map(name => `${name}: $${hotRodLeadConfigPricing[name].toFixed(2)}`)
-    .join(" | ");
+  if (totalEl) totalEl.textContent = "Total: $" + total.toFixed(2);
+  if (qty1El) qty1El.textContent = "$" + total.toFixed(2);
 }
 
-  // -----------------------------
-  // TOTAL PRICE
-  // -----------------------------
- const total = base + lengthAdd + leadAdd + leadConfigAdd;
-
-
-  // -----------------------------
-  // UPDATE BREAKDOWN PANEL
-  // -----------------------------
-  document.getElementById("price_hotrod_diameter").textContent =
-    "$" + base.toFixed(2);
-
-  document.getElementById("price_hotrod_length").textContent =
-    "$" + lengthAdd.toFixed(2);
-
-  document.getElementById("price_hotrod_leadlength").textContent =
-    "$" + leadAdd.toFixed(2);
-
-  document.getElementById("price_hotrod_leadconfig").textContent =
-  "$" + leadConfigAdd.toFixed(2);
-
-document.getElementById("price_hotrod_leadconfig_details").innerHTML =
-  leadConfigDetails;
-
-
-  // Total
-  document.querySelector("#price_hot_rod .total").textContent =
-    "Total: $" + total.toFixed(2);
-
-  // Quantity 1
-  document.querySelector("#price_hot_rod .qty1").textContent =
-    "$" + total.toFixed(2);
-}
-
-  // all your functions above…
-
+/* ---------------------------------------------------------
+   INIT ON PAGE LOAD
+--------------------------------------------------------- */
 window.onload = function() {
   loadLeadConfigOptions();
 };
-
-
 </script>
 
 
