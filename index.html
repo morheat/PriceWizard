@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Price Wizard(6/11, 9:29)</title>
+  <title>Price Wizard(6/11, 9:43)</title>
 
   <style>
     body {
@@ -153,6 +153,19 @@
        placeholder="Enter length"
        oninput="validateHotRodLength(); updateHotRodPrice();">
 
+<label>Lead Gage</label>
+<select id="hotrod_leadgage" onchange="updateHotRodPrice();">
+  <option value="">-- Select Lead Gage --</option>
+  <option>24 ga</option>
+  <option>22 ga</option>
+</select>
+
+<label>Lead Length (inches)</label>
+<input type="number"
+       id="hotrod_leadlength"
+       step="0.01"
+       placeholder="Enter lead length"
+       oninput="updateHotRodPrice();">
 
   <label>Configuration</label>
   <select>
@@ -228,6 +241,8 @@
     <!-- These IDs are required for the pricing engine -->
     <p>Diameter Base Price: <span id="price_hotrod_diameter">$0.00</span></p>
     <p>Length Surcharge: <span id="price_hotrod_length">$0.00</span></p>
+    <p>Lead Length Surcharge: <span id="price_hotrod_leadlength">$0.00</span></p>
+
 
     <!-- You can keep these for future pricing categories -->
     <p>Sheath Material: <span id="price_hotrod_sheath">$0.00</span></p>
@@ -2319,6 +2334,18 @@ const hotRodIncrement = {
        
 };
 
+const hotRodLeadIncrement = {
+  "24 ga": 0.50,
+  "22 ga": 0.75
+};
+
+function getLeadBracketCount(leadLength) {
+  if (isNaN(leadLength) || leadLength <= 10) return 0;
+
+  return Math.ceil(leadLength - 10);
+}
+
+
 /* ---------------------------------------------------------
    HOT ROD — FINAL PRICING ENGINE
 --------------------------------------------------------- */
@@ -2326,38 +2353,67 @@ function updateHotRodPrice() {
   const diameter = document.getElementById("hotrod_diameter").value;
   const sheath = document.getElementById("hotrod_sheath").value;
   const length = parseFloat(document.getElementById("hotrod_length").value);
+  const leadGage = document.getElementById("hotrod_leadgage").value;
+  const leadLength = parseFloat(document.getElementById("hotrod_leadlength").value);
 
   let base = 0;
   let increment = 0;
   let bracketCount = 0;
 
+  // Base price
   if (hotRodBasePrice[diameter]) {
     base = hotRodBasePrice[diameter];
   }
 
+  // Increment per bracket (diameter + sheath)
   if (hotRodIncrement[diameter] && hotRodIncrement[diameter][sheath]) {
     increment = hotRodIncrement[diameter][sheath];
   }
 
+  // Length bracket count
   if (!isNaN(length) && length >= 1) {
-    bracketCount = Math.ceil(length);  // YOUR EXACT BRACKET LOGIC
+    bracketCount = Math.ceil(length);
   }
 
   const lengthAdd = bracketCount * increment;
-  const total = base + lengthAdd;
 
+  // -----------------------------
+  // LEAD LENGTH PRICING
+  // -----------------------------
+  let leadAdd = 0;
+
+  if (leadGage && !isNaN(leadLength)) {
+    const leadInc = hotRodLeadIncrement[leadGage] || 0;
+    const leadBrackets = getLeadBracketCount(leadLength);
+    leadAdd = leadBrackets * leadInc;
+  }
+
+  // -----------------------------
+  // TOTAL PRICE
+  // -----------------------------
+  const total = base + lengthAdd + leadAdd;
+
+  // -----------------------------
+  // UPDATE BREAKDOWN PANEL
+  // -----------------------------
   document.getElementById("price_hotrod_diameter").textContent =
     "$" + base.toFixed(2);
 
   document.getElementById("price_hotrod_length").textContent =
     "$" + lengthAdd.toFixed(2);
 
+  document.getElementById("price_hotrod_leadlength").textContent =
+    "$" + leadAdd.toFixed(2);
+
+  // Total
   document.querySelector("#price_hot_rod .total").textContent =
     "Total: $" + total.toFixed(2);
 
+  // Quantity 1
   document.querySelector("#price_hot_rod .qty1").textContent =
     "$" + total.toFixed(2);
 }
+
 
 </script>
 
