@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Price Wizard(6/11, 9:43)</title>
+  <title>Price Wizard(6/11, 10:28)</title>
 
   <style>
     body {
@@ -113,7 +113,7 @@
 
 <label>Diameter</label>
 <select id="hotrod_diameter"
-        onchange="updateHotRodSheath(); updateHotRodPrice();">
+        onchange="updateHotRodSheath(); updateHotRodLeadGage(); updateLeadGageInfo(); updateHotRodPrice();">
   <option value="">-- Select Diameter --</option>
   <option>1/8 in</option>
   <option>1/4 in</option>
@@ -154,12 +154,15 @@
        oninput="validateHotRodLength(); updateHotRodPrice();">
 
 <label>Lead Gage</label>
-<select id="hotrod_leadgage" onchange="updateHotRodPrice();">
-  <option value="">-- Select Lead Gage --</option>
-  <option>24 ga</option>
-  <option>22 ga</option>
+<select id="hotrod_leadgage"
+        onchange="updateLeadGageInfo(); updateHotRodPrice();">
 </select>
 
+<p id="hotrod_leadgage_info" style="font-size:12px; color:#555; margin-top:-8px;">
+  <!-- This will be filled dynamically -->
+</p>
+
+      
 <label>Lead Length (inches)</label>
 <input type="number"
        id="hotrod_leadlength"
@@ -242,7 +245,6 @@
     <p>Diameter Base Price: <span id="price_hotrod_diameter">$0.00</span></p>
     <p>Length Surcharge: <span id="price_hotrod_length">$0.00</span></p>
     <p>Lead Length Surcharge: <span id="price_hotrod_leadlength">$0.00</span></p>
-
 
     <!-- You can keep these for future pricing categories -->
     <p>Sheath Material: <span id="price_hotrod_sheath">$0.00</span></p>
@@ -2334,11 +2336,207 @@ const hotRodIncrement = {
        
 };
 
-const hotRodLeadIncrement = {
-  "24 ga": 0.50,
-  "22 ga": 0.75
+const hotRodLeadGageOptions = {};
+
+Object.keys(hotRodLeadPricing).forEach(diameter => {
+  hotRodLeadGageOptions[diameter] = Object.keys(hotRodLeadPricing[diameter]);
+});
+
+
+const hotRodLeadPricing = {
+  "1/8 in": {},
+
+  "1/4 in": {
+    "24 ga": { firstBracket: 0, increment: 0.50 },
+    "22 ga": { firstBracket: 0.40, increment: 0.54 }
+  },
+
+  "5/16 in": {
+    "24 ga": { firstBracket: 0, increment: 0.50 },
+    "22 ga": { firstBracket: 0.40, increment: 0.54 }
+  },
+
+  "3/8 in": {
+    "22 ga": { firstBracket: 0, increment: 0.54 },
+    "18 ga": { firstBracket: 1.80, increment: 0.72 },
+    "SJO Cord (2 Conductor, 18 ga)": { firstBracket: 21.80, increment: 0.56 }
+  },
+
+  "1/2 in": {
+    "22 ga": { firstBracket: 0, increment: 0.54 },
+    "18 ga": { firstBracket: 1.80, increment: 0.72 },
+    "SJO Cord (2 Conductor, 18 ga)": { firstBracket: 21.80, increment: 0.56 },
+    "SJO Cord (3 Conductor, 18 ga)": { firstBracket: 37.65, increment: 0.78 }
+  },
+
+  "17/32 in": {
+    "22 ga": { firstBracket: 0, increment: 0.54 },
+    "18 ga": { firstBracket: 1.80, increment: 0.72 },
+    "SJO Cord (2 Conductor, 18 ga)": { firstBracket: 21.80, increment: 0.56 },
+    "SJO Cord (3 Conductor, 18 ga)": { firstBracket: 37.65, increment: 0.78 }
+  },
+
+  "5/8 in": {
+    "18 ga": { firstBracket: 0, increment: 0.72 },
+    "16 ga": { firstBracket: 1.80, increment: 0.90 },
+    "14 ga": { firstBracket: 4.70, increment: 1.19 },
+    "SJO Cord (2 Conductor, 18 ga)": { firstBracket: 20.00, increment: 0.56 },
+    "SJO Cord (3 Conductor, 18 ga)": { firstBracket: 35.85, increment: 0.78 }
+  },
+
+  "11/16 in": {
+    "18 ga": { firstBracket: 0, increment: 0.72 },
+    "16 ga": { firstBracket: 1.80, increment: 0.90 },
+    "14 ga": { firstBracket: 4.70, increment: 1.19 },
+    "SJO Cord (2 Conductor, 18 ga)": { firstBracket: 20.00, increment: 0.56 },
+    "SJO Cord (3 Conductor, 18 ga)": { firstBracket: 35.85, increment: 0.78 }
+  },
+
+  "3/4 in": {
+    "18 ga": { firstBracket: 0, increment: 0.72 },
+    "16 ga": { firstBracket: 1.80, increment: 0.90 },
+    "14 ga": { firstBracket: 4.70, increment: 1.19 },
+    "SJO Cord (2 Conductor, 18 ga)": { firstBracket: 20.00, increment: 0.56 },
+    "SJO Cord (3 Conductor, 18 ga)": { firstBracket: 35.85, increment: 0.78 }
+  },
+
+  "1 in": {
+    "18 ga": { firstBracket: 0, increment: 0.72 },
+    "16 ga": { firstBracket: 1.80, increment: 0.90 },
+    "14 ga": { firstBracket: 4.70, increment: 1.19 },
+    "SJO Cord (2 Conductor, 18 ga)": { firstBracket: 20.00, increment: 0.56 },
+    "SJO Cord (3 Conductor, 18 ga)": { firstBracket: 35.85, increment: 0.78 }
+  },
+
+  "6 mm": {
+    "24 ga": { firstBracket: 0, increment: 0.50 },
+    "22 ga": { firstBracket: 0.40, increment: 0.54 }
+  },
+
+  "6.5 mm": {
+    "24 ga": { firstBracket: 0, increment: 0.50 },
+    "22 ga": { firstBracket: 0.40, increment: 0.54 }
+  },
+
+  "8 mm": {
+    "24 ga": { firstBracket: 0, increment: 0.50 },
+    "22 ga": { firstBracket: 0.40, increment: 0.54 }
+  },
+
+  "10 mm": {
+    "22 ga": { firstBracket: 0, increment: 0.54 },
+    "18 ga": { firstBracket: 1.80, increment: 0.72 },
+    "SJO Cord (2 Conductor, 18 ga)": { firstBracket: 21.80, increment: 0.56 }
+  },
+
+  "12 mm": {
+    "22 ga": { firstBracket: 0, increment: 0.54 },
+    "18 ga": { firstBracket: 1.80, increment: 0.72 },
+    "SJO Cord (2 Conductor, 18 ga)": { firstBracket: 21.80, increment: 0.56 },
+    "SJO Cord (3 Conductor, 18 ga)": { firstBracket: 37.65, increment: 0.78 }
+  },
+
+  "12.5 mm": {
+    "22 ga": { firstBracket: 0, increment: 0.54 },
+    "18 ga": { firstBracket: 1.80, increment: 0.72 },
+    "SJO Cord (2 Conductor, 18 ga)": { firstBracket: 21.80, increment: 0.56 },
+    "SJO Cord (3 Conductor, 18 ga)": { firstBracket: 37.65, increment: 0.78 }
+  },
+
+  "13 mm": {
+    "22 ga": { firstBracket: 0, increment: 0.54 },
+    "18 ga": { firstBracket: 1.80, increment: 0.72 },
+    "SJO Cord (2 Conductor, 18 ga)": { firstBracket: 21.80, increment: 0.56 },
+    "SJO Cord (3 Conductor, 18 ga)": { firstBracket: 37.65, increment: 0.78 }
+  },
+
+  "14 mm": {
+    "18 ga": { firstBracket: 0, increment: 0.72 },
+    "16 ga": { firstBracket: 1.80, increment: 0.90 },
+    "14 ga": { firstBracket: 4.70, increment: 1.19 },
+    "SJO Cord (2 Conductor, 18 ga)": { firstBracket: 20.00, increment: 0.56 },
+    "SJO Cord (3 Conductor, 18 ga)": { firstBracket: 35.85, increment: 0.78 }
+  },
+
+  "16 mm": {
+    "18 ga": { firstBracket: 0, increment: 0.72 },
+    "16 ga": { firstBracket: 1.80, increment: 0.90 },
+    "14 ga": { firstBracket: 4.70, increment: 1.19 },
+    "SJO Cord (2 Conductor, 18 ga)": { firstBracket: 20.00, increment: 0.56 },
+    "SJO Cord (3 Conductor, 18 ga)": { firstBracket: 35.85, increment: 0.78 }
+  },
+
+  "17 mm": {
+    "18 ga": { firstBracket: 0, increment: 0.72 },
+    "16 ga": { firstBracket: 1.80, increment: 0.90 },
+    "14 ga": { firstBracket: 4.70, increment: 1.19 },
+    "SJO Cord (2 Conductor, 18 ga)": { firstBracket: 20.00, increment: 0.56 },
+    "SJO Cord (3 Conductor, 18 ga)": { firstBracket: 35.85, increment: 0.78 }
+  },
+
+  "19 mm": {
+    "18 ga": { firstBracket: 0, increment: 0.72 },
+    "16 ga": { firstBracket: 1.80, increment: 0.90 },
+    "14 ga": { firstBracket: 4.70, increment: 1.19 },
+    "SJO Cord (2 Conductor, 18 ga)": { firstBracket: 20.00, increment: 0.56 },
+    "SJO Cord (3 Conductor, 18 ga)": { firstBracket: 35.85, increment: 0.78 }
+  },
+
+  "20 mm": {
+    "18 ga": { firstBracket: 0, increment: 0.72 },
+    "16 ga": { firstBracket: 1.80, increment: 0.90 },
+    "14 ga": { firstBracket: 4.70, increment: 1.19 },
+    "SJO Cord (2 Conductor, 18 ga)": { firstBracket: 20.00, increment: 0.56 },
+    "SJO Cord (3 Conductor, 18 ga)": { firstBracket: 35.85, increment: 0.78 }
+  },
+
+  "25 mm": {
+    "18 ga": { firstBracket: 0, increment: 0.72 },
+    "16 ga": { firstBracket: 1.80, increment: 0.90 },
+    "14 ga": { firstBracket: 4.70, increment: 1.19 },
+    "SJO Cord (2 Conductor, 18 ga)": { firstBracket: 20.00, increment: 0.56 },
+    "SJO Cord (3 Conductor, 18 ga)": { firstBracket: 35.85, increment: 0.78 }
+  }
 };
 
+
+function updateHotRodLeadGage() {
+  const diameter = document.getElementById("hotrod_diameter").value;
+  const gageSelect = document.getElementById("hotrod_leadgage");
+
+  gageSelect.innerHTML = '<option value="">-- Select Lead Gage --</option>';
+
+  if (!diameter || !hotRodLeadGageOptions[diameter]) return;
+
+  hotRodLeadGageOptions[diameter].forEach(gage => {
+    const opt = document.createElement("option");
+    opt.value = gage;
+    opt.textContent = gage;
+    gageSelect.appendChild(opt);
+  });
+}
+
+
+function updateLeadGageInfo() {
+  const diameter = document.getElementById("hotrod_diameter").value;
+  const gage = document.getElementById("hotrod_leadgage").value;
+  const info = document.getElementById("hotrod_leadgage_info");
+
+  if (!diameter || !gage) {
+    info.textContent = "";
+    return;
+  }
+
+  const pricing = hotRodLeadPricing[diameter][gage];
+  const first = pricing.firstBracket;
+  const inc = pricing.increment;
+
+  info.textContent =
+    `First 0–10 in: $${first.toFixed(2)} | +$${inc.toFixed(2)} per inch beyond 10 in`;
+}
+
+
+  
 function getLeadBracketCount(leadLength) {
   if (isNaN(leadLength) || leadLength <= 10) return 0;
 
@@ -2377,16 +2575,30 @@ function updateHotRodPrice() {
 
   const lengthAdd = bracketCount * increment;
 
-  // -----------------------------
-  // LEAD LENGTH PRICING
-  // -----------------------------
-  let leadAdd = 0;
+// -----------------------------
+// LEAD LENGTH PRICING
+// -----------------------------
+let leadAdd = 0;
 
-  if (leadGage && !isNaN(leadLength)) {
-    const leadInc = hotRodLeadIncrement[leadGage] || 0;
-    const leadBrackets = getLeadBracketCount(leadLength);
-    leadAdd = leadBrackets * leadInc;
+if (leadGage && !isNaN(leadLength)) {
+  const pricing = hotRodLeadPricing[diameter]?.[leadGage];
+
+  if (pricing) {
+    const first = pricing.firstBracket;
+    const inc = pricing.increment;
+
+    // First bracket (0–10 in)
+    leadAdd = first;
+
+    // Additional brackets beyond 10 in
+    if (leadLength > 10) {
+      const extraBrackets = Math.ceil(leadLength - 10);
+      leadAdd += extraBrackets * inc;
+    }
   }
+}
+
+
 
   // -----------------------------
   // TOTAL PRICE
