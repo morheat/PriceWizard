@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Price Wizard(6/11, 10:28)</title>
+  <title>Price Wizard(6/11, 10:35)</title>
 
   <style>
     body {
@@ -2336,13 +2336,6 @@ const hotRodIncrement = {
        
 };
 
-const hotRodLeadGageOptions = {};
-
-Object.keys(hotRodLeadPricing).forEach(diameter => {
-  hotRodLeadGageOptions[diameter] = Object.keys(hotRodLeadPricing[diameter]);
-});
-
-
 const hotRodLeadPricing = {
   "1/8 in": {},
 
@@ -2499,6 +2492,11 @@ const hotRodLeadPricing = {
   }
 };
 
+const hotRodLeadGageOptions = {};
+
+Object.keys(hotRodLeadPricing).forEach(diameter => {
+  hotRodLeadGageOptions[diameter] = Object.keys(hotRodLeadPricing[diameter]);
+});
 
 function updateHotRodLeadGage() {
   const diameter = document.getElementById("hotrod_diameter").value;
