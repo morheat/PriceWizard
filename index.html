@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Price Wizard(6/11, 11:51, Lead Configuration and End Sales V2)</title>
+  <title>Price Wizard(6/11, 12:14, Lead Configuration and End Sales V3)</title>
 
   <style>
     body {
@@ -2538,6 +2538,26 @@ const hotRodLeadPricing = {
   }
 };
 
+  const hotRodLeadConfigPricing = {
+  "Right Angle Leads": 16.68,
+  "Crimped on Leads": 0,
+  "Strain Relief Clip": 16.68,
+  "Spring Guard": 19.21,
+  "Ceramic Beads (per inch)": 6.61,
+  "Single sleeve or heat shrink over both leads (per Inch)": 0.61,
+  "Sleeve or heat shrink on each lead (per inch)": 0.83,
+  "Ground wire base price": 13.67,
+  "Ground wire per inch": 0.25,
+
+  // End Seals
+  "Teflon Seal": 7.74,
+  "Lava Seal": 23.08,
+  "Cement Potting": 8.31,
+  "RTV Potting": 8.31,
+  "Epoxy Potting": 11.60,
+  "Epoxylite Potting": 20.39,
+  "Epoxy over RTV Potting": 18.29
+};
 const hotRodLeadGageOptions = {};
 
 Object.keys(hotRodLeadPricing).forEach(diameter => {
@@ -2641,27 +2661,6 @@ if (leadGage && !isNaN(leadLength)) {
     }
   }
 }
-
-const hotRodLeadConfigPricing = {
-  "Right Angle Leads": 16.68,
-  "Crimped on Leads": 0,
-  "Strain Relief Clip": 16.68,
-  "Spring Guard": 19.21,
-  "Ceramic Beads (per inch)": 6.61,
-  "Single sleeve or heat shrink over both leads (per Inch)": 0.61,
-  "Sleeve or heat shrink on each lead (per inch)": 0.83,
-  "Ground wire base price": 13.67,
-  "Ground wire per inch": 0.25,
-
-  // End Seals
-  "Teflon Seal": 7.74,
-  "Lava Seal": 23.08,
-  "Cement Potting": 8.31,
-  "RTV Potting": 8.31,
-  "Epoxy Potting": 11.60,
-  "Epoxylite Potting": 20.39,
-  "Epoxy over RTV Potting": 18.29
-};
 
 function loadLeadConfigOptions() {
   const select = document.getElementById("hotrod_leadconfig");
