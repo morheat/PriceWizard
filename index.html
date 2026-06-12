@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Price Wizard(6/11, 2:41, Lead Configuration and End Sales V7)</title>
+  <title>Price Wizard(6/12, 10:31, Bug Fix 1/8)</title>
 
   <style>
     body {
@@ -136,7 +136,7 @@
 
 <label>Diameter</label>
 <select id="hotrod_diameter"
-        onchange="updateHotRodSheath(); updateHotRodLeadGage(); updateSheathInfo(); updateLeadGageInfo(); updateHotRodPrice();">
+        onchange="updateHotRodSheath(); updateHotRodLeadGage(); updateHotRodLeadAvailability(); updateHotRodPrice();">
   <option value="">-- Select Diameter --</option>
   <option>1/8 in</option>
   <option>1/4 in</option>
@@ -2590,6 +2590,38 @@ function updateHotRodLeadGage() {
   });
 }
 
+/* ---------------------------------------------------------
+   HOT ROD — ENABLE/DISABLE LEAD OPTIONS BASED ON DIAMETER
+--------------------------------------------------------- */
+function updateHotRodLeadAvailability() {
+  const diameter = document.getElementById("hotrod_diameter").value;
+
+  const gageSelect = document.getElementById("hotrod_leadgage");
+  const lengthInput = document.getElementById("hotrod_leadlength");
+  const checkboxes = document.querySelectorAll(".leadconfig_option");
+  const info = document.getElementById("hotrod_leadconfig_info");
+
+  const disable = (diameter === "1/8 in");
+
+  // Disable or enable lead gage
+  gageSelect.disabled = disable;
+  if (disable) gageSelect.value = "";
+
+  // Disable or enable lead length
+  lengthInput.disabled = disable;
+  if (disable) lengthInput.value = "";
+
+  // Disable or enable checkboxes
+  checkboxes.forEach(cb => {
+    cb.disabled = disable;
+    if (disable) cb.checked = false;
+  });
+
+  // Clear info text if disabled
+  if (disable) info.textContent = "";
+}
+
+
 function loadLeadConfigOptions() {
   const container = document.getElementById("hotrod_leadconfig_container");
   container.innerHTML = "";
@@ -2713,6 +2745,11 @@ function updateHotRodPrice() {
     }
   }
 
+  /* STEP 1 — DISABLE LEAD LENGTH PRICING FOR 1/8 in */
+if (diameter === "1/8 in") {
+  leadAdd = 0;
+}
+  
 /* -----------------------------
    LEAD CONFIGURATION PRICING
 ----------------------------- */
@@ -2723,6 +2760,11 @@ const selectedConfigs = Array.from(
   document.querySelectorAll(".leadconfig_option:checked")
 ).map(cb => cb.value);
 
+  /* STEP 2 — DISABLE LEAD CONFIGURATION FOR 1/8 in */
+if (diameter === "1/8 in") {
+  leadConfigAdd = 0;
+  leadConfigDetails = "";
+}
 selectedConfigs.forEach(name => {
   const price = hotRodLeadConfigPricing[name] || 0;
 
