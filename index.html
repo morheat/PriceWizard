@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Price Wizard(6/12, 11:58, Lead Protection V3)</title>
+  <title>Price Wizard(6/12, 12:16, Lead Protection V4)</title>
 
   <style>
     body {
@@ -328,13 +328,13 @@
     <p>Diameter Base Price: <span id="price_hotrod_diameter">$0.00</span></p>
     <p>Length Surcharge: <span id="price_hotrod_length">$0.00</span></p>
     <p>Lead Length Surcharge: <span id="price_hotrod_leadlength">$0.00</span></p>
-    <p>Lead Configurations & End Seals Subtotal:
-   <span id="price_hotrod_leadconfig">$0.00</span>
-</p>
-
+    <p>Lead Configurations & End Seals Subtotal: <span id="price_hotrod_leadconfig">$0.00</span></p>
 <div id="price_hotrod_leadconfig_details"
      style="font-size:12px; color:#555; margin-bottom:12px;">
 </div>
+    <p>Lead Protection: <span id="price_hotrod_protection">$0.00</span></p>
+<p id="price_hotrod_protection_details"></p>
+
 
 
     <!-- You can keep these for future pricing categories -->
@@ -3155,8 +3155,11 @@ selectedConfigs.forEach(name => {
   }
 });
 
-/* LEAD PROTECTION PRICING */
+/* ---------------------------------------------------------
+   LEAD PROTECTION PRICING
+--------------------------------------------------------- */
 let protectionAdd = 0;
+let protectionDetails = "";
 
 const pType = document.getElementById("hotrod_protection_type").value;
 const pStyle = document.getElementById("hotrod_protection_style").value;
@@ -3164,16 +3167,27 @@ const armorLen = parseFloat(document.getElementById("hotrod_armor_length").value
 const leadLen = parseFloat(document.getElementById("hotrod_protection_lead_length").value);
 
 if (diameter !== "1/8 in" && pType && pStyle && !isNaN(armorLen)) {
-  const pricingRef = hotRodProtectionPricing[diameter];
-  const pricing = typeof pricingRef === "string"
-    ? hotRodProtectionPricing[pricingRef][pType][pStyle]
-    : pricingRef[pType][pStyle];
+
+  // Resolve alias (1/2 in, 12 mm, etc.)
+  let pricingRef = hotRodProtectionPricing[diameter];
+  if (typeof pricingRef === "string") {
+    pricingRef = hotRodProtectionPricing[pricingRef];
+  }
+
+  const pricing = pricingRef?.[pType]?.[pStyle];
 
   if (pricing) {
     const extra = Math.max(leadLen - 10, 0);
     protectionAdd = pricing.base + (extra * pricing.inc);
+
+    protectionDetails =
+      `${pType} — ${pStyle}: $${pricing.base.toFixed(2)} base` +
+      (extra > 0
+        ? ` + ${extra} in × $${pricing.inc.toFixed(2)}`
+        : ``);
   }
 }
+
 
 const total = base + lengthAdd + leadAdd + leadConfigAdd + protectionAdd;
 
@@ -3184,12 +3198,18 @@ const total = base + lengthAdd + leadAdd + leadConfigAdd + protectionAdd;
   const priceLeadLength = document.getElementById("price_hotrod_leadlength");
   const priceLeadConfig = document.getElementById("price_hotrod_leadconfig");
   const priceLeadConfigDetails = document.getElementById("price_hotrod_leadconfig_details");
+  const priceProtection = document.getElementById("price_hotrod_protection");
+const priceProtectionDetails = document.getElementById("price_hotrod_protection_details");
+
 
   if (priceDiameter) priceDiameter.textContent = "$" + base.toFixed(2);
   if (priceLength) priceLength.textContent = "$" + lengthAdd.toFixed(2);
   if (priceLeadLength) priceLeadLength.textContent = "$" + leadAdd.toFixed(2);
   if (priceLeadConfig) priceLeadConfig.textContent = "$" + leadConfigAdd.toFixed(2);
   if (priceLeadConfigDetails) priceLeadConfigDetails.innerHTML = leadConfigDetails;
+  if (priceProtection) priceProtection.textContent = "$" + protectionAdd.toFixed(2);
+if (priceProtectionDetails) priceProtectionDetails.innerHTML = protectionDetails;
+
 
   const totalEl = document.querySelector("#price_hot_rod .total");
   const qty1El = document.querySelector("#price_hot_rod .qty1");
