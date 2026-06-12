@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Price Wizard(6/12, 11:47, Lead Protection V2)</title>
+  <title>Price Wizard(6/12, 11:58, Lead Protection V3)</title>
 
   <style>
     body {
@@ -2858,6 +2858,20 @@ function updateHotRodLeadGage() {
   });
 }
 
+/* ---------------------------------------------------------
+   HOT ROD — RESOLVE PROTECTION STYLE ALIASES
+--------------------------------------------------------- */
+function resolveProtectionRef(diameter) {
+  let ref = hotRodProtectionStyles[diameter];
+
+  while (typeof ref === "string") {
+    ref = hotRodProtectionStyles[ref];
+  }
+
+  return ref || { armor: [], braid: [] };
+}
+
+  
 function updateHotRodProtectionType() {
   const diameter = document.getElementById("hotrod_diameter").value;
   const type = document.getElementById("hotrod_protection_type").value;
@@ -2869,7 +2883,9 @@ function updateHotRodProtectionType() {
 
   if (!diameter || !type) return;
 
-  const options = hotRodProtectionStyles[diameter]?.[type] || [];
+  const resolved = resolveProtectionRef(diameter);
+  const options = resolved[type] || [];
+
   options.forEach(name => {
     const opt = document.createElement("option");
     opt.value = name;
@@ -2877,6 +2893,7 @@ function updateHotRodProtectionType() {
     styleSelect.appendChild(opt);
   });
 }
+
 
 
 /* ---------------------------------------------------------
@@ -3053,6 +3070,17 @@ function syncArmorLeadLengths(source) {
       armorInput.value = "";
     }
   }
+}
+
+  function resolveProtectionRef(diameter) {
+  let ref = hotRodProtectionStyles[diameter];
+
+  // Follow alias chain until we reach an object
+  while (typeof ref === "string") {
+    ref = hotRodProtectionStyles[ref];
+  }
+
+  return ref || { armor: [], braid: [] };
 }
 
   
