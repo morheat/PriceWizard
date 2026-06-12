@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Price Wizard(6/12, 12:25, Lead Protection V5)</title>
+  <title>Price Wizard(6/12, 12:51, Lead Protection V5)</title>
 
   <style>
     body {
@@ -2890,7 +2890,7 @@ function updateHotRodProtectionType() {
   const info = document.getElementById("hotrod_protection_info");
 
   styleSelect.innerHTML = '<option value="">-- Select Style --</option>';
-  info.textContent = "";
+info.textContent = `${capFirst(pType)} — ${pStyle}`;
 
   if (!diameter || !type) return;
 
@@ -3094,6 +3094,11 @@ function syncArmorLeadLengths(source) {
   return ref || { armor: [], braid: [] };
 }
 
+  function capFirst(str) {
+  return str.charAt(0).toUpperCase() + str.slice(1);
+}
+
+
   
 /* ---------------------------------------------------------
    HOT ROD — FINAL PRICING ENGINE
@@ -3191,11 +3196,12 @@ if (diameter !== "1/8 in" && pType && pStyle && !isNaN(armorLen)) {
     const extra = Math.max(leadLen - 10, 0);
     protectionAdd = pricing.base + (extra * pricing.inc);
 
-    protectionDetails =
-      `${pType} — ${pStyle}: $${pricing.base.toFixed(2)} base` +
-      (extra > 0
-        ? ` + ${extra} in × $${pricing.inc.toFixed(2)}`
-        : ``);
+protectionDetails =
+  `${capFirst(pType)} — ${pStyle}: $${pricing.base.toFixed(2)} base` +
+  (extra > 0
+    ? ` + ${extra} in × $${pricing.inc.toFixed(2)}`
+    : ``);
+
   }
 }
 
