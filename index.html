@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Price Wizard(6/12, 10:31, Bug Fix 1/8)</title>
+  <title>Price Wizard(6/12, 10:59, Lead Protection V1)</title>
 
   <style>
     body {
@@ -136,7 +136,7 @@
 
 <label>Diameter</label>
 <select id="hotrod_diameter"
-        onchange="updateHotRodSheath(); updateHotRodLeadGage(); updateHotRodLeadAvailability(); updateHotRodPrice();">
+        onchange="updateHotRodSheath(); updateHotRodLeadGage(); updateHotRodLeadAvailability(); updateHotRodProtectionType(); updateHotRodPrice();"
   <option value="">-- Select Diameter --</option>
   <option>1/8 in</option>
   <option>1/4 in</option>
@@ -206,6 +206,50 @@
 
 <p id="hotrod_leadconfig_info"
    style="font-size:12px; color:#555; margin:6px 0 12px 0;"></p>
+
+<hr>
+
+<label>Lead Protection (Armor / Braid)</label>
+
+<div class="row">
+  <div class="col">
+    <label>Protection Type</label>
+    <select id="hotrod_protection_type" onchange="updateHotRodProtectionType(); updateHotRodPrice();">
+      <option value="">-- Select Protection Type --</option>
+      <option value="armor">Stainless Steel Armor (Flex Hose)</option>
+      <option value="braid">Stainless Steel Braid</option>
+    </select>
+  </div>
+
+  <div class="col">
+    <label>Protection Style</label>
+    <select id="hotrod_protection_style" onchange="updateHotRodPrice();">
+      <option value="">-- Select Style --</option>
+    </select>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col">
+    <label>Armor Length (in)</label>
+    <input type="number"
+           id="hotrod_armor_length"
+           min="0"
+           step="1"
+           oninput="syncArmorLeadLengths('armor'); updateHotRodPrice();">
+  </div>
+
+  <div class="col">
+    <label>Lead Length (in)</label>
+    <input type="number"
+           id="hotrod_protection_lead_length"
+           min="0"
+           step="1"
+           oninput="syncArmorLeadLengths('lead'); updateHotRodPrice();">
+  </div>
+</div>
+
+<div id="hotrod_protection_info" class="info"></div>
 
       
   <label>Configuration</label>
@@ -2493,6 +2537,30 @@ const hotRodLeadConfigBaseItems = {
   "Ground wire base price": true
 };
 
+  /* ---------------------------------------------------------
+   HOT ROD — LEAD PROTECTION OPTIONS (ARMOR / BRAID)
+--------------------------------------------------------- */
+const hotRodProtectionStyles = {
+  "1/8 in": {
+    armor: [], // none defined yet
+    braid: [
+      "Straight SS Braid",
+      "Right Angle SS Braid",
+      "SS Braid over each lead"
+    ]
+  },
+  "1/4 in": {
+    armor: [
+      "Straight Swagged On",
+      "Copper Coupler",
+      "Rt. Angle Armor",
+      "Copper Elbow"
+    ],
+    braid: [] // add later if needed
+  }
+  // add more diameters later as needed
+};
+
 
 /* ---------------------------------------------------------
    HOT ROD — LENGTH LIMITS
@@ -2589,6 +2657,27 @@ function updateHotRodLeadGage() {
     gageSelect.appendChild(opt);
   });
 }
+
+function updateHotRodProtectionType() {
+  const diameter = document.getElementById("hotrod_diameter").value;
+  const type = document.getElementById("hotrod_protection_type").value;
+  const styleSelect = document.getElementById("hotrod_protection_style");
+  const info = document.getElementById("hotrod_protection_info");
+
+  styleSelect.innerHTML = '<option value="">-- Select Style --</option>';
+  info.textContent = "";
+
+  if (!diameter || !type) return;
+
+  const options = hotRodProtectionStyles[diameter]?.[type] || [];
+  options.forEach(name => {
+    const opt = document.createElement("option");
+    opt.value = name;
+    opt.textContent = name;
+    styleSelect.appendChild(opt);
+  });
+}
+
 
 /* ---------------------------------------------------------
    HOT ROD — ENABLE/DISABLE LEAD OPTIONS BASED ON DIAMETER
@@ -2716,6 +2805,31 @@ function getLeadBracketCount(leadLength) {
   if (isNaN(leadLength) || leadLength <= 10) return 0;
   return Math.ceil(leadLength - 10);
 }
+
+function syncArmorLeadLengths(source) {
+  const armorInput = document.getElementById("hotrod_armor_length");
+  const leadInput = document.getElementById("hotrod_protection_lead_length");
+
+  const armorVal = parseFloat(armorInput.value);
+  const leadVal = parseFloat(leadInput.value);
+
+  if (source === "armor") {
+    if (!isNaN(armorVal)) {
+      leadInput.value = armorVal + 2;
+    } else {
+      leadInput.value = "";
+    }
+  }
+
+  if (source === "lead") {
+    if (!isNaN(leadVal)) {
+      armorInput.value = Math.max(leadVal - 2, 0);
+    } else {
+      armorInput.value = "";
+    }
+  }
+}
+
   
 /* ---------------------------------------------------------
    HOT ROD — FINAL PRICING ENGINE
@@ -2788,10 +2902,14 @@ selectedConfigs.forEach(name => {
   }
 });
 
+/* LEAD PROTECTION PRICING (TO BE IMPLEMENTED) */
+let protectionAdd = 0;
+// later: use diameter + type + style + armor/lead length
+// to compute base + increments
 
+// and then include it in total:
+const total = base + lengthAdd + leadAdd + leadConfigAdd + protectionAdd;
 
-  /* TOTAL */
-  const total = base + lengthAdd + leadAdd + leadConfigAdd;
 
   /* UPDATE BREAKDOWN PANEL */
   const priceDiameter = document.getElementById("price_hotrod_diameter");
