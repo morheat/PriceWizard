@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Price Wizard(6/12, 12:51, Lead Protection V5)</title>
+  <title>Price Wizard(6/12, 1:08, Lead Protection V5)</title>
 
   <style>
     body {
@@ -2889,8 +2889,9 @@ function updateHotRodProtectionType() {
   const styleSelect = document.getElementById("hotrod_protection_style");
   const info = document.getElementById("hotrod_protection_info");
 
+  // Reset UI
   styleSelect.innerHTML = '<option value="">-- Select Style --</option>';
-info.textContent = `${capFirst(pType)} — ${pStyle}`;
+  info.textContent = "";
 
   if (!diameter || !type) return;
 
@@ -2904,6 +2905,7 @@ info.textContent = `${capFirst(pType)} — ${pStyle}`;
     styleSelect.appendChild(opt);
   });
 }
+
 
 
 
@@ -3184,7 +3186,6 @@ const leadLen = parseFloat(document.getElementById("hotrod_protection_lead_lengt
 
 if (diameter !== "1/8 in" && pType && pStyle && !isNaN(armorLen)) {
 
-  // Resolve alias (1/2 in, 12 mm, etc.)
   let pricingRef = hotRodProtectionPricing[diameter];
   if (typeof pricingRef === "string") {
     pricingRef = hotRodProtectionPricing[pricingRef];
@@ -3196,14 +3197,24 @@ if (diameter !== "1/8 in" && pType && pStyle && !isNaN(armorLen)) {
     const extra = Math.max(leadLen - 10, 0);
     protectionAdd = pricing.base + (extra * pricing.inc);
 
-protectionDetails =
-  `${capFirst(pType)} — ${pStyle}: $${pricing.base.toFixed(2)} base` +
-  (extra > 0
-    ? ` + ${extra} in × $${pricing.inc.toFixed(2)}`
-    : ``);
-
+    protectionDetails =
+      `${capFirst(pType)} — ${pStyle}: $${pricing.base.toFixed(2)} base` +
+      (extra > 0
+        ? ` + ${extra} in × $${pricing.inc.toFixed(2)}`
+        : ``);
   }
 }
+
+// UPDATE INFO TEXT (THIS IS THE PART YOU WERE LOOKING FOR)
+const info = document.getElementById("hotrod_protection_info");
+if (info) {
+  if (pType && pStyle) {
+    info.textContent = `${capFirst(pType)} — ${pStyle}`;
+  } else {
+    info.textContent = "";
+  }
+}
+
 
 
 const total = base + lengthAdd + leadAdd + leadConfigAdd + protectionAdd;
