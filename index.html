@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Price Wizard(6/15, 3:07, Fittings and Flanges V2)</title>
+  <title>Price Wizard(6/15, 3:16, Fittings and Flanges V2)</title>
 
   <style>
     body {
@@ -271,8 +271,8 @@
   <option value="yes">Yes</option>
 </select>
 
-      <label>Fitting / Flange:</label>
-<select id="hotrod_fitting" onchange="updateHotRodFittingAvailability(); updateHotRodPrice();">
+<label>Fitting / Flange:</label>
+<select id="hotrod_fitting" onchange="updateHotRodPrice();">
   <option value="">-- Select Fitting --</option>
 </select>
 
@@ -283,6 +283,7 @@
   <option value="ss304">304 SS</option>
   <option value="ss316">316 SS</option>
 </select>
+
 
       
   <label>Configuration</label>
@@ -3143,7 +3144,7 @@ function updateHotRodFittingAvailability() {
   const fittingSelect = document.getElementById("hotrod_fitting");
   const materialSelect = document.getElementById("hotrod_fitting_material");
 
-  // ALWAYS start enabled (this is what your other menus do)
+  // Always start enabled
   fittingSelect.disabled = false;
   materialSelect.disabled = false;
 
@@ -3151,14 +3152,14 @@ function updateHotRodFittingAvailability() {
   fittingSelect.innerHTML = '<option value="">-- Select Fitting --</option>';
   materialSelect.value = "";
 
-  // Disable ONLY for 1/8 in
+  // Disable for 1/8 in only
   if (diameter === "1/8 in") {
     fittingSelect.disabled = true;
     materialSelect.disabled = true;
     return;
   }
 
-  // If no diameter selected, stop here (but dropdown stays enabled)
+  // If no diameter selected, stop here
   if (!diameter) return;
 
   // Populate based on group
@@ -3172,6 +3173,7 @@ function updateHotRodFittingAvailability() {
     fittingSelect.innerHTML += `<option value="${name}">${name}</option>`;
   });
 }
+
 
 
 
