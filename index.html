@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Price Wizard(6/15, 2:24, Fittings and Flanges V2)</title>
+  <title>Price Wizard(6/15, 2:29, Fittings and Flanges V2)</title>
 
   <style>
     body {
@@ -3136,21 +3136,39 @@ function updateHotRodProtectionAvailability() {
   }
 }
 
-  function updateHotRodFittingAvailability() {
+function updateHotRodFittingAvailability() {
   const diameter = document.getElementById("hotrod_diameter").value;
   const fittingSelect = document.getElementById("hotrod_fitting");
+  const materialSelect = document.getElementById("hotrod_fitting_material");
 
+  // Reset UI
   fittingSelect.innerHTML = '<option value="">-- Select Fitting --</option>';
+  materialSelect.value = "";
 
-  if (!diameter) return;
+  // Disable everything for ANY 1/8 variant
+  if (diameter.startsWith("1/8")) {
+    fittingSelect.disabled = true;
+    materialSelect.disabled = true;
+    return;
+  }
 
+  // Otherwise enable
+  fittingSelect.disabled = false;
+  materialSelect.disabled = false;
+
+  // Resolve group safely
   const group = hotRodFittingsRef[diameter];
-  const options = hotRodFittingsGroups[group];
+  if (!group) return;
 
+  const options = hotRodFittingsGroups[group];
+  if (!options) return;
+
+  // Populate dropdown
   Object.keys(options).forEach(name => {
     fittingSelect.innerHTML += `<option value="${name}">${name}</option>`;
   });
 }
+
 
 
 
@@ -3435,7 +3453,11 @@ let fittingDetails = "";
 const fitting = document.getElementById("hotrod_fitting").value;
 const material = document.getElementById("hotrod_fitting_material").value;
 
-if (fitting && material) {
+// Disable pricing for 1/8"
+if (diameter.startsWith("1/8")) {
+  fittingAdd = 0;
+  fittingDetails = "";
+} else if (fitting && material) {
   const group = hotRodFittingsRef[diameter];
   const pricing = hotRodFittingsGroups[group]?.[fitting]?.[material];
 
@@ -3444,6 +3466,7 @@ if (fitting && material) {
     fittingDetails = `${fitting} (${material.toUpperCase()}): $${pricing.toFixed(2)}`;
   }
 }
+
 
   
 
@@ -3475,7 +3498,8 @@ const priceFittingDetails = document.getElementById("price_hotrod_fitting_detail
   if (priceThermo) priceThermo.textContent = "$" + thermoAdd.toFixed(2);
   if (priceThermoDetails) priceThermoDetails.innerHTML = thermoDetails;
   if (priceFitting) priceFitting.textContent = "$" + fittingAdd.toFixed(2);
-if (priceFittingDetails) priceFittingDetails.innerHTML = fittingDetails;
+  if (priceFittingDetails) priceFittingDetails.innerHTML = fittingDetails;
+
 
 
 
