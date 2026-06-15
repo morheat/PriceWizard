@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Price Wizard(6/12, 1:08, Lead Protection V5)</title>
+  <title>Price Wizard(6/15, 11:21, Lead Protection V6)</title>
 
   <style>
     body {
@@ -195,7 +195,6 @@
 <select id="hotrod_leadgage"
         onchange="updateLeadGageInfo(); updateHotRodPrice();">
 </select>
-
 <p id="hotrod_leadgage_info"
    style="font-size:12px; color:#555; margin:6px 0 12px 0;">
 </p>
@@ -207,7 +206,7 @@
        step="0.01"
        placeholder="Enter lead length"
        oninput="updateHotRodPrice();">
-
+      
 <label>Lead Configuration & End Seals</label>
 <div id="hotrod_leadconfig_container"></div>
 <div id="hotrod_leadconfig_info" class="info"></div>
@@ -257,8 +256,19 @@
            oninput="syncArmorLeadLengths('lead'); updateHotRodPrice();">
   </div>
 </div>
-
 <div id="hotrod_protection_info" class="info"></div>
+
+
+  <p>Internal Thermocouple Subtotal: <span id="price_hotrod_thermocouple">$0.00</span></p>
+<div id="price_hotrod_thermocouple_details"
+     style="font-size:12px; color:#555; margin-bottom:12px;">
+</div>
+
+      <label>Internal Thermocouple:</label>
+<select id="hotrod_thermocouple" onchange="updateHotRodPrice()">
+  <option value="">None</option>
+  <option value="yes">Yes</option>
+</select>
 
       
   <label>Configuration</label>
@@ -3215,10 +3225,32 @@ if (info) {
   }
 }
 
+/* ---------------------------------------------------------
+   INTERNAL THERMOCOUPLE PRICING
+--------------------------------------------------------- */
+let thermoAdd = 0;
+let thermoDetails = "";
 
+const thermo = document.getElementById("hotrod_thermocouple").value;
 
-const total = base + lengthAdd + leadAdd + leadConfigAdd + protectionAdd;
+if (thermo === "yes" && !isNaN(length)) {
 
+  const baseThermo = 32.15;
+  const incrementThermo = 0.59;
+
+  if (length <= 10) {
+    thermoAdd = baseThermo;
+    thermoDetails = `Internal Thermocouple: $${baseThermo.toFixed(2)} (0–10 in)`;
+  } else {
+    const extra = length - 10;
+    thermoAdd = baseThermo + (extra * incrementThermo);
+    thermoDetails =
+      `Internal Thermocouple: $${baseThermo.toFixed(2)} base + `
+      + `${extra} in × $${incrementThermo.toFixed(2)}`;
+  }
+}
+
+const total = base + lengthAdd + leadAdd + leadConfigAdd + protectionAdd + thermoAdd;
 
   /* UPDATE BREAKDOWN PANEL */
   const priceDiameter = document.getElementById("price_hotrod_diameter");
@@ -3227,7 +3259,10 @@ const total = base + lengthAdd + leadAdd + leadConfigAdd + protectionAdd;
   const priceLeadConfig = document.getElementById("price_hotrod_leadconfig");
   const priceLeadConfigDetails = document.getElementById("price_hotrod_leadconfig_details");
   const priceProtection = document.getElementById("price_hotrod_protection");
-const priceProtectionDetails = document.getElementById("price_hotrod_protection_details");
+  const priceProtectionDetails = document.getElementById("price_hotrod_protection_details");
+  const priceThermo = document.getElementById("price_hotrod_thermocouple");
+  const priceThermoDetails = document.getElementById("price_hotrod_thermocouple_details");
+
 
 
   if (priceDiameter) priceDiameter.textContent = "$" + base.toFixed(2);
@@ -3236,7 +3271,10 @@ const priceProtectionDetails = document.getElementById("price_hotrod_protection_
   if (priceLeadConfig) priceLeadConfig.textContent = "$" + leadConfigAdd.toFixed(2);
   if (priceLeadConfigDetails) priceLeadConfigDetails.innerHTML = leadConfigDetails;
   if (priceProtection) priceProtection.textContent = "$" + protectionAdd.toFixed(2);
-if (priceProtectionDetails) priceProtectionDetails.innerHTML = protectionDetails;
+  if (priceProtectionDetails) priceProtectionDetails.innerHTML = protectionDetails;
+  if (priceThermo) priceThermo.textContent = "$" + thermoAdd.toFixed(2);
+  if (priceThermoDetails) priceThermoDetails.innerHTML = thermoDetails;
+
 
 
   const totalEl = document.querySelector("#price_hot_rod .total");
