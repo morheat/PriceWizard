@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Price Wizard(6/15, 11:21, Lead Protection V6)</title>
+  <title>Price Wizard(6/15, 11:30, Lead Protection V7)</title>
 
   <style>
     body {
@@ -144,7 +144,13 @@
 
 <label>Diameter</label>
 <select id="hotrod_diameter"
-        onchange="updateHotRodSheath(); updateHotRodLeadGage(); updateHotRodLeadAvailability(); updateHotRodProtectionType(); updateHotRodPrice(); updateHotRodProtectionAvailability();
+  onchange="
+    updateHotRodSheath();
+    updateHotRodLeadGage();
+    updateHotRodLeadAvailability();
+    updateHotRodProtectionAvailability();
+    updateHotRodThermocoupleAvailability();
+    updateHotRodPrice();
 "
   <option value="">-- Select Diameter --</option>
   <option>1/8 in</option>
@@ -258,12 +264,6 @@
 </div>
 <div id="hotrod_protection_info" class="info"></div>
 
-
-  <p>Internal Thermocouple Subtotal: <span id="price_hotrod_thermocouple">$0.00</span></p>
-<div id="price_hotrod_thermocouple_details"
-     style="font-size:12px; color:#555; margin-bottom:12px;">
-</div>
-
       <label>Internal Thermocouple:</label>
 <select id="hotrod_thermocouple" onchange="updateHotRodPrice()">
   <option value="">None</option>
@@ -352,6 +352,10 @@
 </div>
     <p>Lead Protection Subtotal: <span id="price_hotrod_protection">$0.00</span></p>
 <div id="price_hotrod_protection_details"
+     style="font-size:12px; color:#555; margin-bottom:12px;">
+</div>
+      <p>Internal Thermocouple Subtotal: <span id="price_hotrod_thermocouple">$0.00</span></p>
+<div id="price_hotrod_thermocouple_details"
      style="font-size:12px; color:#555; margin-bottom:12px;">
 </div>
 
@@ -2975,6 +2979,19 @@ function updateHotRodProtectionAvailability() {
   }
 }
 
+  function updateHotRodThermocoupleAvailability() {
+  const diameter = document.getElementById("hotrod_diameter").value;
+  const thermoSelect = document.getElementById("hotrod_thermocouple");
+
+  const disable = (diameter === "1/8 in");
+
+  thermoSelect.disabled = disable;
+
+  if (disable) {
+    thermoSelect.value = "";
+  }
+}
+
 
 function loadLeadConfigOptions() {
   const container = document.getElementById("hotrod_leadconfig_container");
@@ -3233,7 +3250,7 @@ let thermoDetails = "";
 
 const thermo = document.getElementById("hotrod_thermocouple").value;
 
-if (thermo === "yes" && !isNaN(length)) {
+if (thermo === "yes" && diameter !== "1/8 in" && !isNaN(length)) {
 
   const baseThermo = 32.15;
   const incrementThermo = 0.59;
@@ -3249,6 +3266,7 @@ if (thermo === "yes" && !isNaN(length)) {
       + `${extra} in × $${incrementThermo.toFixed(2)}`;
   }
 }
+
 
 const total = base + lengthAdd + leadAdd + leadConfigAdd + protectionAdd + thermoAdd;
 
