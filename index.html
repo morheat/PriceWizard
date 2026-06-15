@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Price Wizard(6/15, 3:02, Fittings and Flanges V2)</title>
+  <title>Price Wizard(6/15, 3:07, Fittings and Flanges V2)</title>
 
   <style>
     body {
@@ -3143,7 +3143,7 @@ function updateHotRodFittingAvailability() {
   const fittingSelect = document.getElementById("hotrod_fitting");
   const materialSelect = document.getElementById("hotrod_fitting_material");
 
-  // Always start enabled
+  // ALWAYS start enabled (this is what your other menus do)
   fittingSelect.disabled = false;
   materialSelect.disabled = false;
 
@@ -3151,7 +3151,7 @@ function updateHotRodFittingAvailability() {
   fittingSelect.innerHTML = '<option value="">-- Select Fitting --</option>';
   materialSelect.value = "";
 
-  // Disable for 1/8 in
+  // Disable ONLY for 1/8 in
   if (diameter === "1/8 in") {
     fittingSelect.disabled = true;
     materialSelect.disabled = true;
