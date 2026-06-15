@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Price Wizard(6/15, 3:16, Fittings and Flanges V2)</title>
+  <title>Price Wizard(6/15, 3:32, Fittings and Flanges V2)</title>
 
   <style>
     body {
@@ -2807,6 +2807,8 @@ const hotRodProtectionPricing = {
 };
 
 const hotRodFittingsRef = {
+  '1/8 in': null,   // <— ADD THIS LINE
+  
   '1/4 in': "groupA",
   '6 mm': "groupA",
   '6.5 mm': "groupA",
@@ -3458,8 +3460,8 @@ let fittingDetails = "";
 const fitting = document.getElementById("hotrod_fitting").value;
 const material = document.getElementById("hotrod_fitting_material").value;
 
-// Disable pricing for 1/8"
-if (diameter.startsWith("1/8")) {
+// Disable pricing for 1/8 in
+if (diameter === "1/8 in") {
   fittingAdd = 0;
   fittingDetails = "";
 } else if (fitting && material) {
@@ -3471,11 +3473,9 @@ if (diameter.startsWith("1/8")) {
     fittingDetails = `${fitting} (${material.toUpperCase()}): $${pricing.toFixed(2)}`;
   }
 }
-
-
   
 
-const total = base + lengthAdd + leadAdd + leadConfigAdd + protectionAdd + thermoAdd;
+const total = base + lengthAdd + leadAdd + leadConfigAdd + protectionAdd + thermoAdd + fittingAdd;
 
   /* UPDATE BREAKDOWN PANEL */
   const priceDiameter = document.getElementById("price_hotrod_diameter");
@@ -3488,7 +3488,7 @@ const total = base + lengthAdd + leadAdd + leadConfigAdd + protectionAdd + therm
   const priceThermo = document.getElementById("price_hotrod_thermocouple");
   const priceThermoDetails = document.getElementById("price_hotrod_thermocouple_details");
   const priceFitting = document.getElementById("price_hotrod_fitting");
-const priceFittingDetails = document.getElementById("price_hotrod_fitting_details");
+  const priceFittingDetails = document.getElementById("price_hotrod_fitting_details");
 
 
 
