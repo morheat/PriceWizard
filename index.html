@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Price Wizard(6/15, 11:30, Lead Protection V7)</title>
+  <title>Price Wizard(6/15, 1:09, Fittings and Flanges V1)</title>
 
   <style>
     body {
@@ -270,6 +270,19 @@
   <option value="yes">Yes</option>
 </select>
 
+      <label>Fitting / Flange:</label>
+<select id="hotrod_fitting" onchange="updateHotRodFittingAvailability(); updateHotRodPrice();">
+  <option value="">-- Select Fitting --</option>
+</select>
+
+<label>Material:</label>
+<select id="hotrod_fitting_material" onchange="updateHotRodPrice();">
+  <option value="">-- Select Material --</option>
+  <option value="brass">Brass</option>
+  <option value="ss304">304 SS</option>
+  <option value="ss316">316 SS</option>
+</select>
+
       
   <label>Configuration</label>
   <select>
@@ -358,6 +371,11 @@
 <div id="price_hotrod_thermocouple_details"
      style="font-size:12px; color:#555; margin-bottom:12px;">
 </div>
+    <p>Fitting / Flange Subtotal: <span id="price_hotrod_fitting">$0.00</span></p>
+<div id="price_hotrod_fitting_details"
+     style="font-size:12px; color:#555; margin-bottom:12px;">
+</div>
+
 
 
 
@@ -2786,7 +2804,132 @@ const hotRodProtectionPricing = {
   "1/8 in": null
 };
 
+const hotRodFittingsRef = {
+  '1/4"': "groupA",
+  '6 mm': "groupA",
+  '6.5 mm': "groupA",
 
+  '5/16"': "groupB",
+  '8 mm': "groupB",
+
+  '3/8"': "groupC",
+  '10 mm': "groupC",
+
+  '1/2"': "groupD",
+  '17/32"': "groupD",
+  '12 mm': "groupD",
+  '12.5 mm': "groupD",
+  '13 mm': "groupD",
+
+  '5/8"': "groupE",
+  '11/16"': "groupE",
+  '14 mm': "groupE",
+  '16 mm': "groupE",
+  '17 mm': "groupE",
+
+  '3/4"': "groupF",
+  '19 mm': "groupF",
+  '20 mm': "groupF",
+
+  '1"': "groupG",
+  '25 mm': "groupG"
+};
+
+  const hotRodFittingsGroups = {
+
+  groupA: {
+    '1/8" NPT': { brass: 14.71, ss304: 35.88, ss316: 38.00 },
+    'Double Ended 1/8" NPT': { brass: 43.62, ss304: 56.21, ss316: null },
+    '1/4" NPT': { brass: 17.23, ss304: 43.41, ss316: null },
+    'Non-Standard Threaded Fitting': { brass: 34.11, ss304: 48.18, ss316: null },
+
+    // Flanges (small diameters)
+    '1"–1 1/2" Flange': { brass: null, ss304: 16.62, ss316: null },
+
+    'Non-Standard Round Flange': { brass: null, ss304: 33.01, ss316: 40.18 },
+    'Non-Standard Flange (Other Shapes)': { brass: null, ss304: 33.01, ss316: 40.18 },
+    'Ring Stop / Weld Bead / Tab Stop': { brass: null, ss304: 16.68, ss316: null }
+  },
+
+      groupB: {
+    '1/4" NPT': { brass: 17.23, ss304: 43.41, ss316: null },
+    '3/8" NPT': { brass: 19.62, ss304: 45.67, ss316: null },
+    'Non-Standard Threaded Fitting': { brass: 36.65, ss304: 50.94, ss316: null },
+
+    '1"–1 1/2" Flange': { brass: null, ss304: 16.62, ss316: null },
+
+    'Non-Standard Round Flange': { brass: null, ss304: 33.01, ss316: 40.18 },
+    'Non-Standard Flange (Other Shapes)': { brass: null, ss304: 33.01, ss316: 40.18 },
+    'Ring Stop / Weld Bead / Tab Stop': { brass: null, ss304: 16.68, ss316: null }
+  },
+
+     groupC: {
+    '1/4" NPT': { brass: 17.23, ss304: 43.41, ss316: null },
+    'Double Ended 1/4" NPT': { brass: 45.73, ss304: 75.15, ss316: null },
+    '3/8" NPT': { brass: 19.62, ss304: 45.67, ss316: null },
+    'Non-Standard Threaded Fitting': { brass: 36.65, ss304: 50.94, ss316: null },
+
+    '1"–1 1/2" Flange': { brass: null, ss304: 16.62, ss316: null },
+
+    'Non-Standard Round Flange': { brass: null, ss304: 33.01, ss316: 40.18 },
+    'Non-Standard Flange (Other Shapes)': { brass: null, ss304: 33.01, ss316: 40.18 },
+    'Ring Stop / Weld Bead / Tab Stop': { brass: null, ss304: 16.68, ss316: null }
+  },
+ 
+  groupD: {
+    '3/8" NPT': { brass: 19.62, ss304: 45.67, ss316: 46.90 },
+    'Double Ended 3/8" NPT': { brass: 50.08, ss304: 77.26, ss316: null },
+    '1/2" NPT': { brass: 30.12, ss304: 58.32, ss316: 67.81 },
+    'Non-Standard Threaded Fitting': { brass: 41.65, ss304: 70.49, ss316: null },
+
+    // Large flange
+    '1"–1 1/2"–2" Flange': { brass: null, ss304: 16.62, ss316: null },
+
+    'Non-Standard Round Flange': { brass: null, ss304: 33.01, ss316: 40.18 },
+    'Non-Standard Flange (Other Shapes)': { brass: null, ss304: 33.01, ss316: 40.18 },
+    'Ring Stop / Weld Bead / Tab Stop': { brass: null, ss304: 16.68, ss316: null }
+  },
+
+      groupE: {
+    '1/2" NPT': { brass: 30.12, ss304: 58.32, ss316: 67.81 },
+    'Double Ended 3/8" NPT': { brass: 55.65, ss304: 91.69, ss316: null },
+    '3/4" NPT': { brass: 34.98, ss304: 61.35, ss316: null },
+    'Non-Standard Threaded Fitting': { brass: 53.33, ss304: 70.49, ss316: null },
+
+    '1"–1 1/2"–2" Flange': { brass: null, ss304: 16.62, ss316: null },
+
+    'Non-Standard Round Flange': { brass: null, ss304: 33.01, ss316: 40.18 },
+    'Non-Standard Flange (Other Shapes)': { brass: null, ss304: 33.01, ss316: 40.18 },
+    'Ring Stop / Weld Bead / Tab Stop': { brass: null, ss304: 16.68, ss316: null }
+  },
+
+      groupF: {
+    '3/4" NPT': { brass: 34.98, ss304: 61.35, ss316: 77.26 },
+    'Double Ended 3/4" NPT': { brass: 69.31, ss304: 133.26, ss316: null },
+    'Non-Standard Threaded Fitting': { brass: 64.86, ss304: 85.71, ss316: null },
+
+    '1"–1 1/2"–2" Flange': { brass: null, ss304: 16.62, ss316: null },
+
+    'Non-Standard Round Flange': { brass: null, ss304: 33.01, ss316: 40.18 },
+    'Non-Standard Flange (Other Shapes)': { brass: null, ss304: 33.01, ss316: 40.18 },
+    'Ring Stop / Weld Bead / Tab Stop': { brass: null, ss304: 16.68, ss316: null }
+  },
+
+      groupG: {
+    '1" NPT': { brass: 36.02, ss304: 64.95, ss316: 77.26 },
+    'Double Ended 1" NPT': { brass: 72.83, ss304: null, ss316: null },
+    'Non-Standard Threaded Fitting': { brass: 71.00, ss304: 99.77, ss316: null },
+
+    '1"–1 1/2"–2" Flange': { brass: null, ss304: 16.62, ss316: null },
+
+    'Non-Standard Round Flange': { brass: null, ss304: 33.01, ss316: 40.18 },
+    'Non-Standard Flange (Other Shapes)': { brass: null, ss304: 33.01, ss316: 40.18 },
+    'Ring Stop / Weld Bead / Tab Stop': { brass: null, ss304: 16.68, ss316: null }
+  }
+
+};
+
+    
 /* ---------------------------------------------------------
    HOT ROD — LENGTH LIMITS
 --------------------------------------------------------- */
@@ -2991,6 +3134,23 @@ function updateHotRodProtectionAvailability() {
     thermoSelect.value = "";
   }
 }
+
+  function updateHotRodFittingAvailability() {
+  const diameter = document.getElementById("hotrod_diameter").value;
+  const fittingSelect = document.getElementById("hotrod_fitting");
+
+  fittingSelect.innerHTML = '<option value="">-- Select Fitting --</option>';
+
+  if (!diameter) return;
+
+  const group = hotRodFittingsRef[diameter];
+  const options = hotRodFittingsGroups[group];
+
+  Object.keys(options).forEach(name => {
+    fittingSelect.innerHTML += `<option value="${name}">${name}</option>`;
+  });
+}
+
 
 
 function loadLeadConfigOptions() {
@@ -3267,6 +3427,24 @@ if (thermo === "yes" && diameter !== "1/8 in" && !isNaN(length)) {
   }
 }
 
+/* FITTING / FLANGE PRICING */
+let fittingAdd = 0;
+let fittingDetails = "";
+
+const fitting = document.getElementById("hotrod_fitting").value;
+const material = document.getElementById("hotrod_fitting_material").value;
+
+if (fitting && material) {
+  const group = hotRodFittingsRef[diameter];
+  const pricing = hotRodFittingsGroups[group]?.[fitting]?.[material];
+
+  if (pricing) {
+    fittingAdd = pricing;
+    fittingDetails = `${fitting} (${material.toUpperCase()}): $${pricing.toFixed(2)}`;
+  }
+}
+
+  
 
 const total = base + lengthAdd + leadAdd + leadConfigAdd + protectionAdd + thermoAdd;
 
@@ -3280,6 +3458,9 @@ const total = base + lengthAdd + leadAdd + leadConfigAdd + protectionAdd + therm
   const priceProtectionDetails = document.getElementById("price_hotrod_protection_details");
   const priceThermo = document.getElementById("price_hotrod_thermocouple");
   const priceThermoDetails = document.getElementById("price_hotrod_thermocouple_details");
+  const priceFitting = document.getElementById("price_hotrod_fitting");
+const priceFittingDetails = document.getElementById("price_hotrod_fitting_details");
+
 
 
 
@@ -3292,6 +3473,9 @@ const total = base + lengthAdd + leadAdd + leadConfigAdd + protectionAdd + therm
   if (priceProtectionDetails) priceProtectionDetails.innerHTML = protectionDetails;
   if (priceThermo) priceThermo.textContent = "$" + thermoAdd.toFixed(2);
   if (priceThermoDetails) priceThermoDetails.innerHTML = thermoDetails;
+  if (priceFitting) priceFitting.textContent = "$" + fittingAdd.toFixed(2);
+if (priceFittingDetails) priceFittingDetails.innerHTML = fittingDetails;
+
 
 
 
