@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Price Wizard(6/15, 1:09, Fittings and Flanges V1)</title>
+  <title>Price Wizard(6/15, 1:14, Fittings and Flanges V2)</title>
 
   <style>
     body {
@@ -144,14 +144,16 @@
 
 <label>Diameter</label>
 <select id="hotrod_diameter"
-  onchange="
-    updateHotRodSheath();
-    updateHotRodLeadGage();
-    updateHotRodLeadAvailability();
-    updateHotRodProtectionAvailability();
-    updateHotRodThermocoupleAvailability();
-    updateHotRodPrice();
+onchange="
+  updateHotRodSheath();
+  updateHotRodLeadGage();
+  updateHotRodLeadAvailability();
+  updateHotRodProtectionAvailability();
+  updateHotRodThermocoupleAvailability();
+  updateHotRodFittingAvailability();
+  updateHotRodPrice();
 "
+
   <option value="">-- Select Diameter --</option>
   <option>1/8 in</option>
   <option>1/4 in</option>
@@ -3135,14 +3137,27 @@ function updateHotRodProtectionAvailability() {
   }
 }
 
-  function updateHotRodFittingAvailability() {
+function updateHotRodFittingAvailability() {
   const diameter = document.getElementById("hotrod_diameter").value;
   const fittingSelect = document.getElementById("hotrod_fitting");
+  const materialSelect = document.getElementById("hotrod_fitting_material");
 
+  // Reset UI
   fittingSelect.innerHTML = '<option value="">-- Select Fitting --</option>';
+  materialSelect.value = "";
 
-  if (!diameter) return;
+  // Disable everything for 1/8"
+  if (diameter === '1/8"') {
+    fittingSelect.disabled = true;
+    materialSelect.disabled = true;
+    return;
+  }
 
+  // Otherwise enable
+  fittingSelect.disabled = false;
+  materialSelect.disabled = false;
+
+  // Populate based on group
   const group = hotRodFittingsRef[diameter];
   const options = hotRodFittingsGroups[group];
 
@@ -3150,6 +3165,7 @@ function updateHotRodProtectionAvailability() {
     fittingSelect.innerHTML += `<option value="${name}">${name}</option>`;
   });
 }
+
 
 
 
@@ -3434,7 +3450,10 @@ let fittingDetails = "";
 const fitting = document.getElementById("hotrod_fitting").value;
 const material = document.getElementById("hotrod_fitting_material").value;
 
-if (fitting && material) {
+if (diameter === '1/8"') {
+  fittingAdd = 0;
+  fittingDetails = "";
+} else if (fitting && material) {
   const group = hotRodFittingsRef[diameter];
   const pricing = hotRodFittingsGroups[group]?.[fitting]?.[material];
 
@@ -3442,6 +3461,8 @@ if (fitting && material) {
     fittingAdd = pricing;
     fittingDetails = `${fitting} (${material.toUpperCase()}): $${pricing.toFixed(2)}`;
   }
+}
+
 }
 
   
@@ -3474,7 +3495,8 @@ const priceFittingDetails = document.getElementById("price_hotrod_fitting_detail
   if (priceThermo) priceThermo.textContent = "$" + thermoAdd.toFixed(2);
   if (priceThermoDetails) priceThermoDetails.innerHTML = thermoDetails;
   if (priceFitting) priceFitting.textContent = "$" + fittingAdd.toFixed(2);
-if (priceFittingDetails) priceFittingDetails.innerHTML = fittingDetails;
+  if (priceFittingDetails) priceFittingDetails.innerHTML = fittingDetails;
+
 
 
 
