@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Price Wizard(6/15, 2:57, Fittings and Flanges V2)</title>
+  <title>Price Wizard(6/15, 3:02, Fittings and Flanges V2)</title>
 
   <style>
     body {
@@ -3143,33 +3143,36 @@ function updateHotRodFittingAvailability() {
   const fittingSelect = document.getElementById("hotrod_fitting");
   const materialSelect = document.getElementById("hotrod_fitting_material");
 
+  // Always start enabled
+  fittingSelect.disabled = false;
+  materialSelect.disabled = false;
+
   // Reset UI
   fittingSelect.innerHTML = '<option value="">-- Select Fitting --</option>';
   materialSelect.value = "";
 
-  // Disable everything for 1/8 in
+  // Disable for 1/8 in
   if (diameter === "1/8 in") {
     fittingSelect.disabled = true;
     materialSelect.disabled = true;
     return;
   }
 
-  // Otherwise enable
-  fittingSelect.disabled = false;
-  materialSelect.disabled = false;
+  // If no diameter selected, stop here (but dropdown stays enabled)
+  if (!diameter) return;
 
-  // Resolve group safely
+  // Populate based on group
   const group = hotRodFittingsRef[diameter];
   if (!group) return;
 
   const options = hotRodFittingsGroups[group];
   if (!options) return;
 
-  // Populate dropdown
   Object.keys(options).forEach(name => {
     fittingSelect.innerHTML += `<option value="${name}">${name}</option>`;
   });
 }
+
 
 
 function loadLeadConfigOptions() {
