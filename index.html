@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Price Wizard(6/15, 1:29, Fittings and Flanges V4)</title>
+  <title>Price Wizard(6/15, 2:12, Fittings and Flanges V4)</title>
 
   <style>
     body {
@@ -3141,29 +3141,29 @@ function updateHotRodFittingAvailability() {
   const fittingSelect = document.getElementById("hotrod_fitting");
   const materialSelect = document.getElementById("hotrod_fitting_material");
 
-  // Reset UI
   fittingSelect.innerHTML = '<option value="">-- Select Fitting --</option>';
   materialSelect.value = "";
 
-  // Disable everything for 1/8"
-  if (diameter === '1/8') {
+  if (diameter.startsWith("1/8")) {
     fittingSelect.disabled = true;
     materialSelect.disabled = true;
     return;
   }
 
-  // Otherwise enable
   fittingSelect.disabled = false;
   materialSelect.disabled = false;
 
-  // Populate based on group
   const group = hotRodFittingsRef[diameter];
+  if (!group) return;
+
   const options = hotRodFittingsGroups[group];
+  if (!options) return;
 
   Object.keys(options).forEach(name => {
     fittingSelect.innerHTML += `<option value="${name}">${name}</option>`;
   });
 }
+
 
 
 
