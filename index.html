@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Price Wizard(6/15, 2:41, Fittings and Flanges V2)</title>
+  <title>Price Wizard(6/15, 2:45, Fittings and Flanges V2)</title>
 
   <style>
     body {
@@ -2945,21 +2945,22 @@ const hotRodLengthLimits = {
 function validateHotRodLength() {
   const diameter = document.getElementById("hotrod_diameter").value;
   const lengthInput = document.getElementById("hotrod_length");
+  const length = parseFloat(lengthInput.value);
 
-  let min = 1;
-  let max = 60;
-
-  if (hotRodLengthLimits[diameter]) {
-    min = hotRodLengthLimits[diameter].min;
-    max = hotRodLengthLimits[diameter].max;
+  // 1/8 in has special max length
+  if (diameter.startsWith("1/8")) {
+    if (length > 6) {
+      lengthInput.value = 6;
+    }
+    return;
   }
 
-  const value = parseFloat(lengthInput.value);
-  if (isNaN(value)) return;
-
-  if (value < min) lengthInput.value = min;
-  if (value > max) lengthInput.value = max;
+  // All other diameters use normal max
+  if (length > 60) {
+    lengthInput.value = 60;
+  }
 }
+
 
 /* ---------------------------------------------------------
    HOT ROD — DROPDOWN OPTION MAPS
