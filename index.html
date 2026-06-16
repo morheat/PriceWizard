@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Price Wizard(6/15, 3:39, Fittings and Flanges V2)</title>
+  <title>Price Wizard(6/16, 10:24, Fittings and Flanges V3)</title>
 
   <style>
     body {
@@ -3171,9 +3171,11 @@ function updateHotRodFittingAvailability() {
   const options = hotRodFittingsGroups[group];
   if (!options) return;
 
-  Object.keys(options).forEach(name => {
-    fittingSelect.innerHTML += `<option value="${name}">${name}</option>`;
-  });
+Object.keys(options).forEach(name => {
+  const encoded = encodeURIComponent(name);
+  fittingSelect.innerHTML += `<option value="${encoded}">${name}</option>`;
+});
+
 }
 
 
@@ -3457,10 +3459,9 @@ if (thermo === "yes" && diameter !== "1/8 in" && !isNaN(length)) {
 let fittingAdd = 0;
 let fittingDetails = "";
 
-const fitting = document.getElementById("hotrod_fitting").value;
+const fitting = decodeURIComponent(document.getElementById("hotrod_fitting").value);
 const material = document.getElementById("hotrod_fitting_material").value;
 
-// Disable pricing for 1/8 in
 if (diameter === "1/8 in") {
   fittingAdd = 0;
   fittingDetails = "";
@@ -3473,6 +3474,7 @@ if (diameter === "1/8 in") {
     fittingDetails = `${fitting} (${material.toUpperCase()}): $${pricing.toFixed(2)}`;
   }
 }
+
   
 
 const total = base + lengthAdd + leadAdd + leadConfigAdd + protectionAdd + thermoAdd + fittingAdd;
