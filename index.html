@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Price Wizard(6/16, 10:56, Fittings and Flanges V4)</title>
+  <title>Price Wizard(6/16, 11:06, Disc Table V1)</title>
 
   <style>
     body {
@@ -399,16 +399,13 @@
         <th style="text-align:left; padding:6px;">Quantity</th>
         <th style="text-align:left; padding:6px;">9 Days (Std)</th>
       </tr>
-      <tr>
-        <td style="padding:6px;">1</td>
-        <td class="qty1" style="padding:6px;">$0.00</td>
-      </tr>
-      <tr><td style="padding:6px;">2–4</td><td style="padding:6px;">$0.00</td></tr>
-      <tr><td style="padding:6px;">5–9</td><td style="padding:6px;">$0.00</td></tr>
-      <tr><td style="padding:6px;">10–24</td><td style="padding:6px;">$0.00</td></tr>
-      <tr><td style="padding:6px;">25–49</td><td style="padding:6px;">$0.00</td></tr>
-      <tr><td style="padding:6px;">50–99</td><td style="padding:6px;">$0.00</td></tr>
-      <tr><td style="padding:6px;">100+</td><td style="padding:6px;">$0.00</td></tr>
+        <tr><td>1</td><td class="qty1">$0.00</td></tr>
+        <tr><td>2–4</td><td class="qty2_4">$0.00</td></tr>
+        <tr><td>5–9</td><td class="qty5_9">$0.00</td></tr>
+        <tr><td>10–24</td><td class="qty10_24">$0.00</td></tr>
+        <tr><td>25–49</td><td class="qty25_49">$0.00</td></tr>
+        <tr><td>50–99</td><td class="qty50_99">$0.00</td></tr>
+        <tr><td>100+</td><td class="qty100">$0.00</td></tr>
     </table>
 
     <hr>
@@ -3503,9 +3500,9 @@ if (diameter === "1/8 in") {
   }
 }
 
-  
-
 const total = base + lengthAdd + leadAdd + leadConfigAdd + protectionAdd + thermoAdd + fittingAdd;
+
+  
 
   /* UPDATE BREAKDOWN PANEL */
   const priceDiameter = document.getElementById("price_hotrod_diameter");
@@ -3534,8 +3531,27 @@ const total = base + lengthAdd + leadAdd + leadConfigAdd + protectionAdd + therm
   if (priceFitting) priceFitting.textContent = "$" + fittingAdd.toFixed(2);
   if (priceFittingDetails) priceFittingDetails.innerHTML = fittingDetails;
 
+/* ---------------------------------------------------------
+   QUANTITY DISCOUNT TABLE
+--------------------------------------------------------- */
 
+const baseUnitPrice = total; // price for quantity 1
 
+const discountTable = [
+  { selector: ".qty1",     discount: 0.00 },   // 1
+  { selector: ".qty2_4",   discount: 0.188 },  // 2–4
+  { selector: ".qty5_9",   discount: 0.375 },  // 5–9
+  { selector: ".qty10_24", discount: 0.50 },   // 10–24
+  { selector: ".qty25_49", discount: 0.625 },  // 25–49
+  { selector: ".qty50_99", discount: 0.65 },   // 50–99
+  { selector: ".qty100",   discount: 0.662 }   // 100+
+];
+
+discountTable.forEach(row => {
+  const price = baseUnitPrice * (1 - row.discount);
+  const cell = document.querySelector(row.selector);
+  if (cell) cell.textContent = `$${price.toFixed(2)}`;
+});
 
 
   const totalEl = document.querySelector("#price_hot_rod .total");
