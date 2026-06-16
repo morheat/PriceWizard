@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Price Wizard(6/16, 10:24, Fittings and Flanges V3)</title>
+  <title>Price Wizard(6/16, 10:56, Fittings and Flanges V4)</title>
 
   <style>
     body {
@@ -3171,10 +3171,15 @@ function updateHotRodFittingAvailability() {
   const options = hotRodFittingsGroups[group];
   if (!options) return;
 
-Object.keys(options).forEach(name => {
+Object.entries(options).forEach(([name, materials]) => {
+  // Skip fittings where ALL materials are null
+  const hasAnyPrice = Object.values(materials).some(v => v !== null);
+  if (!hasAnyPrice) return;
+
   const encoded = encodeURIComponent(name);
   fittingSelect.innerHTML += `<option value="${encoded}">${name}</option>`;
 });
+
 
 }
 
@@ -3460,6 +3465,29 @@ let fittingAdd = 0;
 let fittingDetails = "";
 
 const fitting = decodeURIComponent(document.getElementById("hotrod_fitting").value);
+  // Disable material options that are null for this fitting
+if (fitting && diameter !== "1/8 in") {
+  const group = hotRodFittingsRef[diameter];
+  const materials = hotRodFittingsGroups[group]?.[fitting];
+
+  if (materials) {
+    const materialSelect = document.getElementById("hotrod_fitting_material");
+
+    materialSelect.querySelectorAll("option").forEach(opt => {
+      const mat = opt.value;
+      if (!mat) return; // skip placeholder
+
+      if (materials[mat] === null) {
+        opt.disabled = true;
+        opt.style.color = "#aaa";
+      } else {
+        opt.disabled = false;
+        opt.style.color = "";
+      }
+    });
+  }
+}
+
 const material = document.getElementById("hotrod_fitting_material").value;
 
 if (diameter === "1/8 in") {
