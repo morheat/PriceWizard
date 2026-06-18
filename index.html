@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Price Wizard(6/18, 3:17, Other Options V1)</title>
+  <title>Price Wizard(6/18, 3:24, Other Options V2)</title>
 
   <style>
     body {
@@ -284,6 +284,13 @@
   <option value="ss316">316 SS</option>
 </select>
 
+<label>Other Options</label>
+<div id="hotrod_otheroptions_container"></div>
+
+<p id="hotrod_otheroptions_info"
+   style="font-size:12px; color:#555; margin:6px 0 12px 0;"></p>
+
+<hr>
 
       
   <label>Configuration</label>
@@ -377,6 +384,10 @@
 <div id="price_hotrod_fitting_details"
      style="font-size:12px; color:#555; margin-bottom:12px;">
 </div>
+    <p>Other Options: <span id="price_hotrod_other">$0.00</span></p>
+<div id="price_hotrod_other_details"
+     style="font-size:12px; color:#555; margin-bottom:12px;"></div>
+
 
 
 
@@ -2931,6 +2942,19 @@ const hotRodFittingsRef = {
 
 };
 
+  const hotRodOtherOptionsPricing = {
+  "Distributed Wattage": 17.80,
+  "Trim to Length": 12.44,
+  "Bent Heater": 14.01,
+  "Dual Zone Heater": 24.70,
+  "Double Ended Construction": 40.47,
+  "Insulated Connectors": 7.32,
+  "Non‑Insulated Connectors": 4.51,
+  "Pre‑Oxidize Heater": 19.48,
+  "Passivation 0‑12": 7.32,
+  "Passivation 13‑24": 10.98
+};
+
     
 /* ---------------------------------------------------------
    HOT ROD — LENGTH LIMITS
@@ -3202,6 +3226,71 @@ function loadLeadConfigOptions() {
     });
 
     wrapper.appendChild(checkbox);
+    wrapper.appendChild(document.createTextNode(" " + name));
+    container.appendChild(wrapper);
+  });
+}
+
+  function loadHotRodOtherOptions() {
+  const container = document.getElementById("hotrod_otheroptions_container");
+  container.innerHTML = "";
+
+  const options = {
+    "Distributed Wattage": 17.80,
+    "Trim to Length": 12.44,
+    "Bent Heater": 14.01,
+    "Dual Zone Heater": 24.70,
+    "Double Ended Construction": 40.47,
+    "Insulated Connectors": 7.32,
+    "Non‑Insulated Connectors": 4.51,
+    "Pre‑Oxidize Heater": 19.48
+  };
+
+  // MULTI‑SELECT OPTIONS
+  Object.keys(options).forEach(name => {
+    const wrapper = document.createElement("label");
+    wrapper.style.display = "block";
+
+    const checkbox = document.createElement("input");
+    checkbox.type = "checkbox";
+    checkbox.value = name;
+    checkbox.classList.add("other_option");
+
+    checkbox.addEventListener("change", () => {
+      updateHotRodPrice();
+    });
+
+    wrapper.appendChild(checkbox);
+    wrapper.appendChild(document.createTextNode(" " + name));
+    container.appendChild(wrapper);
+  });
+
+  // PASSIVATION (MUTUALLY EXCLUSIVE)
+  const passivationWrapper = document.createElement("div");
+  passivationWrapper.style.marginTop = "8px";
+  passivationWrapper.innerHTML = `<strong>Passivation (select only one):</strong>`;
+  container.appendChild(passivationWrapper);
+
+  const passivationOptions = {
+    "Passivation 0‑12": 7.32,
+    "Passivation 13‑24": 10.98
+  };
+
+  Object.keys(passivationOptions).forEach(name => {
+    const wrapper = document.createElement("label");
+    wrapper.style.display = "block";
+
+    const radio = document.createElement("input");
+    radio.type = "radio";
+    radio.name = "passivation";
+    radio.value = name;
+    radio.classList.add("other_passivation");
+
+    radio.addEventListener("change", () => {
+      updateHotRodPrice();
+    });
+
+    wrapper.appendChild(radio);
     wrapper.appendChild(document.createTextNode(" " + name));
     container.appendChild(wrapper);
   });
@@ -3500,7 +3589,33 @@ if (diameter === "1/8 in") {
   }
 }
 
+/* ---------------------------------------------------------
+   OTHER OPTIONS PRICING
+--------------------------------------------------------- */
+let otherAdd = 0;
+let otherDetails = "";
 
+// Multi-select options
+const selectedOther = Array.from(
+  document.querySelectorAll(".other_option:checked")
+).map(cb => cb.value);
+
+selectedOther.forEach(name => {
+  const price = hotRodOtherOptionsPricing[name] || 0;
+  otherAdd += price;
+  otherDetails += `${name}: $${price.toFixed(2)}<br>`;
+});
+
+// Passivation (radio)
+const passivation = document.querySelector(".other_passivation:checked");
+if (passivation) {
+  const name = passivation.value;
+  const price = hotRodOtherOptionsPricing[name] || 0;
+  otherAdd += price;
+  otherDetails += `${name}: $${price.toFixed(2)}<br>`;
+}
+
+  
 const total = base + lengthAdd + leadAdd + leadConfigAdd + protectionAdd + thermoAdd + fittingAdd + otherAdd;
 
 
@@ -3518,6 +3633,10 @@ const total = base + lengthAdd + leadAdd + leadConfigAdd + protectionAdd + therm
   const priceThermoDetails = document.getElementById("price_hotrod_thermocouple_details");
   const priceFitting = document.getElementById("price_hotrod_fitting");
   const priceFittingDetails = document.getElementById("price_hotrod_fitting_details");
+  const priceOther = document.getElementById("price_hotrod_other");
+  const priceOtherDetails = document.getElementById("price_hotrod_other_details");
+
+
 
 
 
@@ -3532,7 +3651,8 @@ const total = base + lengthAdd + leadAdd + leadConfigAdd + protectionAdd + therm
   if (priceThermoDetails) priceThermoDetails.innerHTML = thermoDetails;
   if (priceFitting) priceFitting.textContent = "$" + fittingAdd.toFixed(2);
   if (priceFittingDetails) priceFittingDetails.innerHTML = fittingDetails;
-
+  if (priceOther) priceOther.textContent = "$" + otherAdd.toFixed(2);
+if (priceOtherDetails) priceOtherDetails.innerHTML = otherDetails;
 
 
 /* ---------------------------------------------------------
@@ -3570,7 +3690,9 @@ discountTable.forEach(row => {
 --------------------------------------------------------- */
 window.onload = function() {
   loadLeadConfigOptions();
+  loadHotRodOtherOptions();
 };
+
 
 </script>
 
