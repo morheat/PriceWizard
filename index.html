@@ -1,9 +1,12 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Price Wizard(6/18, 3:41, Other Options V4)</title>
+  <title>Price Wizard (6/19, 7:48, Cleaning V1)</title>
 
   <style>
+    /* ---------------------------------------------------------
+       GLOBAL PAGE STYLES
+       --------------------------------------------------------- */
     body {
       font-family: Arial, sans-serif;
       background: linear-gradient(135deg, #6a5acd, #00bfff);
@@ -40,63 +43,70 @@
       border: 1px solid #aaa;
     }
 
-    /* Lead Config & End Seal checkbox styling */
-#hotrod_leadconfig_container label {
-  font-size: 0.9rem;        /* slightly smaller */
-  font-weight: 500;         /* medium weight, not bold */
-  color: #444;              /* softer text color */
-  margin-bottom: 4px;       /* tighter spacing */
-  display: flex;
-  align-items: center;
-  gap: 6px;                 /* space between checkbox and text */
-}
+    /* ---------------------------------------------------------
+       LEAD CONFIGURATION — CLEAN COMPACT STYLE
+       --------------------------------------------------------- */
+    #hotrod_leadconfig_container label {
+      font-size: 0.9rem;
+      font-weight: 500;
+      color: #444;
+      margin-bottom: 4px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
 
+    #hotrod_leadconfig_container input[type="checkbox"] {
+      transform: scale(1.1);
+      cursor: pointer;
+    }
+
+    #hotrod_leadconfig_info {
+      font-size: 0.85rem;
+      color: #666;
+      margin-top: 6px;
+      line-height: 1.3;
+    }
+
+    /* ---------------------------------------------------------
+       LEAD PROTECTION INFO TEXT
+       --------------------------------------------------------- */
+    #hotrod_protection_info {
+      font-size: 0.85rem;
+      color: #666;
+      margin-top: 6px;
+      line-height: 1.3;
+    }
+
+    /* ---------------------------------------------------------
+       OTHER OPTIONS — MATCHING CLEAN STYLE
+       --------------------------------------------------------- */
     #hotrod_otheroptions_container label {
-  font-size: 0.9rem;        /* slightly smaller */
-  font-weight: 500;         /* medium weight, not bold */
-  color: #444;              /* softer text color */
-  margin-bottom: 4px;       /* tighter spacing */
-  display: flex;
-  align-items: center;
-  gap: 6px;       
-}
-
-
-#hotrod_leadconfig_container input[type="checkbox"] {
-  transform: scale(1.1);    /* slightly larger checkbox */
-  cursor: pointer;
-}
-
-#hotrod_leadconfig_info {
-  font-size: 0.85rem;
-  color: #666;
-  margin-top: 6px;
-  line-height: 1.3;
-}
-    
-#hotrod_protection_info {
-  font-size: 0.85rem;
-  color: #666;
-  margin-top: 6px;
-  line-height: 1.3;
-}
+      font-size: 0.9rem;
+      font-weight: 500;
+      color: #444;
+      margin-bottom: 4px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
 
     #hotrod_otheroptions_info {
-  font-size: 0.85rem;
-  color: #666;
-  margin-top: 6px;
-  line-height: 1.3;
-}
+      font-size: 0.85rem;
+      color: #666;
+      margin-top: 6px;
+      line-height: 1.3;
+    }
 
     #hotrod_otheroptions_container strong {
-  font-size: 0.85rem;
-  color: #555;
-  font-weight: 500;
-}
+      font-size: 0.85rem;
+      color: #555;
+      font-weight: 500;
+    }
 
-
-
-
+    /* ---------------------------------------------------------
+       SECTION BOXES
+       --------------------------------------------------------- */
     .section {
       margin-top: 25px;
       padding: 20px;
@@ -105,6 +115,9 @@
       box-shadow: inset 0 0 5px rgba(0,0,0,0.1);
     }
 
+    /* ---------------------------------------------------------
+       PRICE SUMMARY PANEL
+       --------------------------------------------------------- */
     #priceSummary {
       margin-top: 30px;
       padding: 20px;
@@ -117,20 +130,22 @@
       margin-top: 0;
     }
 
+    /* ---------------------------------------------------------
+       PRODUCT LAYOUT (LEFT OPTIONS / RIGHT PRICE)
+       --------------------------------------------------------- */
     .productRow {
-  display: flex;
-  gap: 30px;
-  margin-top: 25px;
-}
+      display: flex;
+      gap: 30px;
+      margin-top: 25px;
+    }
 
-.productColumn {
-  flex: 1;
-}
+    .productColumn {
+      flex: 1;
+    }
 
-.priceColumn {
-  flex: 1;
-}
-
+    .priceColumn {
+      flex: 1;
+    }
   </style>
 </head>
 
@@ -140,7 +155,9 @@
 
   <h2>Price Wizard</h2>
 
-  <!-- PRODUCT DROPDOWN -->
+  <!-- ---------------------------------------------------------
+       PRODUCT SELECTION DROPDOWN
+       --------------------------------------------------------- -->
   <label>Product</label>
   <select id="product" onchange="showOptions()">
     <option value="">-- Select Product --</option>
@@ -161,178 +178,193 @@
   </select>
 
 
-<div id="hot_rod" class="section" style="display:none;">
+  <!-- ---------------------------------------------------------
+       HOT ROD PRODUCT SECTION
+       --------------------------------------------------------- -->
+  <div id="hot_rod" class="section" style="display:none;">
     <div class="productRow">
 
-    <!-- LEFT COLUMN: DROPDOWNS -->
-    <div class="productColumn">
-  <h3>Hot Rod</h3>
+      <!-- LEFT COLUMN: ALL HOT ROD INPUTS -->
+      <div class="productColumn">
+        <h3>Hot Rod</h3>
 
-<label>Diameter</label>
-<select id="hotrod_diameter"
-  onchange="
-    updateHotRodSheath();
-    updateHotRodLeadGage();
-    updateHotRodLeadAvailability();
-    updateHotRodProtectionAvailability();
-    updateHotRodThermocoupleAvailability();
-    updateHotRodFittingAvailability();
-    updateHotRodPrice();
-  ">
-  <option value="">-- Select Diameter --</option>
-  <option>1/8 in</option>
-  <option>1/4 in</option>
-  <option>5/16 in</option>
-  <option>3/8 in</option>
-  <option>1/2 in</option>
-  <option>17/32 in</option>
-  <option>5/8 in</option>
-  <option>11/16 in</option>
-  <option>3/4 in</option>
-  <option>1 in</option>
-  <option>6 mm</option>
-  <option>6.5 mm</option>
-  <option>8 mm</option>
-  <option>10 mm</option>
-  <option>12 mm</option>
-  <option>12.5 mm</option>
-  <option>13 mm</option>
-  <option>14 mm</option>
-  <option>16 mm</option>
-  <option>17 mm</option>
-  <option>19 mm</option>
-  <option>20 mm</option>
-  <option>25 mm</option>
-</select>
+        <!-- Diameter -->
+        <label>Diameter</label>
+        <select id="hotrod_diameter"
+          onchange="
+            updateHotRodSheath();
+            updateHotRodLeadGage();
+            updateHotRodLeadAvailability();
+            updateHotRodProtectionAvailability();
+            updateHotRodThermocoupleAvailability();
+            updateHotRodFittingAvailability();
+            updateHotRodPrice();
+          ">
+          <option value="">-- Select Diameter --</option>
+          <option>1/8 in</option>
+          <option>1/4 in</option>
+          <option>5/16 in</option>
+          <option>3/8 in</option>
+          <option>1/2 in</option>
+          <option>17/32 in</option>
+          <option>5/8 in</option>
+          <option>11/16 in</option>
+          <option>3/4 in</option>
+          <option>1 in</option>
+          <option>6 mm</option>
+          <option>6.5 mm</option>
+          <option>8 mm</option>
+          <option>10 mm</option>
+          <option>12 mm</option>
+          <option>12.5 mm</option>
+          <option>13 mm</option>
+          <option>14 mm</option>
+          <option>16 mm</option>
+          <option>17 mm</option>
+          <option>19 mm</option>
+          <option>20 mm</option>
+          <option>25 mm</option>
+        </select>
 
-<label>Sheath Material</label>
-<select id="hotrod_sheath"
-        onchange="updateSheathInfo(); updateHotRodPrice();">
-</select>
+        <!-- Sheath Material -->
+        <label>Sheath Material</label>
+        <select id="hotrod_sheath"
+                onchange="updateSheathInfo(); updateHotRodPrice();">
+        </select>
 
-<p id="hotrod_sheath_info"
-   style="font-size:12px; color:#555; margin:6px 0 12px 0;">
-</p>
+        <p id="hotrod_sheath_info"
+           style="font-size:12px; color:#555; margin:6px 0 12px 0;"></p>
 
-      
-<label>Length (inches)</label>
-<input type="number"
-       id="hotrod_length"
-       step="0.01"
-       placeholder="Enter length"
-       oninput="validateHotRodLength(); updateHotRodPrice();">
+        <!-- Length -->
+        <label>Length (inches)</label>
+        <input type="number"
+               id="hotrod_length"
+               step="0.01"
+               placeholder="Enter length"
+               oninput="validateHotRodLength(); updateHotRodPrice();">
 
+        <!-- Lead Gage -->
+        <label>Lead Gage</label>
+        <select id="hotrod_leadgage"
+                onchange="updateLeadGageInfo(); updateHotRodPrice();">
+        </select>
 
+        <p id="hotrod_leadgage_info"
+           style="font-size:12px; color:#555; margin:6px 0 12px 0;"></p>
 
-<label>Lead Gage</label>
-<select id="hotrod_leadgage"
-        onchange="updateLeadGageInfo(); updateHotRodPrice();">
-</select>
-<p id="hotrod_leadgage_info"
-   style="font-size:12px; color:#555; margin:6px 0 12px 0;">
-</p>
+        <!-- Lead Length -->
+        <label>Lead Length (inches)</label>
+        <input type="number"
+               id="hotrod_leadlength"
+               step="0.01"
+               placeholder="Enter lead length"
+               oninput="updateHotRodPrice();">
 
-  
-<label>Lead Length (inches)</label>
-<input type="number"
-       id="hotrod_leadlength"
-       step="0.01"
-       placeholder="Enter lead length"
-       oninput="updateHotRodPrice();">
-      
-<label>Lead Configuration & End Seals</label>
-<div id="hotrod_leadconfig_container"></div>
-<div id="hotrod_leadconfig_info" class="info"></div>
+        <!-- Lead Configuration -->
+        <label>Lead Configuration & End Seals</label>
+        <div id="hotrod_leadconfig_container"></div>
+        <div id="hotrod_leadconfig_info" class="info"></div>
 
+        <p id="hotrod_leadconfig_info"
+           style="font-size:12px; color:#555; margin:6px 0 12px 0;"></p>
 
-<p id="hotrod_leadconfig_info"
-   style="font-size:12px; color:#555; margin:6px 0 12px 0;"></p>
+        <hr>
 
-<hr>
+        <!-- Lead Protection -->
+        <label>Lead Protection (Armor / Braid)</label>
 
-<label>Lead Protection (Armor / Braid)</label>
+        <div class="row">
+          <div class="col">
+            <label>Protection Type</label>
+            <select id="hotrod_protection_type"
+                    onchange="updateHotRodProtectionType(); updateHotRodPrice();">
+              <option value="">-- Select Protection Type --</option>
+              <option value="armor">Stainless Steel Armor (Flex Hose)</option>
+              <option value="braid">Stainless Steel Braid</option>
+            </select>
+          </div>
 
-<div class="row">
-  <div class="col">
-    <label>Protection Type</label>
-    <select id="hotrod_protection_type" onchange="updateHotRodProtectionType(); updateHotRodPrice();">
-      <option value="">-- Select Protection Type --</option>
-      <option value="armor">Stainless Steel Armor (Flex Hose)</option>
-      <option value="braid">Stainless Steel Braid</option>
-    </select>
-  </div>
+          <div class="col">
+            <label>Protection Style</label>
+            <select id="hotrod_protection_style"
+                    onchange="updateHotRodPrice();">
+              <option value="">-- Select Style --</option>
+            </select>
+          </div>
+        </div>
 
-  <div class="col">
-    <label>Protection Style</label>
-    <select id="hotrod_protection_style" onchange="updateHotRodPrice();">
-      <option value="">-- Select Style --</option>
-    </select>
-  </div>
-</div>
+        <div class="row">
+          <div class="col">
+            <label>Armor Length (in)</label>
+            <input type="number"
+                   id="hotrod_armor_length"
+                   min="0"
+                   step="1"
+                   oninput="syncArmorLeadLengths('armor'); updateHotRodPrice();">
+          </div>
 
-<div class="row">
-  <div class="col">
-    <label>Armor Length (in)</label>
-    <input type="number"
-           id="hotrod_armor_length"
-           min="0"
-           step="1"
-           oninput="syncArmorLeadLengths('armor'); updateHotRodPrice();">
-  </div>
+          <div class="col">
+            <label>Lead Length (in)</label>
+            <input type="number"
+                   id="hotrod_protection_lead_length"
+                   min="0"
+                   step="1"
+                   oninput="syncArmorLeadLengths('lead'); updateHotRodPrice();">
+          </div>
+        </div>
 
-  <div class="col">
-    <label>Lead Length (in)</label>
-    <input type="number"
-           id="hotrod_protection_lead_length"
-           min="0"
-           step="1"
-           oninput="syncArmorLeadLengths('lead'); updateHotRodPrice();">
-  </div>
-</div>
-<div id="hotrod_protection_info" class="info"></div>
+        <div id="hotrod_protection_info" class="info"></div>
 
-      <label>Internal Thermocouple:</label>
-<select id="hotrod_thermocouple" onchange="updateHotRodPrice()">
-  <option value="">None</option>
-  <option value="yes">Yes</option>
-</select>
+        <!-- Internal Thermocouple -->
+        <label>Internal Thermocouple:</label>
+        <select id="hotrod_thermocouple" onchange="updateHotRodPrice()">
+          <option value="">None</option>
+          <option value="yes">Yes</option>
+        </select>
 
-<label>Fitting / Flange:</label>
-<select id="hotrod_fitting" onchange="updateHotRodPrice();">
-  <option value="">-- Select Fitting --</option>
-</select>
+        <!-- Fitting / Flange -->
+        <label>Fitting / Flange:</label>
+        <select id="hotrod_fitting" onchange="updateHotRodPrice();">
+          <option value="">-- Select Fitting --</option>
+        </select>
 
-<label>Material:</label>
-<select id="hotrod_fitting_material" onchange="updateHotRodPrice();">
-  <option value="">-- Select Material --</option>
-  <option value="brass">Brass</option>
-  <option value="ss304">304 SS</option>
-  <option value="ss316">316 SS</option>
-</select>
+        <!-- Fitting Material -->
+        <label>Material:</label>
+        <select id="hotrod_fitting_material" onchange="updateHotRodPrice();">
+          <option value="">-- Select Material --</option>
+          <option value="brass">Brass</option>
+          <option value="ss304">304 SS</option>
+          <option value="ss316">316 SS</option>
+        </select>
 
-<label>Other Options</label>
-<div id="hotrod_otheroptions_container"></div>
-<p id="hotrod_otheroptions_info"
-   style="font-size:12px; color:#555; margin:6px 0 12px 0;"></p>
-<hr>
+        <!-- Other Options -->
+        <label>Other Options</label>
+        <div id="hotrod_otheroptions_container"></div>
 
+        <p id="hotrod_otheroptions_info"
+           style="font-size:12px; color:#555; margin:6px 0 12px 0;"></p>
 
-  <label>Volts</label>
-  <select>
-    <option value="">-- Select Volts --</option>
-    <option>110</option>
-    <option>120</option>
-    <option>230</option>
-    <option>240</option>
-  </select>
+        <hr>
 
-<label>Watts</label>
-<input type="number"
-       id="hotrod_watts"
-       placeholder="Enter Watts"
-       oninput="updateHotRodPrice();">
-      
-</div>
+        <!-- Volts -->
+        <label>Volts</label>
+        <select>
+          <option value="">-- Select Volts --</option>
+          <option>110</option>
+          <option>120</option>
+          <option>230</option>
+          <option>240</option>
+        </select>
+
+        <!-- Watts -->
+        <label>Watts</label>
+        <input type="number"
+               id="hotrod_watts"
+               placeholder="Enter Watts"
+               oninput="updateHotRodPrice();">
+
+      </div> <!-- END LEFT COLUMN -->
+
 
           <!-- ⭐ HOT ROD PRICE PANEL -->
 <div class="priceColumn">
