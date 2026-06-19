@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Price Wizard (6/19, 8:21, Cleaning V2.75)</title>
+  <title>Price Wizard (6/19, 8:43, Cleaning V2.875)</title>
 
   <style>
     /* ---------------------------------------------------------
@@ -178,284 +178,190 @@
   </select>
 
 
-  <!-- ---------------------------------------------------------
-       HOT ROD PRODUCT SECTION
-       --------------------------------------------------------- -->
-  <div id="hot_rod" class="section" style="display:none;">
-    <div class="productRow">
-
-      <!-- LEFT COLUMN: ALL HOT ROD INPUTS -->
-      <div class="productColumn">
-        <h3>Hot Rod</h3>
-
-        <!-- Diameter -->
-        <label>Diameter</label>
-        <select id="hotrod_diameter"
-          onchange="
-            updateHotRodSheath();
-            updateHotRodLeadGage();
-            updateHotRodLeadAvailability();
-            updateHotRodProtectionAvailability();
-            updateHotRodThermocoupleAvailability();
-            updateHotRodFittingAvailability();
-            updateHotRodPrice();
-          ">
-          <option value="">-- Select Diameter --</option>
-          <option>1/8 in</option>
-          <option>1/4 in</option>
-          <option>5/16 in</option>
-          <option>3/8 in</option>
-          <option>1/2 in</option>
-          <option>17/32 in</option>
-          <option>5/8 in</option>
-          <option>11/16 in</option>
-          <option>3/4 in</option>
-          <option>1 in</option>
-          <option>6 mm</option>
-          <option>6.5 mm</option>
-          <option>8 mm</option>
-          <option>10 mm</option>
-          <option>12 mm</option>
-          <option>12.5 mm</option>
-          <option>13 mm</option>
-          <option>14 mm</option>
-          <option>16 mm</option>
-          <option>17 mm</option>
-          <option>19 mm</option>
-          <option>20 mm</option>
-          <option>25 mm</option>
-        </select>
-
-        <!-- Sheath Material -->
-        <label>Sheath Material</label>
-        <select id="hotrod_sheath"
-                onchange="updateSheathInfo(); updateHotRodPrice();">
-        </select>
-
-        <p id="hotrod_sheath_info"
-           style="font-size:12px; color:#555; margin:6px 0 12px 0;"></p>
-
-        <!-- Length -->
-        <label>Length (inches)</label>
-        <input type="number"
-               id="hotrod_length"
-               step="0.01"
-               placeholder="Enter length"
-               oninput="validateHotRodLength(); updateHotRodPrice();">
-
-        <!-- Lead Gage -->
-        <label>Lead Gage</label>
-        <select id="hotrod_leadgage"
-                onchange="updateLeadGageInfo(); updateHotRodPrice();">
-        </select>
-
-        <p id="hotrod_leadgage_info"
-           style="font-size:12px; color:#555; margin:6px 0 12px 0;"></p>
-
-        <!-- Lead Length -->
-        <label>Lead Length (inches)</label>
-        <input type="number"
-               id="hotrod_leadlength"
-               step="0.01"
-               placeholder="Enter lead length"
-               oninput="updateHotRodPrice();">
-
-        <!-- Lead Configuration -->
-        <label>Lead Configuration & End Seals</label>
-        <div id="hotrod_leadconfig_container"></div>
-        <div id="hotrod_leadconfig_info" class="info"></div>
-
-        <p id="hotrod_leadconfig_info"
-           style="font-size:12px; color:#555; margin:6px 0 12px 0;"></p>
-
-        <hr>
-
-        <!-- Lead Protection -->
-        <label>Lead Protection (Armor / Braid)</label>
-
-        <div class="row">
-          <div class="col">
-            <label>Protection Type</label>
-            <select id="hotrod_protection_type"
-                    onchange="updateHotRodProtectionType(); updateHotRodPrice();">
-              <option value="">-- Select Protection Type --</option>
-              <option value="armor">Stainless Steel Armor (Flex Hose)</option>
-              <option value="braid">Stainless Steel Braid</option>
-            </select>
-          </div>
-
-          <div class="col">
-            <label>Protection Style</label>
-            <select id="hotrod_protection_style"
-                    onchange="updateHotRodPrice();">
-              <option value="">-- Select Style --</option>
-            </select>
-          </div>
-        </div>
-
-        <div class="row">
-          <div class="col">
-            <label>Armor Length (in)</label>
-            <input type="number"
-                   id="hotrod_armor_length"
-                   min="0"
-                   step="1"
-                   oninput="syncArmorLeadLengths('armor'); updateHotRodPrice();">
-          </div>
-
-          <div class="col">
-            <label>Lead Length (in)</label>
-            <input type="number"
-                   id="hotrod_protection_lead_length"
-                   min="0"
-                   step="1"
-                   oninput="syncArmorLeadLengths('lead'); updateHotRodPrice();">
-          </div>
-        </div>
-
-        <div id="hotrod_protection_info" class="info"></div>
-
-        <!-- Internal Thermocouple -->
-        <label>Internal Thermocouple:</label>
-        <select id="hotrod_thermocouple" onchange="updateHotRodPrice()">
-          <option value="">None</option>
-          <option value="yes">Yes</option>
-        </select>
-
-        <!-- Fitting / Flange -->
-        <label>Fitting / Flange:</label>
-        <select id="hotrod_fitting" onchange="updateHotRodPrice();">
-          <option value="">-- Select Fitting --</option>
-        </select>
-
-        <!-- Fitting Material -->
-        <label>Material:</label>
-        <select id="hotrod_fitting_material" onchange="updateHotRodPrice();">
-          <option value="">-- Select Material --</option>
-          <option value="brass">Brass</option>
-          <option value="ss304">304 SS</option>
-          <option value="ss316">316 SS</option>
-        </select>
-
-        <!-- Other Options -->
-        <label>Other Options</label>
-        <div id="hotrod_otheroptions_container"></div>
-
-        <p id="hotrod_otheroptions_info"
-           style="font-size:12px; color:#555; margin:6px 0 12px 0;"></p>
-
-        <hr>
-
-        <!-- Volts -->
-        <label>Volts</label>
-        <select>
-          <option value="">-- Select Volts --</option>
-          <option>110</option>
-          <option>120</option>
-          <option>230</option>
-          <option>240</option>
-        </select>
-
-        <!-- Watts -->
-        <label>Watts</label>
-        <input type="number"
-               id="hotrod_watts"
-               placeholder="Enter Watts"
-               oninput="updateHotRodPrice();">
-
-      </div> <!-- END LEFT COLUMN -->
-
-
 <!-- ---------------------------------------------------------
-     ⭐ HOT ROD PRICE PANEL
-     This panel displays all calculated pricing components
-     and the quantity discount table for the Hot Rod product.
+     ⭐ HOT ROD — PRODUCT SECTION
+     All user inputs for Hot Rod heater configuration.
 --------------------------------------------------------- -->
-<div class="priceColumn">
-  <div id="price_hot_rod" class="section" style="display:none;">
-
-    <h3>Price Breakdown — Hot Rod</h3>
-
-    <!-- Base diameter price -->
-    <p>Diameter Base Price: <span id="price_hotrod_diameter">$0.00</span></p>
-
-    <!-- Length surcharge (per-inch increments) -->
-    <p>Length Surcharge: <span id="price_hotrod_length">$0.00</span></p>
-
-    <!-- Lead wire length surcharge -->
-    <p>Lead Length Surcharge: <span id="price_hotrod_leadlength">$0.00</span></p>
-
-    <!-- Lead configuration subtotal -->
-    <p>Lead Configurations & End Seals Subtotal: <span id="price_hotrod_leadconfig">$0.00</span></p>
-    <div id="price_hotrod_leadconfig_details"
-         style="font-size:12px; color:#555; margin-bottom:12px;">
-    </div>
-
-    <!-- Lead protection subtotal -->
-    <p>Lead Protection Subtotal: <span id="price_hotrod_protection">$0.00</span></p>
-    <div id="price_hotrod_protection_details"
-         style="font-size:12px; color:#555; margin-bottom:12px;">
-    </div>
-
-    <!-- Internal thermocouple subtotal -->
-    <p>Internal Thermocouple Subtotal: <span id="price_hotrod_thermocouple">$0.00</span></p>
-    <div id="price_hotrod_thermocouple_details"
-         style="font-size:12px; color:#555; margin-bottom:12px;">
-    </div>
-
-    <!-- Fitting / flange subtotal -->
-    <p>Fitting / Flange Subtotal: <span id="price_hotrod_fitting">$0.00</span></p>
-    <div id="price_hotrod_fitting_details"
-         style="font-size:12px; color:#555; margin-bottom:12px;">
-    </div>
-
-    <!-- Other Options subtotal -->
-    <p>Other Options: <span id="price_hotrod_other">$0.00</span></p>
-    <div id="price_hotrod_other_details"
-         style="font-size:12px; color:#555; margin-bottom:12px;">
-    </div>
-
-    <!-- ---------------------------------------------------------
-         Quantity Discount Table
-         These values are updated dynamically by updateHotRodPrice()
-    --------------------------------------------------------- -->
-    <table style="width:100%; margin-top:15px; border-collapse: collapse;">
-      <tr>
-        <th style="text-align:left; padding:6px;">Quantity</th>
-        <th style="text-align:left; padding:6px;">9 Days (Std)</th>
-      </tr>
-      <tr><td>1</td><td class="qty1">$0.00</td></tr>
-      <tr><td>2–4</td><td class="qty2_4">$0.00</td></tr>
-      <tr><td>5–9</td><td class="qty5_9">$0.00</td></tr>
-      <tr><td>10–24</td><td class="qty10_24">$0.00</td></tr>
-      <tr><td>25–49</td><td class="qty25_49">$0.00</td></tr>
-      <tr><td>50–99</td><td class="qty50_99">$0.00</td></tr>
-      <tr><td>100+</td><td class="qty100">$0.00</td></tr>
-    </table>
-
-    <hr>
-
-    <!-- Final total (before quantity selection) -->
-    <p class="total"><strong>Total: $0.00</strong></p>
-
-  </div>
-</div>
-        </div>
-</div>
-
-      
-<!-- ---------------------------------------------------------
-     ⭐ NON-SWAGED HEATERS — PRODUCT SECTION
-     This section contains all user inputs for Non-Swaged Heaters.
---------------------------------------------------------- -->
-<div id="non_swaged" class="section" style="display:none;">
+<div id="hot_rod" class="section" style="display:none;">
   <div class="productRow">
 
     <!-- LEFT COLUMN: ALL INPUT FIELDS -->
     <div class="productColumn">
-      <h3>Non-Swaged Heaters</h3>
+      <h3>Hot Rod</h3>
 
       <!-- Diameter -->
+      <label>Diameter</label>
+      <select id="hotrod_diameter">
+        <option value="">-- Select Diameter --</option>
+        <option>1/8 in</option>
+        <option>1/4 in</option>
+        <option>5/16 in</option>
+        <option>3/8 in</option>
+        <option>1/2 in</option>
+        <option>17/32 in</option>
+        <option>5/8 in</option>
+        <option>11/16 in</option>
+        <option>3/4 in</option>
+        <option>1 in</option>
+        <option>6 mm</option>
+        <option>6.5 mm</option>
+        <option>8 mm</option>
+        <option>10 mm</option>
+        <option>12 mm</option>
+        <option>12.5 mm</option>
+        <option>13 mm</option>
+        <option>14 mm</option>
+        <option>16 mm</option>
+        <option>17 mm</option>
+        <option>19 mm</option>
+        <option>20 mm</option>
+        <option>25 mm</option>
+      </select>
+
+      <!-- Sheath Material -->
+      <label>Sheath Material</label>
+      <select id="hotrod_sheath"></select>
+      <p id="hotrod_sheath_info" class="info"></p>
+
+      <!-- Length -->
+      <label>Length (inches)</label>
+      <input type="number" id="hotrod_length" step="0.01" placeholder="Enter length">
+
+      <!-- Lead Gage -->
+      <label>Lead Gage</label>
+      <select id="hotrod_leadgage"></select>
+      <p id="hotrod_leadgage_info" class="info"></p>
+
+      <!-- Lead Length -->
+      <label>Lead Length (inches)</label>
+      <input type="number" id="hotrod_leadlength" step="0.01" placeholder="Enter lead length">
+
+      <!-- Lead Configuration -->
+      <label>Lead Configuration & End Seals</label>
+      <div id="hotrod_leadconfig_container"></div>
+      <p id="hotrod_leadconfig_info" class="info"></p>
+
+      <hr>
+
+      <!-- Lead Protection -->
+      <label>Lead Protection (Armor / Braid)</label>
+
+      <label>Protection Type</label>
+      <select id="hotrod_protection_type">
+        <option value="">-- Select Protection Type --</option>
+        <option value="armor">Stainless Steel Armor (Flex Hose)</option>
+        <option value="braid">Stainless Steel Braid</option>
+      </select>
+
+      <label>Protection Style</label>
+      <select id="hotrod_protection_style">
+        <option value="">-- Select Style --</option>
+      </select>
+
+      <label>Armor Length (in)</label>
+      <input type="number" id="hotrod_armor_length" min="0" step="1">
+
+      <label>Lead Length (in)</label>
+      <input type="number" id="hotrod_protection_lead_length" min="0" step="1">
+
+      <p id="hotrod_protection_info" class="info"></p>
+
+      <!-- Internal Thermocouple -->
+      <label>Internal Thermocouple</label>
+      <select id="hotrod_thermocouple">
+        <option value="">None</option>
+        <option value="yes">Yes</option>
+      </select>
+
+      <!-- Fitting / Flange -->
+      <label>Fitting / Flange</label>
+      <select id="hotrod_fitting"></select>
+
+      <label>Material</label>
+      <select id="hotrod_fitting_material">
+        <option value="">-- Select Material --</option>
+        <option value="brass">Brass</option>
+        <option value="ss304">304 SS</option>
+        <option value="ss316">316 SS</option>
+      </select>
+
+      <!-- Other Options -->
+      <label>Other Options</label>
+      <div id="hotrod_otheroptions_container"></div>
+      <p id="hotrod_otheroptions_info" class="info"></p>
+
+      <hr>
+
+      <!-- Volts -->
+      <label>Volts</label>
+      <select id="hotrod_volts">
+        <option value="">-- Select Volts --</option>
+        <option>110</option>
+        <option>120</option>
+        <option>230</option>
+        <option>240</option>
+      </select>
+
+      <!-- Watts -->
+      <label>Watts</label>
+      <input type="number" id="hotrod_watts" placeholder="Enter Watts">
+    </div>
+
+    <!-- ---------------------------------------------------------
+         ⭐ HOT ROD — PRICE PANEL
+--------------------------------------------------------- -->
+    <div class="priceColumn">
+      <div id="price_hot_rod" class="section" style="display:none;">
+        <h3>Price Breakdown — Hot Rod</h3>
+
+        <p>Diameter Base Price: <span id="price_hotrod_diameter">$0.00</span></p>
+        <p>Length Surcharge: <span id="price_hotrod_length">$0.00</span></p>
+        <p>Lead Length Surcharge: <span id="price_hotrod_leadlength">$0.00</span></p>
+        <p>Lead Configurations & End Seals: <span id="price_hotrod_leadconfig">$0.00</span></p>
+        <div id="price_hotrod_leadconfig_details" class="info"></div>
+
+        <p>Lead Protection: <span id="price_hotrod_protection">$0.00</span></p>
+        <div id="price_hotrod_protection_details" class="info"></div>
+
+        <p>Internal Thermocouple: <span id="price_hotrod_thermocouple">$0.00</span></p>
+        <div id="price_hotrod_thermocouple_details" class="info"></div>
+
+        <p>Fitting / Flange: <span id="price_hotrod_fitting">$0.00</span></p>
+        <div id="price_hotrod_fitting_details" class="info"></div>
+
+        <p>Other Options: <span id="price_hotrod_other">$0.00</span></p>
+        <div id="price_hotrod_other_details" class="info"></div>
+
+        <!-- Quantity Table -->
+        <table style="width:100%; margin-top:15px; border-collapse: collapse;">
+          <tr><th>Quantity</th><th>9 Days (Std)</th></tr>
+          <tr><td>1</td><td class="qty1">$0.00</td></tr>
+          <tr><td>2–4</td><td class="qty2_4">$0.00</td></tr>
+          <tr><td>5–9</td><td class="qty5_9">$0.00</td></tr>
+          <tr><td>10–24</td><td class="qty10_24">$0.00</td></tr>
+          <tr><td>25–49</td><td class="qty25_49">$0.00</td></tr>
+          <tr><td>50–99</td><td class="qty50_99">$0.00</td></tr>
+          <tr><td>100+</td><td class="qty100">$0.00</td></tr>
+        </table>
+
+        <hr>
+        <p><strong>Total: $0.00</strong></p>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ---------------------------------------------------------
+     ⭐ NON-SWAGED HEATERS — PRODUCT SECTION
+--------------------------------------------------------- -->
+<div id="non_swaged" class="section" style="display:none;">
+  <div class="productRow">
+
+    <!-- LEFT COLUMN -->
+    <div class="productColumn">
+      <h3>Non-Swaged Heaters</h3>
+
       <label>Diameter</label>
       <select>
         <option value="">-- Select Diameter --</option>
@@ -463,7 +369,6 @@
         <option>Placeholder 2</option>
       </select>
 
-      <!-- Length -->
       <label>Length</label>
       <select>
         <option value="">-- Select Length --</option>
@@ -471,7 +376,6 @@
         <option>Placeholder 2</option>
       </select>
 
-      <!-- Circuit Type -->
       <label>Circuit Type</label>
       <select>
         <option value="">-- Select Circuit Type --</option>
@@ -479,7 +383,6 @@
         <option>Placeholder 2</option>
       </select>
 
-      <!-- Volts -->
       <label>Volts</label>
       <select>
         <option value="">-- Select Volts --</option>
@@ -487,7 +390,6 @@
         <option>Placeholder 2</option>
       </select>
 
-      <!-- Watts -->
       <label>Watts</label>
       <select>
         <option value="">-- Select Watts --</option>
@@ -495,7 +397,6 @@
         <option>Placeholder 2</option>
       </select>
 
-      <!-- Lead Gage -->
       <label>Lead Gage</label>
       <select>
         <option value="">-- Select Lead Gage --</option>
@@ -503,7 +404,6 @@
         <option>Placeholder 2</option>
       </select>
 
-      <!-- Lead Wire Length -->
       <label>Lead Wire Length</label>
       <select>
         <option value="">-- Select Lead Wire Length --</option>
@@ -511,7 +411,6 @@
         <option>Placeholder 2</option>
       </select>
 
-      <!-- Lead Wire Protection -->
       <label>Lead Wire Protection</label>
       <select>
         <option value="">-- Select Lead Wire Protection --</option>
@@ -519,7 +418,6 @@
         <option>Placeholder 2</option>
       </select>
 
-      <!-- Protection Length -->
       <label>Protection Length</label>
       <select>
         <option value="">-- Select Protection Length --</option>
@@ -528,13 +426,9 @@
       </select>
     </div>
 
-    <!-- ---------------------------------------------------------
-         ⭐ NON-SWAGED HEATERS — PRICE PANEL
-         Displays all calculated pricing components.
-    --------------------------------------------------------- -->
+    <!-- RIGHT COLUMN — PRICE PANEL -->
     <div class="priceColumn">
       <div id="price_non_swaged" class="section" style="display:none;">
-
         <h3>Price Breakdown — Non-Swaged Heaters</h3>
 
         <p>Diameter: $0.00</p>
@@ -547,26 +441,19 @@
         <p>Lead Wire Protection: $0.00</p>
         <p>Protection Length: $0.00</p>
 
-        <!-- Quantity Discount Table -->
         <table style="width:100%; margin-top:15px; border-collapse: collapse;">
-          <tr>
-            <th style="text-align:left; padding:6px;">Quantity</th>
-            <th style="text-align:left; padding:6px;">9 Days (Std)</th>
-          </tr>
-          <tr><td style="padding:6px;">1</td><td style="padding:6px;">$0.00</td></tr>
-          <tr><td style="padding:6px;">2–4</td><td style="padding:6px;">$0.00</td></tr>
-          <tr><td style="padding:6px;">5–9</td><td style="padding:6px;">$0.00</td></tr>
-          <tr><td style="padding:6px;">10–24</td><td style="padding:6px;">$0.00</td></tr>
-          <tr><td style="padding:6px;">25–49</td><td style="padding:6px;">$0.00</td></tr>
-          <tr><td style="padding:6px;">50–99</td><td style="padding:6px;">$0.00</td></tr>
-          <tr><td style="padding:6px;">100+</td><td style="padding:6px;">$0.00</td></tr>
+          <tr><th>Quantity</th><th>9 Days (Std)</th></tr>
+          <tr><td>1</td><td>$0.00</td></tr>
+          <tr><td>2–4</td><td>$0.00</td></tr>
+          <tr><td>5–9</td><td>$0.00</td></tr>
+          <tr><td>10–24</td><td>$0.00</td></tr>
+          <tr><td>25–49</td><td>$0.00</td></tr>
+          <tr><td>50–99</td><td>$0.00</td></tr>
+          <tr><td>100+</td><td>$0.00</td></tr>
         </table>
 
         <hr>
-
-        <!-- Final Total -->
         <p><strong>Total: $0.00</strong></p>
-
       </div>
     </div>
 
@@ -576,7 +463,7 @@
 
 <!-- ---------------------------------------------------------
      ⭐ STARFLEX — PRODUCT SECTION
-     All user inputs for Starflex heaters.
+     All user inputs for Starflex heater configuration.
 --------------------------------------------------------- -->
 <div id="starflex" class="section" style="display:none;">
   <div class="productRow">
@@ -671,11 +558,9 @@
 
     <!-- ---------------------------------------------------------
          ⭐ STARFLEX — PRICE PANEL
-         Displays all calculated pricing components.
-    --------------------------------------------------------- -->
+--------------------------------------------------------- -->
     <div class="priceColumn">
       <div id="price_starflex" class="section" style="display:none;">
-
         <h3>Price Breakdown — Starflex</h3>
 
         <p>Width: $0.00</p>
@@ -689,33 +574,27 @@
         <p>Spring Loaded Clamps: $0.00</p>
         <p>Thermocouple Hole: $0.00</p>
 
-        <!-- Quantity Discount Table -->
+        <!-- Quantity Table -->
         <table style="width:100%; margin-top:15px; border-collapse: collapse;">
-          <tr>
-            <th style="text-align:left; padding:6px;">Quantity</th>
-            <th style="text-align:left; padding:6px;">9 Days (Std)</th>
-          </tr>
-          <tr><td style="padding:6px;">1</td><td style="padding:6px;">$0.00</td></tr>
-          <tr><td style="padding:6px;">2–4</td><td style="padding:6px;">$0.00</td></tr>
-          <tr><td style="padding:6px;">5–9</td><td style="padding:6px;">$0.00</td></tr>
-          <tr><td style="padding:6px;">10–24</td><td style="padding:6px;">$0.00</td></tr>
-          <tr><td style="padding:6px;">25–49</td><td style="padding:6px;">$0.00</td></tr>
-          <tr><td style="padding:6px;">50–99</td><td style="padding:6px;">$0.00</td></tr>
-          <tr><td style="padding:6px;">100+</td><td style="padding:6px;">$0.00</td></tr>
+          <tr><th>Quantity</th><th>9 Days (Std)</th></tr>
+          <tr><td>1</td><td>$0.00</td></tr>
+          <tr><td>2–4</td><td>$0.00</td></tr>
+          <tr><td>5–9</td><td>$0.00</td></tr>
+          <tr><td>10–24</td><td>$0.00</td></tr>
+          <tr><td>25–49</td><td>$0.00</td></tr>
+          <tr><td>50–99</td><td>$0.00</td></tr>
+          <tr><td>100+</td><td>$0.00</td></tr>
         </table>
 
         <hr>
-
-        <!-- Final Total -->
         <p><strong>Total: $0.00</strong></p>
-
       </div>
     </div>
 
   </div>
 </div>
 
-     
+
 <!-- ---------------------------------------------------------
      ⭐ MICA BAND HEATER — PRODUCT SECTION
      All user inputs for Mica Band Heater configuration.
@@ -723,7 +602,7 @@
 <div id="mica_band" class="section" style="display:none;">
   <div class="productRow">
 
-    <!-- LEFT COLUMN: ALL INPUT FIELDS -->
+    <!-- LEFT COLUMN -->
     <div class="productColumn">
       <h3>Mica Band Heater</h3>
 
@@ -751,7 +630,7 @@
         <option>Placeholder 2</option>
       </select>
 
-      <!-- Stainless Steel Sheath -->
+      <!-- SS Sheath -->
       <label>SS Sheath</label>
       <select>
         <option value="">-- Select SS Sheath --</option>
@@ -826,11 +705,9 @@
 
     <!-- ---------------------------------------------------------
          ⭐ MICA BAND HEATER — PRICE PANEL
-         Displays all calculated pricing components.
-    --------------------------------------------------------- -->
+--------------------------------------------------------- -->
     <div class="priceColumn">
       <div id="price_mica_band" class="section" style="display:none;">
-
         <h3>Price Breakdown — Mica Band Heater</h3>
 
         <p>Construction: $0.00</p>
@@ -846,26 +723,20 @@
         <p>Lead Covering: $0.00</p>
         <p>Lead Covering Length: $0.00</p>
 
-        <!-- Quantity Discount Table -->
+        <!-- Quantity Table -->
         <table style="width:100%; margin-top:15px; border-collapse: collapse;">
-          <tr>
-            <th style="text-align:left; padding:6px;">Quantity</th>
-            <th style="text-align:left; padding:6px;">9 Days (Std)</th>
-          </tr>
-          <tr><td style="padding:6px;">1</td><td style="padding:6px;">$0.00</td></tr>
-          <tr><td style="padding:6px;">2–4</td><td style="padding:6px;">$0.00</td></tr>
-          <tr><td style="padding:6px;">5–9</td><td style="padding:6px;">$0.00</td></tr>
-          <tr><td style="padding:6px;">10–24</td><td style="padding:6px;">$0.00</td></tr>
-          <tr><td style="padding:6px;">25–49</td><td style="padding:6px;">$0.00</td></tr>
-          <tr><td style="padding:6px;">50–99</td><td style="padding:6px;">$0.00</td></tr>
-          <tr><td style="padding:6px;">100+</td><td style="padding:6px;">$0.00</td></tr>
+          <tr><th>Quantity</th><th>9 Days (Std)</th></tr>
+          <tr><td>1</td><td>$0.00</td></tr>
+          <tr><td>2–4</td><td>$0.00</td></tr>
+          <tr><td>5–9</td><td>$0.00</td></tr>
+          <tr><td>10–24</td><td>$0.00</td></tr>
+          <tr><td>25–49</td><td>$0.00</td></tr>
+          <tr><td>50–99</td><td>$0.00</td></tr>
+          <tr><td>100+</td><td>$0.00</td></tr>
         </table>
 
         <hr>
-
-        <!-- Final Total -->
         <p><strong>Total: $0.00</strong></p>
-
       </div>
     </div>
 
@@ -880,7 +751,7 @@
 <div id="nozzle_heater" class="section" style="display:none;">
   <div class="productRow">
 
-    <!-- LEFT COLUMN: ALL INPUT FIELDS -->
+    <!-- LEFT COLUMN -->
     <div class="productColumn">
       <h3>Nozzle Heater</h3>
 
@@ -943,11 +814,9 @@
 
     <!-- ---------------------------------------------------------
          ⭐ NOZZLE HEATER — PRICE PANEL
-         Displays all calculated pricing components.
-    --------------------------------------------------------- -->
+--------------------------------------------------------- -->
     <div class="priceColumn">
       <div id="price_nozzle_heater" class="section" style="display:none;">
-
         <h3>Price Breakdown — Nozzle Heater</h3>
 
         <p>Diameter: $0.00</p>
@@ -959,34 +828,26 @@
         <p>Stainless Steel Braid: $0.00</p>
         <p>Clamping Options: $0.00</p>
 
-        <!-- Quantity Discount Table -->
+        <!-- Quantity Table -->
         <table style="width:100%; margin-top:15px; border-collapse: collapse;">
-          <tr>
-            <th style="text-align:left; padding:6px;">Quantity</th>
-            <th style="text-align:left; padding:6px;">9 Days (Std)</th>
-          </tr>
-          <tr><td style="padding:6px;">1</td><td style="padding:6px;">$0.00</td></tr>
-          <tr><td style="padding:6px;">2–4</td><td style="padding:6px;">$0.00</td></tr>
-          <tr><td style="padding:6px;">5–9</td><td style="padding:6px;">$0.00</td></tr>
-          <tr><td style="padding:6px;">10–24</td><td style="padding:6px;">$0.00</td></tr>
-          <tr><td style="padding:6px;">25–49</td><td style="padding:6px;">$0.00</td></tr>
-          <tr><td style="padding:6px;">50–99</td><td style="padding:6px;">$0.00</td></tr>
-          <tr><td style="padding:6px;">100+</td><td style="padding:6px;">$0.00</td></tr>
+          <tr><th>Quantity</th><th>9 Days (Std)</th></tr>
+          <tr><td>1</td><td>$0.00</td></tr>
+          <tr><td>2–4</td><td>$0.00</td></tr>
+          <tr><td>5–9</td><td>$0.00</td></tr>
+          <tr><td>10–24</td><td>$0.00</td></tr>
+          <tr><td>25–49</td><td>$0.00</td></tr>
+          <tr><td>50–99</td><td>$0.00</td></tr>
+          <tr><td>100+</td><td>$0.00</td></tr>
         </table>
 
         <hr>
-
-        <!-- Final Total -->
         <p><strong>Total: $0.00</strong></p>
-
       </div>
     </div>
 
   </div>
 </div>
-
   
-
 <!-- ---------------------------------------------------------
      ⭐ SILICONE RUBBER — PRODUCT SECTION
      All user inputs for Silicone Rubber heater configuration.
@@ -994,7 +855,7 @@
 <div id="silicone_rubber" class="section" style="display:none;">
   <div class="productRow">
 
-    <!-- LEFT COLUMN: ALL INPUT FIELDS -->
+    <!-- LEFT COLUMN -->
     <div class="productColumn">
       <h3>Silicone Rubber</h3>
 
@@ -1108,7 +969,7 @@
       <select>
         <option value="">-- Select Extra Layer --</option>
         <option>Placeholder</option>
-      </select>
+      </select> <!-- FIXED: This tag was missing -->
 
       <!-- Three Phase Construction -->
       <label>Three Phase Construction</label>
@@ -1130,16 +991,13 @@
         <option value="">-- Number of Cutouts --</option>
         <option>Placeholder</option>
       </select>
-
     </div>
 
     <!-- ---------------------------------------------------------
          ⭐ SILICONE RUBBER — PRICE PANEL
-         Displays all calculated pricing components.
-    --------------------------------------------------------- -->
+--------------------------------------------------------- -->
     <div class="priceColumn">
       <div id="price_silicone_rubber" class="section" style="display:none;">
-
         <h3>Price Breakdown — Silicone Rubber</h3>
 
         <p>Configuration: $0.00</p>
@@ -1162,26 +1020,20 @@
         <p>Number of Holes: $0.00</p>
         <p>Number of Cutouts: $0.00</p>
 
-        <!-- Quantity Discount Table -->
+        <!-- Quantity Table -->
         <table style="width:100%; margin-top:15px; border-collapse: collapse;">
-          <tr>
-            <th style="text-align:left; padding:6px;">Quantity</th>
-            <th style="text-align:left; padding:6px;">9 Days (Std)</th>
-          </tr>
-          <tr><td style="padding:6px;">1</td><td style="padding:6px;">$0.00</td></tr>
-          <tr><td style="padding:6px;">2–4</td><td style="padding:6px;">$0.00</td></tr>
-          <tr><td style="padding:6px;">5–9</td><td style="padding:6px;">$0.00</td></tr>
-          <tr><td style="padding:6px;">10–24</td><td style="padding:6px;">$0.00</td></tr>
-          <tr><td style="padding:6px;">25–49</td><td style="padding:6px;">$0.00</td></tr>
-          <tr><td style="padding:6px;">50–99</td><td style="padding:6px;">$0.00</td></tr>
-          <tr><td style="padding:6px;">100+</td><td style="padding:6px;">$0.00</td></tr>
+          <tr><th>Quantity</th><th>9 Days (Std)</th></tr>
+          <tr><td>1</td><td>$0.00</td></tr>
+          <tr><td>2–4</td><td>$0.00</td></tr>
+          <tr><td>5–9</td><td>$0.00</td></tr>
+          <tr><td>10–24</td><td>$0.00</td></tr>
+          <tr><td>25–49</td><td>$0.00</td></tr>
+          <tr><td>50–99</td><td>$0.00</td></tr>
+          <tr><td>100+</td><td>$0.00</td></tr>
         </table>
 
         <hr>
-
-        <!-- Final Total -->
         <p><strong>Total: $0.00</strong></p>
-
       </div>
     </div>
 
@@ -1196,7 +1048,7 @@
 <div id="mica_strip" class="section" style="display:none;">
   <div class="productRow">
 
-    <!-- LEFT COLUMN: ALL INPUT FIELDS -->
+    <!-- LEFT COLUMN -->
     <div class="productColumn">
       <h3>Mica Strip Heater</h3>
 
@@ -1360,16 +1212,13 @@
         <option value="">-- Select Slots --</option>
         <option>Placeholder</option>
       </select>
-
     </div>
 
     <!-- ---------------------------------------------------------
          ⭐ MICA STRIP HEATER — PRICE PANEL
-         Displays all calculated pricing components.
-    --------------------------------------------------------- -->
+--------------------------------------------------------- -->
     <div class="priceColumn">
       <div id="price_mica_strip" class="section" style="display:none;">
-
         <h3>Price Breakdown — Mica Strip Heater</h3>
 
         <p>Sheath Material: $0.00</p>
@@ -1396,32 +1245,26 @@
         <p>Holes: $0.00</p>
         <p>Slots: $0.00</p>
 
-        <!-- Quantity Discount Table -->
+        <!-- Quantity Table -->
         <table style="width:100%; margin-top:15px; border-collapse: collapse;">
-          <tr>
-            <th style="text-align:left; padding:6px;">Quantity</th>
-            <th style="text-align:left; padding:6px;">9 Days (Std)</th>
-          </tr>
-          <tr><td style="padding:6px;">1</td><td style="padding:6px;">$0.00</td></tr>
-          <tr><td style="padding:6px;">2–4</td><td style="padding:6px;">$0.00</td></tr>
-          <tr><td style="padding:6px;">5–9</td><td style="padding:6px;">$0.00</td></tr>
-          <tr><td style="padding:6px;">10–24</td><td style="padding:6px;">$0.00</td></tr>
-          <tr><td style="padding:6px;">25–49</td><td style="padding:6px;">$0.00</td></tr>
-          <tr><td style="padding:6px;">50–99</td><td style="padding:6px;">$0.00</td></tr>
-          <tr><td style="padding:6px;">100+</td><td style="padding:6px;">$0.00</td></tr>
+          <tr><th>Quantity</th><th>9 Days (Std)</th></tr>
+          <tr><td>1</td><td>$0.00</td></tr>
+          <tr><td>2–4</td><td>$0.00</td></tr>
+          <tr><td>5–9</td><td>$0.00</td></tr>
+          <tr><td>10–24</td><td>$0.00</td></tr>
+          <tr><td>25–49</td><td>$0.00</td></tr>
+          <tr><td>50–99</td><td>$0.00</td></tr>
+          <tr><td>100+</td><td>$0.00</td></tr>
         </table>
 
         <hr>
-
-        <!-- Final Total -->
         <p><strong>Total: $0.00</strong></p>
-
       </div>
     </div>
 
   </div>
 </div>
-      
+
 
 <!-- ---------------------------------------------------------
      ⭐ CERAMIC STRIP HEATER — PRODUCT SECTION
@@ -1430,7 +1273,7 @@
 <div id="ceramic_strip" class="section" style="display:none;">
   <div class="productRow">
 
-    <!-- LEFT COLUMN: ALL INPUT FIELDS -->
+    <!-- LEFT COLUMN -->
     <div class="productColumn">
       <h3>Ceramic Strip Heater</h3>
 
@@ -1542,11 +1385,9 @@
 
     <!-- ---------------------------------------------------------
          ⭐ CERAMIC STRIP HEATER — PRICE PANEL
-         Displays all calculated pricing components.
-    --------------------------------------------------------- -->
+--------------------------------------------------------- -->
     <div class="priceColumn">
       <div id="price_ceramic_strip" class="section" style="display:none;">
-
         <h3>Price Breakdown — Ceramic Strip Heater</h3>
 
         <p>Thickness: $0.00</p>
@@ -1565,33 +1406,26 @@
         <p>Distributed Wattage: $0.00</p>
         <p>Tab Stop: $0.00</p>
 
-        <!-- Quantity Discount Table -->
+        <!-- Quantity Table -->
         <table style="width:100%; margin-top:15px; border-collapse: collapse;">
-          <tr>
-            <th style="text-align:left; padding:6px;">Quantity</th>
-            <th style="text-align:left; padding:6px;">9 Days (Std)</th>
-          </tr>
-          <tr><td style="padding:6px;">1</td><td style="padding:6px;">$0.00</td></tr>
-          <tr><td style="padding:6px;">2–4</td><td style="padding:6px;">$0.00</td></tr>
-          <tr><td style="padding:6px;">5–9</td><td style="padding:6px;">$0.00</td></tr>
-          <tr><td style="padding:6px;">10–24</td><td style="padding:6px;">$0.00</td></tr>
-          <tr><td style="padding:6px;">25–49</td><td style="padding:6px;">$0.00</td></tr>
-          <tr><td style="padding:6px;">50–99</td><td style="padding:6px;">$0.00</td></tr>
-          <tr><td style="padding:6px;">100+</td><td style="padding:6px;">$0.00</td></tr>
+          <tr><th>Quantity</th><th>9 Days (Std)</th></tr>
+          <tr><td>1</td><td>$0.00</td></tr>
+          <tr><td>2–4</td><td>$0.00</td></tr>
+          <tr><td>5–9</td><td>$0.00</td></tr>
+          <tr><td>10–24</td><td>$0.00</td></tr>
+          <tr><td>25–49</td><td>$0.00</td></tr>
+          <tr><td>50–99</td><td>$0.00</td></tr>
+          <tr><td>100+</td><td>$0.00</td></tr>
         </table>
 
         <hr>
-
-        <!-- Final Total -->
         <p><strong>Total: $0.00</strong></p>
-
       </div>
     </div>
 
   </div>
 </div>
-
-
+  
 <!-- ---------------------------------------------------------
      ⭐ AIR HEATER — PRODUCT SECTION
      All user inputs for Air Heater configuration.
@@ -1599,7 +1433,7 @@
 <div id="air_heater" class="section" style="display:none;">
   <div class="productRow">
 
-    <!-- LEFT COLUMN: ALL INPUT FIELDS -->
+    <!-- LEFT COLUMN -->
     <div class="productColumn">
       <h3>Air Heater</h3>
 
@@ -1641,11 +1475,9 @@
 
     <!-- ---------------------------------------------------------
          ⭐ AIR HEATER — PRICE PANEL
-         Displays all calculated pricing components.
-    --------------------------------------------------------- -->
+--------------------------------------------------------- -->
     <div class="priceColumn">
       <div id="price_air_heater" class="section" style="display:none;">
-
         <h3>Price Breakdown — Air Heater</h3>
 
         <p>Volts: $0.00</p>
@@ -1654,33 +1486,25 @@
         <p>Inlet Fitting: $0.00</p>
         <p>Outlet Fitting: $0.00</p>
 
-        <!-- Quantity Discount Table -->
+        <!-- Quantity Table -->
         <table style="width:100%; margin-top:15px; border-collapse: collapse;">
-          <tr>
-            <th style="text-align:left; padding:6px;">Quantity</th>
-            <th style="text-align:left; padding:6px;">9 Days (Std)</th>
-          </tr>
-          <tr><td style="padding:6px;">1</td><td style="padding:6px;">$0.00</td></tr>
-          <tr><td style="padding:6px;">2–4</td><td style="padding:6px;">$0.00</td></tr>
-          <tr><td style="padding:6px;">5–9</td><td style="padding:6px;">$0.00</td></tr>
-          <tr><td style="padding:6px;">10–24</td><td style="padding:6px;">$0.00</td></tr>
-          <tr><td style="padding:6px;">25–49</td><td style="padding:6px;">$0.00</td></tr>
-          <tr><td style="padding:6px;">50–99</td><td style="padding:6px;">$0.00</td></tr>
-          <tr><td style="padding:6px;">100+</td><td style="padding:6px;">$0.00</td></tr>
+          <tr><th>Quantity</th><th>9 Days (Std)</th></tr>
+          <tr><td>1</td><td>$0.00</td></tr>
+          <tr><td>2–4</td><td>$0.00</td></tr>
+          <tr><td>5–9</td><td>$0.00</td></tr>
+          <tr><td>10–24</td><td>$0.00</td></tr>
+          <tr><td>25–49</td><td>$0.00</td></tr>
+          <tr><td>50–99</td><td>$0.00</td></tr>
+          <tr><td>100+</td><td>$0.00</td></tr>
         </table>
 
         <hr>
-
-        <!-- Final Total -->
         <p><strong>Total: $0.00</strong></p>
-
       </div>
     </div>
 
   </div>
 </div>
-      
-
 
 <!-- ---------------------------------------------------------
      ⭐ BASIC THERMOCOUPLE — PRODUCT SECTION
@@ -1689,7 +1513,7 @@
 <div id="basic_tc" class="section" style="display:none;">
   <div class="productRow">
 
-    <!-- LEFT COLUMN: ALL INPUT FIELDS -->
+    <!-- LEFT COLUMN -->
     <div class="productColumn">
       <h3>Basic Thermocouple</h3>
 
@@ -1752,11 +1576,9 @@
 
     <!-- ---------------------------------------------------------
          ⭐ BASIC THERMOCOUPLE — PRICE PANEL
-         Displays all calculated pricing components.
-    --------------------------------------------------------- -->
+--------------------------------------------------------- -->
     <div class="priceColumn">
       <div id="price_basic_tc" class="section" style="display:none;">
-
         <h3>Price Breakdown — Basic TC</h3>
 
         <p>Style: $0.00</p>
@@ -1768,26 +1590,20 @@
         <p>Termination: $0.00</p>
         <p>Second Termination: $0.00</p>
 
-        <!-- Quantity Discount Table -->
+        <!-- Quantity Table -->
         <table style="width:100%; margin-top:15px; border-collapse: collapse;">
-          <tr>
-            <th style="text-align:left; padding:6px;">Quantity</th>
-            <th style="text-align:left; padding:6px;">9 Days (Std)</th>
-          </tr>
-          <tr><td style="padding:6px;">1</td><td style="padding:6px;">$0.00</td></tr>
-          <tr><td style="padding:6px;">2–4</td><td style="padding:6px;">$0.00</td></tr>
-          <tr><td style="padding:6px;">5–9</td><td style="padding:6px;">$0.00</td></tr>
-          <tr><td style="padding:6px;">10–24</td><td style="padding:6px;">$0.00</td></tr>
-          <tr><td style="padding:6px;">25–49</td><td style="padding:6px;">$0.00</td></tr>
-          <tr><td style="padding:6px;">50–99</td><td style="padding:6px;">$0.00</td></tr>
-          <tr><td style="padding:6px;">100+</td><td style="padding:6px;">$0.00</td></tr>
+          <tr><th>Quantity</th><th>9 Days (Std)</th></tr>
+          <tr><td>1</td><td>$0.00</td></tr>
+          <tr><td>2–4</td><td>$0.00</td></tr>
+          <tr><td>5–9</td><td>$0.00</td></tr>
+          <tr><td>10–24</td><td>$0.00</td></tr>
+          <tr><td>25–49</td><td>$0.00</td></tr>
+          <tr><td>50–99</td><td>$0.00</td></tr>
+          <tr><td>100+</td><td>$0.00</td></tr>
         </table>
 
         <hr>
-
-        <!-- Final Total -->
         <p><strong>Total: $0.00</strong></p>
-
       </div>
     </div>
 
@@ -1802,7 +1618,7 @@
 <div id="mi_tc" class="section" style="display:none;">
   <div class="productRow">
 
-    <!-- LEFT COLUMN: ALL INPUT FIELDS -->
+    <!-- LEFT COLUMN -->
     <div class="productColumn">
       <h3>Mineral Insulated Thermocouple</h3>
 
@@ -1864,12 +1680,10 @@
     </div>
 
     <!-- ---------------------------------------------------------
-         ⭐ MINERAL INSULATED TC — PRICE PANEL
-         Displays all calculated pricing components.
-    --------------------------------------------------------- -->
+         ⭐ MI THERMOCOUPLE — PRICE PANEL
+--------------------------------------------------------- -->
     <div class="priceColumn">
       <div id="price_mi_tc" class="section" style="display:none;">
-
         <h3>Price Breakdown — Mineral Insulated TC</h3>
 
         <p>Type: $0.00</p>
@@ -1881,32 +1695,25 @@
         <p>Lead Length: $0.00</p>
         <p>Termination: $0.00</p>
 
-        <!-- Quantity Discount Table -->
+        <!-- Quantity Table -->
         <table style="width:100%; margin-top:15px; border-collapse: collapse;">
-          <tr>
-            <th style="text-align:left; padding:6px;">Quantity</th>
-            <th style="text-align:left; padding:6px;">9 Days (Std)</th>
-          </tr>
-          <tr><td style="padding:6px;">1</td><td style="padding:6px;">$0.00</td></tr>
-          <tr><td style="padding:6px;">2–4</td><td style="padding:6px;">$0.00</td></tr>
-          <tr><td style="padding:6px;">5–9</td><td style="padding:6px;">$0.00</td></tr>
-          <tr><td style="padding:6px;">10–24</td><td style="padding:6px;">$0.00</td></tr>
-          <tr><td style="padding:6px;">25–49</td><td style="padding:6px;">$0.00</td></tr>
-          <tr><td style="padding:6px;">50–99</td><td style="padding:6px;">$0.00</td></tr>
-          <tr><td style="padding:6px;">100+</td><td style="padding:6px;">$0.00</td></tr>
+          <tr><th>Quantity</th><th>9 Days (Std)</th></tr>
+          <tr><td>1</td><td>$0.00</td></tr>
+          <tr><td>2–4</td><td>$0.00</td></tr>
+          <tr><td>5–9</td><td>$0.00</td></tr>
+          <tr><td>10–24</td><td>$0.00</td></tr>
+          <tr><td>25–49</td><td>$0.00</td></tr>
+          <tr><td>50–99</td><td>$0.00</td></tr>
+          <tr><td>100+</td><td>$0.00</td></tr>
         </table>
 
         <hr>
-
-        <!-- Final Total -->
         <p><strong>Total: $0.00</strong></p>
-
       </div>
     </div>
 
   </div>
 </div>
-
 
 <!-- ---------------------------------------------------------
      ⭐ COIL HEATERS — PRODUCT SECTION
@@ -1915,7 +1722,7 @@
 <div id="coil_heaters" class="section" style="display:none;">
   <div class="productRow">
 
-    <!-- LEFT COLUMN: ALL INPUT FIELDS -->
+    <!-- LEFT COLUMN -->
     <div class="productColumn">
       <h3>Coil Heaters</h3>
 
@@ -1957,11 +1764,9 @@
 
     <!-- ---------------------------------------------------------
          ⭐ COIL HEATERS — PRICE PANEL
-         Displays all calculated pricing components.
-    --------------------------------------------------------- -->
+--------------------------------------------------------- -->
     <div class="priceColumn">
       <div id="price_coil_heaters" class="section" style="display:none;">
-
         <h3>Price Breakdown — Coil Heaters</h3>
 
         <p>Volts: $0.00</p>
@@ -1970,33 +1775,27 @@
         <p>Coil Length: $0.00</p>
         <p>Thermocouple: $0.00</p>
 
-        <!-- Quantity Discount Table -->
+        <!-- Quantity Table -->
         <table style="width:100%; margin-top:15px; border-collapse: collapse;">
-          <tr>
-            <th style="text-align:left; padding:6px;">Quantity</th>
-            <th style="text-align:left; padding:6px;">9 Days (Std)</th>
-          </tr>
-          <tr><td style="padding:6px;">1</td><td style="padding:6px;">$0.00</td></tr>
-          <tr><td style="padding:6px;">2–4</td><td style="padding:6px;">$0.00</td></tr>
-          <tr><td style="padding:6px;">5–9</td><td style="padding:6px;">$0.00</td></tr>
-          <tr><td style="padding:6px;">10–24</td><td style="padding:6px;">$0.00</td></tr>
-          <tr><td style="padding:6px;">25–49</td><td style="padding:6px;">$0.00</td></tr>
-          <tr><td style="padding:6px;">50–99</td><td style="padding:6px;">$0.00</td></tr>
-          <tr><td style="padding:6px;">100+</td><td style="padding:6px;">$0.00</td></tr>
+          <tr><th>Quantity</th><th>9 Days (Std)</th></tr>
+          <tr><td>1</td><td>$0.00</td></tr>
+          <tr><td>2–4</td><td>$0.00</td></tr>
+          <tr><td>5–9</td><td>$0.00</td></tr>
+          <tr><td>10–24</td><td>$0.00</td></tr>
+          <tr><td>25–49</td><td>$0.00</td></tr>
+          <tr><td>50–99</td><td>$0.00</td></tr>
+          <tr><td>100+</td><td>$0.00</td></tr>
         </table>
 
         <hr>
-
-        <!-- Final Total -->
         <p><strong>Total: $0.00</strong></p>
-
       </div>
     </div>
 
   </div>
 </div>
 
-      
+
 <!-- ---------------------------------------------------------
      ⭐ SQUARE CARTRIDGE HEATER — PRODUCT SECTION
      All user inputs for Square Cartridge Heater configuration.
@@ -2004,7 +1803,7 @@
 <div id="square_cartridge" class="section" style="display:none;">
   <div class="productRow">
 
-    <!-- LEFT COLUMN: ALL INPUT FIELDS -->
+    <!-- LEFT COLUMN -->
     <div class="productColumn">
       <h3>Square Cartridge Heater</h3>
 
@@ -2074,11 +1873,9 @@
 
     <!-- ---------------------------------------------------------
          ⭐ SQUARE CARTRIDGE HEATER — PRICE PANEL
-         Displays all calculated pricing components.
-    --------------------------------------------------------- -->
+--------------------------------------------------------- -->
     <div class="priceColumn">
       <div id="price_square_cartridge" class="section" style="display:none;">
-
         <h3>Price Breakdown — Square Cartridge Heater</h3>
 
         <p>Size: $0.00</p>
@@ -2091,33 +1888,26 @@
         <p>Lead Insulation: $0.00</p>
         <p>Lead Wire Length: $0.00</p>
 
-        <!-- Quantity Discount Table -->
+        <!-- Quantity Table -->
         <table style="width:100%; margin-top:15px; border-collapse: collapse;">
-          <tr>
-            <th style="text-align:left; padding:6px;">Quantity</th>
-            <th style="text-align:left; padding:6px;">9 Days (Std)</th>
-          </tr>
-          <tr><td style="padding:6px;">1</td><td style="padding:6px;">$0.00</td></tr>
-          <tr><td style="padding:6px;">2–4</td><td style="padding:6px;">$0.00</td></tr>
-          <tr><td style="padding:6px;">5–9</td><td style="padding:6px;">$0.00</td></tr>
-          <tr><td style="padding:6px;">10–24</td><td style="padding:6px;">$0.00</td></tr>
-          <tr><td style="padding:6px;">25–49</td><td style="padding:6px;">$0.00</td></tr>
-          <tr><td style="padding:6px;">50–99</td><td style="padding:6px;">$0.00</td></tr>
-          <tr><td style="padding:6px;">100+</td><td style="padding:6px;">$0.00</td></tr>
+          <tr><th>Quantity</th><th>9 Days (Std)</th></tr>
+          <tr><td>1</td><td>$0.00</td></tr>
+          <tr><td>2–4</td><td>$0.00</td></tr>
+          <tr><td>5–9</td><td>$0.00</td></tr>
+          <tr><td>10–24</td><td>$0.00</td></tr>
+          <tr><td>25–49</td><td>$0.00</td></tr>
+          <tr><td>50–99</td><td>$0.00</td></tr>
+          <tr><td>100+</td><td>$0.00</td></tr>
         </table>
 
         <hr>
-
-        <!-- Final Total -->
         <p><strong>Total: $0.00</strong></p>
-
       </div>
     </div>
 
   </div>
 </div>
-
-
+  
 <!-- ---------------------------------------------------------
      ⭐ CERAMIC BAND HEATER — PRODUCT SECTION
      All user inputs for Ceramic Band Heater configuration.
@@ -2125,7 +1915,7 @@
 <div id="ceramic_band" class="section" style="display:none;">
   <div class="productRow">
 
-    <!-- LEFT COLUMN: ALL INPUT FIELDS -->
+    <!-- LEFT COLUMN -->
     <div class="productColumn">
       <h3>Ceramic Band Heater</h3>
 
@@ -2237,11 +2027,9 @@
 
     <!-- ---------------------------------------------------------
          ⭐ CERAMIC BAND HEATER — PRICE PANEL
-         Displays all calculated pricing components.
-    --------------------------------------------------------- -->
+--------------------------------------------------------- -->
     <div class="priceColumn">
       <div id="price_ceramic_band" class="section" style="display:none;">
-
         <h3>Price Breakdown — Ceramic Band Heater</h3>
 
         <p>Type: $0.00</p>
@@ -2260,34 +2048,27 @@
         <p>Single Hole: $0.00</p>
         <p>Bayonet Adapter at Gap: $0.00</p>
 
-        <!-- Quantity Discount Table -->
+        <!-- Quantity Table -->
         <table style="width:100%; margin-top:15px; border-collapse: collapse;">
-          <tr>
-            <th style="text-align:left; padding:6px;">Quantity</th>
-            <th style="text-align:left; padding:6px;">9 Days (Std)</th>
-          </tr>
-          <tr><td style="padding:6px;">1</td><td style="padding:6px;">$0.00</td></tr>
-          <tr><td style="padding:6px;">2–4</td><td style="padding:6px;">$0.00</td></tr>
-          <tr><td style="padding:6px;">5–9</td><td style="padding:6px;">$0.00</td></tr>
-          <tr><td style="padding:6px;">10–24</td><td style="padding:6px;">$0.00</td></tr>
-          <tr><td style="padding:6px;">25–49</td><td style="padding:6px;">$0.00</td></tr>
-          <tr><td style="padding:6px;">50–99</td><td style="padding:6px;">$0.00</td></tr>
-          <tr><td style="padding:6px;">100+</td><td style="padding:6px;">$0.00</td></tr>
+          <tr><th>Quantity</th><th>9 Days (Std)</th></tr>
+          <tr><td>1</td><td>$0.00</td></tr>
+          <tr><td>2–4</td><td>$0.00</td></tr>
+          <tr><td>5–9</td><td>$0.00</td></tr>
+          <tr><td>10–24</td><td>$0.00</td></tr>
+          <tr><td>25–49</td><td>$0.00</td></tr>
+          <tr><td>50–99</td><td>$0.00</td></tr>
+          <tr><td>100+</td><td>$0.00</td></tr>
         </table>
 
         <hr>
-
-        <!-- Final Total -->
         <p><strong>Total: $0.00</strong></p>
-
       </div>
     </div>
 
   </div>
 </div>
 
-</div>
-
+  
 <script>
 /* ---------------------------------------------------------
    PRODUCT SHOW / HIDE
