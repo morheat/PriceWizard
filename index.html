@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Price Wizard (6/19, 9:46, Cleaning V15)</title>
+  <title>Price Wizard (6/19, 9:53, Cleaning V16)</title>
 
   <style>
     /* ---------------------------------------------------------
@@ -2302,15 +2302,27 @@
 
 </div>
 
+
+  
 <script>
 /* ---------------------------------------------------------
-   PRODUCT SHOW / HIDE
+   ⭐ PRODUCT SHOW / HIDE
+   Controls which product menu and price panel are visible.
+   Triggered whenever the user changes the product dropdown.
 --------------------------------------------------------- */
-
-
 function showOptions() {
+
+  /* ---------------------------------------------------------
+     Get the selected product ID from the dropdown
+     Example: "hot_rod", "mica_band", "ceramic_band", etc.
+  --------------------------------------------------------- */
   const selected = document.getElementById("product").value;
 
+  /* ---------------------------------------------------------
+     List of ALL product section IDs
+     These correspond to <div id="..."> blocks for each menu.
+     Used to hide all menus before showing the selected one.
+  --------------------------------------------------------- */
   const productSections = [
     "hot_rod",
     "non_swaged",
@@ -2328,6 +2340,11 @@ function showOptions() {
     "ceramic_band"
   ];
 
+  /* ---------------------------------------------------------
+     List of ALL price panel IDs
+     These correspond to <div id="price_..."> blocks.
+     Used to hide all price panels before showing the selected one.
+  --------------------------------------------------------- */
   const pricePanels = [
     "price_hot_rod",
     "price_non_swaged",
@@ -2345,23 +2362,49 @@ function showOptions() {
     "price_ceramic_band"
   ];
 
+  /* ---------------------------------------------------------
+     Hide ALL product sections
+     This ensures only one menu is visible at a time.
+  --------------------------------------------------------- */
   productSections.forEach(id => {
     document.getElementById(id).style.display = "none";
   });
 
+  /* ---------------------------------------------------------
+     Hide ALL price panels
+     Same logic as above — only one price panel should be visible.
+  --------------------------------------------------------- */
   pricePanels.forEach(id => {
     document.getElementById(id).style.display = "none";
   });
 
-  document.getElementById("price_default").style.display = selected ? "none" : "block";
+  /* ---------------------------------------------------------
+     Show or hide the default price panel
+     If no product is selected → show default
+     If a product is selected → hide default
+  --------------------------------------------------------- */
+  document.getElementById("price_default").style.display =
+    selected ? "none" : "block";
 
+  /* ---------------------------------------------------------
+     If a product is selected:
+       - Show its product section
+       - Show its matching price panel
+     Example:
+       selected = "hot_rod"
+       → show #hot_rod
+       → show #price_hot_rod
+  --------------------------------------------------------- */
   if (selected) {
     document.getElementById(selected).style.display = "block";
     document.getElementById("price_" + selected).style.display = "block";
   }
 }
+
 /* ---------------------------------------------------------
-   HOT ROD — PRICING MATRICES
+   ⭐ HOT ROD — PRICING MATRICES
+   Base price per diameter + per-sheath increments.
+   Used by updateHotRodPrice() to calculate totals.
 --------------------------------------------------------- */
 
 const hotRodBasePrice = {
@@ -2390,6 +2433,11 @@ const hotRodBasePrice = {
   "25 mm": 48.64
 };
 
+/* ---------------------------------------------------------
+   Increment per diameter + sheath material
+   Example:
+     hotRodIncrement["1/4 in"]["316 SS"]
+--------------------------------------------------------- */
 const hotRodIncrement = {
   "1/8 in": { "304 SS": 6.75 },
 
@@ -2400,65 +2448,65 @@ const hotRodIncrement = {
   },
 
   "5/16 in": { "304 SS": 5.21 },
-    
+
   "3/8 in": {
     "304 SS": 5.29,
     "316 SS": 5.48,
     "Incoloy": 5.69
   },
-      
+
   "1/2 in": {
     "304 SS": 7.03,
     "316 SS": 7.39,
     "Incoloy": 8.66
   },
-      
+
   "17/32 in": {
     "304 SS": 7.03,
     "316 SS": 7.39,
     "Incoloy": 8.66
   },
-  
+
   "5/8 in": {
     "304 SS": 7.74,
     "316 SS": 8.15,
     "Incoloy": 9.57
   },
-   
+
   "11/16 in": {
     "304 SS": 7.74,
     "316 SS": 8.15,
     "Incoloy": 9.57
   },
-    
+
   "3/4 in": {
     "304 SS": 9.78,
     "316 SS": 10.56,
     "Incoloy": 11.82
   },
-  
+
   "1 in": { "304 SS": 14.42 },
-             
+
   "6 mm": {
     "304 SS": 4.70,
     "316 SS": 4.85,
     "Incoloy": 4.92
   },
-         
+
   "6.5 mm": {
     "304 SS": 4.70,
     "316 SS": 4.85,
     "Incoloy": 4.92
   },
 
-  "8 mm": { "304 SS": 5.21 },    
-  
+  "8 mm": { "304 SS": 5.21 },
+
   "10 mm": {
     "304 SS": 5.29,
     "316 SS": 5.48,
     "Incoloy": 5.69
   },
-  
+
   "12 mm": {
     "304 SS": 7.03,
     "316 SS": 7.39,
@@ -2470,45 +2518,44 @@ const hotRodIncrement = {
     "316 SS": 7.39,
     "Incoloy": 8.66
   },
-  
+
   "13 mm": {
     "304 SS": 7.03,
     "316 SS": 7.39,
     "Incoloy": 8.66
   },
-  
+
   "14 mm": {
     "304 SS": 7.74,
     "316 SS": 8.15,
     "Incoloy": 9.57
   },
-  
+
   "16 mm": {
     "304 SS": 7.74,
     "316 SS": 8.15,
     "Incoloy": 9.57
   },
-    
+
   "17 mm": {
     "304 SS": 7.74,
     "316 SS": 8.15,
     "Incoloy": 9.57
   },
-    
+
   "19 mm": {
     "304 SS": 9.78,
     "316 SS": 10.56,
     "Incoloy": 11.82
   },
-    
+
   "20 mm": {
     "304 SS": 9.78,
     "316 SS": 10.56,
     "Incoloy": 11.82
   },
 
-  "25 mm": { "304 SS": 14.42 }    
-       
+  "25 mm": { "304 SS": 14.42 }
 };
 
 const hotRodLeadPricing = {
