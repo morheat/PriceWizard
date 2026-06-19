@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Price Wizard (6/19, 7:48, Cleaning V1)</title>
+  <title>Price Wizard (6/19, 7:51, Cleaning V1.5)</title>
 
   <style>
     /* ---------------------------------------------------------
@@ -366,57 +366,81 @@
       </div> <!-- END LEFT COLUMN -->
 
 
-          <!-- ⭐ HOT ROD PRICE PANEL -->
+<!-- ---------------------------------------------------------
+     ⭐ HOT ROD PRICE PANEL
+     This panel displays all calculated pricing components
+     and the quantity discount table for the Hot Rod product.
+--------------------------------------------------------- -->
 <div class="priceColumn">
   <div id="price_hot_rod" class="section" style="display:none;">
+
     <h3>Price Breakdown — Hot Rod</h3>
 
-    <!-- These IDs are required for the pricing engine -->
+    <!-- Base diameter price -->
     <p>Diameter Base Price: <span id="price_hotrod_diameter">$0.00</span></p>
-    <p>Length Surcharge: <span id="price_hotrod_length">$0.00</span></p>
-    <p>Lead Length Surcharge: <span id="price_hotrod_leadlength">$0.00</span></p>
-    <p>Lead Configurations & End Seals Subtotal: <span id="price_hotrod_leadconfig">$0.00</span></p>
-<div id="price_hotrod_leadconfig_details"
-     style="font-size:12px; color:#555; margin-bottom:12px;">
-</div>
-    <p>Lead Protection Subtotal: <span id="price_hotrod_protection">$0.00</span></p>
-<div id="price_hotrod_protection_details"
-     style="font-size:12px; color:#555; margin-bottom:12px;">
-</div>
-      <p>Internal Thermocouple Subtotal: <span id="price_hotrod_thermocouple">$0.00</span></p>
-<div id="price_hotrod_thermocouple_details"
-     style="font-size:12px; color:#555; margin-bottom:12px;">
-</div>
-    <p>Fitting / Flange Subtotal: <span id="price_hotrod_fitting">$0.00</span></p>
-<div id="price_hotrod_fitting_details"
-     style="font-size:12px; color:#555; margin-bottom:12px;">
-</div>
-    <p>Other Options: <span id="price_hotrod_other">$0.00</span></p>
-<div id="price_hotrod_other_details"
-     style="font-size:12px; color:#555; margin-bottom:12px;"></div>
 
+    <!-- Length surcharge (per-inch increments) -->
+    <p>Length Surcharge: <span id="price_hotrod_length">$0.00</span></p>
+
+    <!-- Lead wire length surcharge -->
+    <p>Lead Length Surcharge: <span id="price_hotrod_leadlength">$0.00</span></p>
+
+    <!-- Lead configuration subtotal -->
+    <p>Lead Configurations & End Seals Subtotal: <span id="price_hotrod_leadconfig">$0.00</span></p>
+    <div id="price_hotrod_leadconfig_details"
+         style="font-size:12px; color:#555; margin-bottom:12px;">
+    </div>
+
+    <!-- Lead protection subtotal -->
+    <p>Lead Protection Subtotal: <span id="price_hotrod_protection">$0.00</span></p>
+    <div id="price_hotrod_protection_details"
+         style="font-size:12px; color:#555; margin-bottom:12px;">
+    </div>
+
+    <!-- Internal thermocouple subtotal -->
+    <p>Internal Thermocouple Subtotal: <span id="price_hotrod_thermocouple">$0.00</span></p>
+    <div id="price_hotrod_thermocouple_details"
+         style="font-size:12px; color:#555; margin-bottom:12px;">
+    </div>
+
+    <!-- Fitting / flange subtotal -->
+    <p>Fitting / Flange Subtotal: <span id="price_hotrod_fitting">$0.00</span></p>
+    <div id="price_hotrod_fitting_details"
+         style="font-size:12px; color:#555; margin-bottom:12px;">
+    </div>
+
+    <!-- Other Options subtotal -->
+    <p>Other Options: <span id="price_hotrod_other">$0.00</span></p>
+    <div id="price_hotrod_other_details"
+         style="font-size:12px; color:#555; margin-bottom:12px;">
+    </div>
+
+    <!-- ---------------------------------------------------------
+         Quantity Discount Table
+         These values are updated dynamically by updateHotRodPrice()
+    --------------------------------------------------------- -->
     <table style="width:100%; margin-top:15px; border-collapse: collapse;">
       <tr>
         <th style="text-align:left; padding:6px;">Quantity</th>
         <th style="text-align:left; padding:6px;">9 Days (Std)</th>
       </tr>
-        <tr><td>1</td><td class="qty1">$0.00</td></tr>
-        <tr><td>2–4</td><td class="qty2_4">$0.00</td></tr>
-        <tr><td>5–9</td><td class="qty5_9">$0.00</td></tr>
-        <tr><td>10–24</td><td class="qty10_24">$0.00</td></tr>
-        <tr><td>25–49</td><td class="qty25_49">$0.00</td></tr>
-        <tr><td>50–99</td><td class="qty50_99">$0.00</td></tr>
-        <tr><td>100+</td><td class="qty100">$0.00</td></tr>
+      <tr><td>1</td><td class="qty1">$0.00</td></tr>
+      <tr><td>2–4</td><td class="qty2_4">$0.00</td></tr>
+      <tr><td>5–9</td><td class="qty5_9">$0.00</td></tr>
+      <tr><td>10–24</td><td class="qty10_24">$0.00</td></tr>
+      <tr><td>25–49</td><td class="qty25_49">$0.00</td></tr>
+      <tr><td>50–99</td><td class="qty50_99">$0.00</td></tr>
+      <tr><td>100+</td><td class="qty100">$0.00</td></tr>
     </table>
 
     <hr>
 
+    <!-- Final total (before quantity selection) -->
     <p class="total"><strong>Total: $0.00</strong></p>
+
   </div>
 </div>
 
-      </div>
-  </div>
       
   <div id="non_swaged" class="section" style="display:none;">
     <div class="productRow">
